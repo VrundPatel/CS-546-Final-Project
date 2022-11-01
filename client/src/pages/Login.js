@@ -1,12 +1,19 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link } from "react-router-dom";
+import * as api from '../api/endpoints';
 import './login.css';
 
 export default function Login() {
+
+  const onFormSubmit = (event) => {
+    console.log('form submitted', event);
+    api.login();
+  }
+
   return (
     <div className='form-container'>
-      <Form className='custom-form'>
+      <Form className='custom-form' onSubmit={onFormSubmit}>
         <h2 style={{ 'textAlign': 'center' }}>Login to GottaGo</h2>
         <Form.Group className="mb-3" controlId="userEmail">
           <Form.Label>Email address</Form.Label>
