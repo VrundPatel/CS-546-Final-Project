@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Redirect } from "react-router-dom";
 import './App.css';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
