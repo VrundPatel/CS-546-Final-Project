@@ -1,10 +1,14 @@
-import { axios } from 'axios';
+import axios from 'axios';
 
-export function login() {
-  console.log('inside login function');
-  // axios.get('')
+const serverUrl = "http://localhost:9000";
+
+export async function login() {
 }
 
 export function signUp() {
+}
 
+export async function getAllRestrooms() {
+  const { data } = await axios.get(`${serverUrl}/restrooms`);
+  return data;
 }
