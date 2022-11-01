@@ -1,4 +1,4 @@
-.login-form-container {
+.form-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,7 +7,7 @@
   background: #000;
 }
 
-.login-form {
+.custom-form {
   width: 500px;
   padding: 40px;
   border-radius: 8px;
