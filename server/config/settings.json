@@ -1,0 +1,6 @@
+{
+    "mongoConfig": {
+      "serverUrl": "mongodb+srv://gottagouser:gottagopassword!@cluster0.irjdpmz.mongodb.net/test",
+      "database": "gottago"
+    }
+  }
