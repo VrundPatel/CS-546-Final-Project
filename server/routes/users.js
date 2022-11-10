@@ -12,7 +12,8 @@ router
     .post(async (req, res) => {
         // Creates a new user account
         console.log('incoming request ', req.body);
-        res.send('POST request to http://localhost:3000/user');
+        const userCreated = await userData.createUser(req.body);
+        res.json({ created: true });
     })
     .delete(async (req, res) => {
         // Deletes a user account. Probably not needed for the project?
@@ -25,13 +26,13 @@ router
         try { // Error Checking
             //TODO: ID validation
         } catch (e) {
-            return res.status(400).json({error: e});
+            return res.status(400).json({ error: e });
         }
         try {
-        const user = await userData.getUserById(req.params.userId);
-        res.json(user);
+            const user = await userData.getUserById(req.params.userId);
+            res.json(user);
         } catch (e) {
-            res.status(404).json({error: e});
+            res.status(404).json({ error: e });
         }
     })
     .put(async (req, res) => {
