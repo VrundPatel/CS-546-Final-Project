@@ -13,5 +13,6 @@ const getCollectionFn = (collection) => {
 };
 
 module.exports = {
+  users: getCollectionFn('users'),
   restrooms: getCollectionFn('restrooms'),
 };

@@ -11,6 +11,7 @@ router
     })
     .post(async (req, res) => {
         // Creates a new user account
+        console.log('incoming request ', req.body);
         res.send('POST request to http://localhost:3000/user');
     })
     .delete(async (req, res) => {
