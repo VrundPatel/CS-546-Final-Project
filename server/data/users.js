@@ -12,12 +12,12 @@ const getUserById = async (id) => {
   //TODO: ID validation
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: ObjectId(id) });
-  if (user === null) throw 'Error: No movie with that id';
+  if (user === null) throw 'Error: No user with that id';
   user._id = user._id.toString();
   return user;
 };
 
-// TODO: Encrupt password
+// TODO: Encrypt password
 // TODO: Check for existing user via email
 const createUser = async ({ fullName, email, password }) => {
   const userCollection = await users();

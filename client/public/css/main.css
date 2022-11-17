@@ -1,0 +1,127 @@
+header {
+	color: rgb(220, 220, 220);
+	font-family: Arial;
+	font-size: 24pt;
+	font-weight: bold;
+}
+
+p {
+	font-family: Arial;
+	font-weight: bold;
+	color: black;
+}
+
+p span {
+	font-family: Arial;
+	font-weight: bold;
+	color: white;
+}
+
+div {
+	padding-bottom: 5px;
+	text-align: center;
+}
+
+form.button label {
+	color: navy;
+	font-family: Arial;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+input {
+	color: black;
+	font-style: italic;
+	line-height: 20px;
+	
+}
+
+form {
+	text-align: center;
+}
+
+button {
+	background: navy;
+	color: rgb(220, 220, 220);
+	line-height: 20px;
+	
+}
+
+button:hover {
+	background: blue;
+}
+
+span {
+	background-color: navy;
+	border: 8px solid navy;
+}
+
+body {
+	background: rgb(220, 220, 220);
+}
+
+footer p {
+	color: gray;
+	font-family: Arial;
+	font-style: italic;
+}
+
+h1 {
+	color: rgb(220, 220, 220);
+	font-family: Arial;
+}
+
+h2 {
+	color: black;
+	font-family: Arial;
+	font-weight: bold;
+}
+
+article.people {
+	color: black;
+	font-family: Arial;
+}
+
+article.person {
+	color: black;
+	font-family: Arial;
+}
+
+a {
+	color: black;
+	font-family: Arial;
+	font-size: 16pt;
+}
+
+a:hover {
+	color: navy;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+dt {
+	color: navy;
+	font-weight: bold;
+	font-family: Arial;
+	font-size: 16pt;
+}
+
+dd {
+	color: black;
+	font-weight: none;
+	font-family: Arial;
+	font-size: 12pt;
+}
+
+ul {
+	border: 3px dashed black;
+}
+
+section {
+	border: 3px solid navy;
+}
+
+p.about, .contact p{
+	font-weight: bold;
+	color: red;
+  }
