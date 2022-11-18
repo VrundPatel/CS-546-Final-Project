@@ -1,10 +1,9 @@
+import axios from 'axios';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './login.css';
-import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -26,14 +25,13 @@ export default function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('form state ', formState);
     setFormState(initialState);
 
     try {
       const { data, status } = await axios.post('http://localhost:9000/users', formState);
       if (!!data) navigate('/home');
     } catch (e) {
-      console.log('error', e);
+      alert('User already exits')
     }
   }
 
@@ -100,5 +98,5 @@ export default function SignUp() {
         </Button>
       </Form>
     </div>
-  );
+  )
 }
