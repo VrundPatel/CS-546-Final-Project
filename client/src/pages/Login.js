@@ -1,14 +1,47 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link } from "react-router-dom";
-import * as api from '../api/endpoints';
+import { Link, useNavigate } from "react-router-dom";
 import './login.css';
+import { compare } from 'bcryptjs-react';
+import axios from 'axios';
+import { useState } from 'react';
 
 export default function Login() {
 
-  const onFormSubmit = (event) => {
-    console.log('form submitted', event);
-    api.login();
+  const navigate = useNavigate();
+
+  const initialState = {
+    email: '',
+    password: ''
+  };
+
+  const [formState, setFormState] = useState(initialState);
+  const { email, password } = formState;
+
+  const handleOnChange = (e) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value })
+  }
+
+  const onFormSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const { data } = await axios.post(`http://localhost:9000/users/login`, {
+        email: email
+      });
+      if (!!data) {
+        // compare password
+        console.log('data returned ', data);
+        const passwordMatched = await compare(password, data.password);
+        if (passwordMatched) {
+          setFormState(initialState);
+          navigate('/home');
+        } else {
+          alert('Incorrect password');
+        }
+      }
+    } catch (e) {
+      alert('User does not exist')
+    }
   }
 
   return (
@@ -17,11 +50,22 @@ export default function Login() {
         <h2 style={{ 'textAlign': 'center' }}>Login to GottaGo</h2>
         <Form.Group className="mb-3" controlId="userEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
+          <Form.Control
+            onChange={handleOnChange}
+            value={email}
+            name='email'
+            type="email"
+            placeholder="Enter email" />
         </Form.Group>
+
         <Form.Group className="mb-3" controlId="userPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
+          <Form.Control
+            onChange={handleOnChange}
+            value={password}
+            name='password'
+            type="password"
+            placeholder="Password" />
         </Form.Group>
         <p>Don't have an account?
           <Link to='/sign-up'>Sign Up</Link>

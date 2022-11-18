@@ -8,9 +8,20 @@ router
   .post(async (req, res) => {
     try {
       const userCreated = await userData.createUser(req.body);
-      res.json({ created: true});
-    } catch(e) {
-      res.status(400).json({error: e});
+      res.json({ created: true });
+    } catch (e) {
+      res.status(400).json({ error: e });
+    }
+  });
+
+router
+  .route('/login')
+  .post(async (req, res) => {
+    try {
+      const userFound = await userData.getUserByEmail(req.body.email);
+      res.json(userFound);
+    } catch (e) {
+      res.status(400).json({ error: e });
     }
   });
 

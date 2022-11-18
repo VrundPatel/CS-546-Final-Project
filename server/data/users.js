@@ -17,14 +17,16 @@ const getUserById = async (id) => {
 
 const getUserByEmail = async (input) => {
   const userCollection = await users();
-  const user = await userCollection.findOne({ email: input});
-  return !!user;
+  const user = await userCollection.findOne({ email: input });
+  return user;
 };
 
 // TODO: Encrypt password before saving
 const createUser = async ({ fullName, city, state, email, password }) => {
+  email = email.toLowerCase();
   const userCollection = await users();
-  if (await getUserByEmail(email)) {
+  const userFound = await getUserByEmail(email)
+  if (!!userFound) {
     throw 'User already exists';
   }
   const insertInfo = await userCollection.insertOne({ fullName, city, state, email, password });
@@ -36,5 +38,6 @@ const createUser = async ({ fullName, city, state, email, password }) => {
 module.exports = {
   getAllUsers,
   getUserById,
-  createUser
+  createUser,
+  getUserByEmail
 }

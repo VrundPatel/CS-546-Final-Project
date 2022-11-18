@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { hash } from 'bcryptjs-react';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -25,11 +26,17 @@ export default function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setFormState(initialState);
+    const hashPass = await hash(formState.password, 10);
 
     try {
-      const { data, status } = await axios.post('http://localhost:9000/users', formState);
-      if (!!data) navigate('/home');
+      const { data } = await axios.post('http://localhost:9000/users', {
+        ...formState,
+        password: hashPass
+      });
+      setFormState(initialState);
+      if (!!data) {
+        navigate('/home');
+      }
     } catch (e) {
       alert('User already exits')
     }
