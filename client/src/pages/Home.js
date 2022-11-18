@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import * as api from '../api/endpoints';
 import Card from 'react-bootstrap/Card';
+import Navbar from 'react-bootstrap/Navbar';
+import Container from 'react-bootstrap/Container';
 
 export default function Restrooms() {
   const [restrooms, setRestrooms] = useState([]);
@@ -13,7 +15,13 @@ export default function Restrooms() {
 
   return (
     <>
-      <h1>Restrooms</h1>
+      <Navbar bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand href="#home">
+            GottaGo
+          </Navbar.Brand>
+        </Container>
+      </Navbar>
       <div>
         {
           restrooms.map((restroom, index) => {

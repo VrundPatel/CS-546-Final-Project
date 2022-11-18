@@ -24,6 +24,9 @@ export default function SignUp() {
     console.log('form state ', formState);
     setFormState(initialState);
     const { data } = await axios.post('http://localhost:9000/users', formState);
+    if (data) {
+      
+    }
   }
 
   return (
