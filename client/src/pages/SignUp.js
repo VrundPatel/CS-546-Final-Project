@@ -8,12 +8,14 @@ import axios from 'axios';
 export default function SignUp() {
   const initialState = {
     fullName: '',
+    city: '',
+    state: '',
     email: '',
     password: ''
   };
 
   const [formState, setFormState] = useState(initialState);
-  const { fullName, email, password } = formState;
+  const { fullName, city, state, email, password } = formState;
 
   const handleOnChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value })
@@ -42,6 +44,26 @@ export default function SignUp() {
             name='fullName'
             type="text"
             placeholder="Enter full name" />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="userCity">
+          <Form.Label>City</Form.Label>
+          <Form.Control
+            onChange={handleOnChange}
+            value={city}
+            name='city'
+            type="text"
+            placeholder="City" />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="userState">
+          <Form.Label>State</Form.Label>
+          <Form.Control
+            onChange={handleOnChange}
+            value={state}
+            name='state'
+            type="text"
+            placeholder="State" />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="userEmail">

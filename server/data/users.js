@@ -19,9 +19,9 @@ const getUserById = async (id) => {
 
 // TODO: Encrypt password
 // TODO: Check for existing user via email
-const createUser = async ({ fullName, email, password }) => {
+const createUser = async ({ fullName, city, state, email, password }) => {
   const userCollection = await users();
-  const insertInfo = await userCollection.insertOne({ fullName, email, password });
+  const insertInfo = await userCollection.insertOne({ fullName, city, state, email, password });
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw 'Could not add user';
   return getUserById(insertInfo.insertedId.toString());

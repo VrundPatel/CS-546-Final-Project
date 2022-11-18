@@ -1,11 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import './App.css';
-import Login from './pages/Login';
 import Restrooms from './pages/Home';
+import Login from './pages/Login';
+import RestroomDetails from './pages/RestroomDetails';
 import SignUp from './pages/SignUp';
 import UserProfile from './pages/UserProfile';
-import RestroomDetails from './pages/RestroomDetails';
 
 function App() {
   return (
