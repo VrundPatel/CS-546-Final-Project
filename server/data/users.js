@@ -9,18 +9,24 @@ const getAllUsers = async () => {
 }
 
 const getUserById = async (id) => {
-  //TODO: ID validation
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: ObjectId(id) });
   if (user === null) throw 'Error: No user with that id';
-  user._id = user._id.toString();
-  return user;
+  return user._id.toString();
 };
 
-// TODO: Encrypt password
-// TODO: Check for existing user via email
+const getUserByEmail = async (input) => {
+  const userCollection = await users();
+  const user = await userCollection.findOne({ email: input});
+  return !!user;
+};
+
+// TODO: Encrypt password before saving
 const createUser = async ({ fullName, city, state, email, password }) => {
   const userCollection = await users();
+  if (await getUserByEmail(email)) {
+    throw 'User already exists';
+  }
   const insertInfo = await userCollection.insertOne({ fullName, city, state, email, password });
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw 'Could not add user';

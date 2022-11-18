@@ -4,8 +4,11 @@ import Form from 'react-bootstrap/Form';
 import { Link } from "react-router-dom";
 import './login.css';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
   const initialState = {
     fullName: '',
     city: '',
@@ -25,9 +28,12 @@ export default function SignUp() {
     event.preventDefault();
     console.log('form state ', formState);
     setFormState(initialState);
-    const { data } = await axios.post('http://localhost:9000/users', formState);
-    if (data) {
-      
+
+    try {
+      const { data, status } = await axios.post('http://localhost:9000/users', formState);
+      if (!!data) navigate('/home');
+    } catch (e) {
+      console.log('error', e);
     }
   }
 

@@ -5,19 +5,13 @@ const userData = data.users;
 
 router
   .route('/')
-  .get(async (req, res) => {
-    const userList = await userData.getAllUsers();
-    res.json(userList);
-  })
   .post(async (req, res) => {
-    // Creates a new user account
-    console.log('incoming request ', req.body);
-    const userCreated = await userData.createUser(req.body);
-    res.json({ created: true });
-  })
-  .delete(async (req, res) => {
-    // Deletes a user account. Probably not needed for the project?
-    res.send('DELETE request to http://localhost:3000/user');
+    try {
+      const userCreated = await userData.createUser(req.body);
+      res.json({ created: true});
+    } catch(e) {
+      res.status(400).json({error: e});
+    }
   });
 
 router
