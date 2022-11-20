@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import * as api from '../api/endpoints';
 import Card from 'react-bootstrap/Card';
-import Navbar from 'react-bootstrap/Navbar';
-import Container from 'react-bootstrap/Container';
+import * as api from '../api/endpoints';
 import Layout from "./layout";
 
 export default function Restrooms() {
