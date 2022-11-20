@@ -1,4 +1,4 @@
-import { Button, Card, ListGroup, ListGroupItem, Table } from "react-bootstrap";
+import { Button, Card, Table } from "react-bootstrap";
 
 function InfoCard(props) {
   return (

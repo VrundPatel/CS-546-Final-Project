@@ -1,4 +1,4 @@
-import { Col, Row, Nav, Tab, Container } from "react-bootstrap";
+import { Col, Row, Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import InfoCard from "./InfoCard";
 import { useEffect, useState } from "react";

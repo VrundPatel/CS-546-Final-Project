@@ -1,12 +1,7 @@
 import { Fragment, useState } from "react";
-import { Button, Card, Container, Form } from "react-bootstrap";
+import { Button, Card, Form } from "react-bootstrap";
 
 function WriteReview() {
-  const initialState = {
-    email: "",
-    password: "",
-  };
-  const [formState, setFormState] = useState(initialState);
   const [rating, setRating] = useState(5);
   const [comments, setComments] = useState("");
 

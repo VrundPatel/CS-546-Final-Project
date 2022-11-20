@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Badge, Card, Container, ListGroup } from "react-bootstrap";
+import { Badge, Card, ListGroup } from "react-bootstrap";
 
 function Reviews(props) {
   console.log(typeof props);
