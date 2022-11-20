@@ -11,7 +11,7 @@ import UserProfile from './pages/UserProfile';
 
 function App() {
   //TODO: introduce a custom hook for auth 
-  const [isAuthenticated, setAutheticated] = useState(false);
+  const [isAuthenticated, setAutheticated] = useState(true);
   return (
     <BrowserRouter>
       <Routes>
