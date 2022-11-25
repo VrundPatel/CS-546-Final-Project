@@ -2,8 +2,6 @@ import { Fragment } from "react";
 import { Badge, Card, ListGroup } from "react-bootstrap";
 
 function Reviews(props) {
-  console.log(typeof props);
-  console.log(typeof props.reviews);
   return (
     <Fragment class="overflow-auto">
       <Card className="text-center">
