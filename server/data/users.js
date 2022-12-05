@@ -35,9 +35,57 @@ const createUser = async ({ fullName, city, state, email, password }) => {
   return getUserById(insertInfo.insertedId.toString());
 };
 
+const updateUser = async (id, updatedUser) => {
+  if (!id) {
+    throw `id is missing, should input the id your want to update`;
+  }
+  if (!updatedUser) {
+    return await this.getUserById(id);
+  }
+  checkString(id);
+  const userCollection = await users();
+  let updatedUserData = {};
+  let gotten = await this.getUserById(id);
+  if (JSON.stringify(updatedUser) == JSON.stringify(gotten)) {
+    return await this.getUserById(id);
+  }
+
+  if (updatedUser.fullName) {
+    updatedUserData.fullName = updatedUser.fullName;
+  }
+  if (updatedUser.city) {
+    updatedUserData.city = updatedUser.city;
+  }
+  if (updatedUser.state) {
+    updatedUserData.state = updatedUser.state;
+  }
+  if (updatedUser.email) {
+    updatedUserData.email = updatedUser.email;
+  }
+  if (updatedUser.password) {
+    updatedUserData.password = updatedUser.password;
+  }
+
+  if (updatedUserData == {}) {
+    return await this.getUserById(id);
+  }
+  const updateUserInfo = await userCollection.updateOne({ _id: id }, { $set: updatedUserData });
+  if (updateUserInfo.modifiedCount === 0 && updateUserInfo.deletedCount === 0) {
+    throw `could not update user`;
+  }
+  return await this.getUserById(id);
+};
+
+function checkString(input) {
+  if (typeof input != 'string' || input.trim().length == 0) {
+      throw `Not valid! Input should be a non-empty string`;
+  }
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
-  getUserByEmail
+  getUserByEmail,
+  updateUser
 }
