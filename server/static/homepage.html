@@ -12,18 +12,22 @@
 
     <body>
         <main>
-            
             <h1>GottaGo</h1>
             <h2>When you gotta go, you GottaGo!</h2>
             <div id="error" class="error" hidden>Error</div>
-            <form id="sortArrayForm">
-                <label id="Search" for="searchRestrooms">
-                    <input id="input" type="text" name="searchRestrooms">
-                    <button id="myButton" type="submit">Search</button>
+            <form method="post" action ="/search">
+                <label for="searchRestrooms">Test</label>
+                <input id="searchRestrooms" type="text" name="searchRestrooms">
+                <button type="submit">Search</button>
+            </form>
+            <!-- <br>
+            <form method="post" id="closestRestroomsForm">
+                <label id="Search" for="closestRestrooms">
+                    <button id="myLocationButton" type="submit">Closest Near Me</button>
                 </label>
             </form>
             <div id="container">
-            </div>
+            </div> -->
         </main>
     </body>
 
