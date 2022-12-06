@@ -161,7 +161,7 @@ const updateReport = async (reportId, updatedReport) => {
 
 function checkString(input) {
     if (typeof input != 'string' || input.trim().length == 0) {
-        throw `Not valid! Input should be a non-empty string`;
+        throw `Not valid! ${input} should be a non-empty string`;
     }
 }
 
