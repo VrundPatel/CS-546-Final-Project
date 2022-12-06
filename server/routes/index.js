@@ -8,6 +8,8 @@ const constructorMethod = (app) => {
   app.use('/', homepageRoutes);
   app.use('/restrooms', restroomRoutes);
   app.use('/users', userRoutes);
+  app.use('/reviews', reviewsRoutes);
+  app.use('/reports', reportsRoutes);
 
     app.use('*', (req, res) => {
         res.sendStatus(404);
