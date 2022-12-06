@@ -20,7 +20,7 @@ const getRestroomById = async (id) => {
 };
 
 const searchRestroomsByTerm = async (searchTerm) => {
-    searchTerm = validation.checkSearchTerm(searchTerm, "Search term(s)");
+    searchTerm = validation.checkString(searchTerm, "Search term(s)");
     const restroomCollection = await restrooms();
     // const restroomList = await restroomCollection.find({$text: {$search: searchTerm}});
     const restroomList = await restroomCollection.find({$text: {$search: searchTerm}});
