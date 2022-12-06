@@ -11,9 +11,9 @@ const constructorMethod = (app) => {
   app.use('/reviews', reviewsRoutes);
   app.use('/reports', reportsRoutes);
 
-    app.use('*', (req, res) => {
-        res.sendStatus(404);
-    });
+  app.use('*', (req, res) => {
+    res.sendStatus(404);
+  });
 };
 
 module.exports = constructorMethod;
