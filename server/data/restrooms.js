@@ -109,6 +109,55 @@ const removeRestroomById = async (id) => {
 
 };
 
+const updateRestroom = async (
+  id,
+  streetAddress,
+  city,
+  state,
+  zipCode,
+  openingHours,
+  closingHours,
+  availability,
+  ammenities,
+) => {
+  if (!id || !streetAddress || !city || !state ||
+    !zipCode || !openingHours || !closingHours ||
+    !availability || !ammenities) {
+    throw `All fields need to have valid values`;
+  }
+  checkString(id);
+  checkString(streetAddress);
+  checkString(city);
+  checkString(state);
+  checkString(zipCode);
+  checkString(openingHours);
+  checkString(closingHours);
+  checkArrays(availability);
+  checkArrays(ammenities);
+  if (!ObjectId.isValid(id)) {
+    throw `id is not a valid ObjectId`;
+  }
+
+  let updatedRestroom = {
+    streetAddress: streetAddress,
+    city: city,
+    state: state,
+    zipCode: zipCode,
+    overallRating: 0,
+    openingHours: openingHours,
+    closingHours: closingHours,
+    availability: availability,
+    ammenities: ammenities
+  };
+  const restroomsCollection = await restrooms();
+  await restroomsCollection.updateOne(
+    { _id: ObjectId(id) },
+    { $set: updatedRestroom }
+  );
+  return await restroomsCollection.findOne({ _id: ObjectId(id) });
+
+};
+
 function checkString(input) {
   if (typeof input != 'string' || input.trim().length == 0) {
     throw `Not valid! ${input} should be a non-empty string`;
@@ -132,5 +181,6 @@ module.exports = {
   searchRestroomsByTerm,
   searchRestroomsByLocation,
   removeRestroomById,
-  createRestroom
+  createRestroom,
+  updateRestroom
 }

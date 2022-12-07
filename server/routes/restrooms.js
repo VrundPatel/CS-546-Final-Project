@@ -111,7 +111,90 @@ router
   })
   .put(async (req, res) => {
     //TODO: Updates an existing restroom with updated fields
-    
+    const id = req.params.restroomId;
+    const restroomInfo = req.body;
+    if (!id) {
+      res.status(400).json({ error: `You must provide an id to search for` });
+      return;
+    }
+    if (!ObjectId.isValid(id)) {
+      res.status(400).json({ error: `invalid id is given` });
+      return;
+    }
+    try {
+      await restroomData.getRestroomById(id);
+    } catch (e) {
+      res.status(404).json({ error: `restroom by id not found` });
+      return;
+    }
+    if (!restroomInfo.streetAddress || !restroomInfo.city || !restroomInfo.state ||
+      !restroomInfo.zipCode || !restroomInfo.openingHours || !restroomInfo.closingHours ||
+      !restroomInfo.availability || !restroomInfo.ammenities) {
+      res.status(400).json({ error: `the request body is not valid` });
+      return;
+    }
+    try {
+      checkString(restroomInfo.streetAddress);
+    }
+    catch (e) {
+      res.status(400).json({ error: `Not valid! StreetAddress should be a non-empty string` });
+      return;
+    }
+    try {
+      checkString(restroomInfo.city);
+    }
+    catch (e) {
+      res.status(400).json({ error: `Not valid! City should be a non-empty string` });
+      return;
+    }
+    try {
+      checkString(restroomInfo.state);
+    }
+    catch (e) {
+      res.status(400).json({ error: `Not valid! State should be a non-empty string` });
+      return;
+    }
+    try {
+      checkString(restroomInfo.zipCode);
+    }
+    catch (e) {
+      res.status(400).json({ error: `Not valid! Zipcode should be a non-empty string` });
+      return;
+    }
+    try {
+      checkString(restroomInfo.openingHours);
+    }
+    catch (e) {
+      res.status(400).json({ error: `Not valid! Opening hours should be a non-empty string` });
+      return;
+    }
+    try {
+      checkString(restroomInfo.closingHours);
+    }
+    catch (e) {
+      res.status(400).json({ error: `Not valid! Closing hours should be a non-empty string` });
+      return;
+    }
+    try {
+      checkArrays(restroomInfo.availability);
+    }
+    catch (e) {
+      res.status(400).json({ error: `Not valid! Availability should be a non-empty Array` });
+      return;
+    }
+    try {
+      checkArrays(restroomInfo.ammenities);
+    }
+    catch (e) {
+      res.status(400).json({ error: `Not valid! Ammenities should be a non-empty Array` });
+      return;
+    }
+    try {
+      const updatedRestroom = await restroomData.updateRestroom(id, restroomInfo.streetAddress, restroomInfo.city, restroomInfo.state, restroomInfo.zipCode, restroomInfo.openingHours, restroomInfo.closingHours, restroomInfo.availability, restroomInfo.ammenities);
+      res.status(200).json(updatedRestroom);
+    } catch (e) {
+      res.status(500).json({ error: e });
+    }
     //res.send(`POST request to http://localhost:3000/restroom/${req.params.id}`);
   })
   .delete(async (req, res) => {
