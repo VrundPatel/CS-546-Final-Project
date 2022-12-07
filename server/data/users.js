@@ -28,12 +28,12 @@ const getUserByEmail = async (input) => {
   return user;
 };
 
-const createUser = async ({ firstName, lastName, city, state, zipcode, email, hashedPassword }) => {
+const createUser = async ({ firstName, lastName, city, state, zipCode, email, hashedPassword }) => {
   checkString(firstName);
   checkString(lastName);
   checkString(city);
   checkString(state);
-  checkString(zipcode);
+  checkString(zipCode);
   checkString(email);
   checkString(hashedPassword);
   email = email.toLowerCase();
@@ -42,7 +42,7 @@ const createUser = async ({ firstName, lastName, city, state, zipcode, email, ha
     lastName: lastName,
     city: city,
     state: state,
-    zipcode: zipcode,
+    zipCode: zipCode,
     email: email,
     hashedPassword: hashedPassword,
     reviewIds: [],
