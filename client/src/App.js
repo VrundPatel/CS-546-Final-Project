@@ -14,14 +14,14 @@ export const AuthContext = React.createContext();
 
 function App() {
   //TODO: introduce a custom hook for auth 
-  const [isAuthenticated, setAutheticated] = useState(false);
+  const [isAuthenticated, setAutheticated] = useState(true);
 
-  useEffect(() => {
-    axios.get('http://localhost:9000/users/auth-check').then((res) => {
-      console.log('response for auth check ', res.data);
-      setAutheticated(true);
-    })
-  })
+  // useEffect(() => {
+  //   axios.get('http://localhost:9000/users/auth-check').then((res) => {
+  //     console.log('response for auth check ', res.data);
+  //     setAutheticated(true);
+  //   })
+  // })
   return (
     <AuthContext.Provider value={isAuthenticated}>
       <BrowserRouter>
@@ -30,17 +30,17 @@ function App() {
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={
-            <GuardedRoute>
+            <GuardedRoute isAuthenticated>
               <Restrooms />
             </GuardedRoute>
           } />
           <Route path="/restroon/:id" element={
-            <GuardedRoute>
+            <GuardedRoute isAuthenticated>
               <RestroomDetails />
             </GuardedRoute>
           } />
           <Route path="/user" element={
-            <GuardedRoute>
+            <GuardedRoute isAuthenticated>
               <UserProfile />
             </GuardedRoute>
           } />

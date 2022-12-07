@@ -21,33 +21,14 @@ const getUserByEmail = async (input) => {
   return user;
 };
 
-// TODO: Encrypt password before saving
-const createUser = async (firstName, lastName, city, state, zipCode, email, hashedPassword) => {
-  checkString(firstName);
-  checkString(lastName);
-  checkString(city);
-  checkString(state);
-  checkString(zipCode);
-  checkString(email);
-  checkString(hashedPassword);
+const createUser = async ({ fullName, city, state, email, password }) => {
   email = email.toLowerCase();
   const userCollection = await users();
   const userFound = await getUserByEmail(email)
   if (!!userFound) {
-    throw `User already exists`;
+    throw 'User already exists';
   }
-  let newUser = {
-    firstName: firstName,
-    lastName: lastName,
-    city: city,
-    state: state,
-    zipCode: zipCode,
-    email: email,
-    hashedPassword: hashedPassword,
-    reviewIds: [],
-    reportIds: []
-  }
-  const insertInfo = await userCollection.insertOne(newUser);
+  const insertInfo = await userCollection.insertOne({ fullName, city, state, email, password });
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw 'Could not add user';
   return getUserById(insertInfo.insertedId.toString());
