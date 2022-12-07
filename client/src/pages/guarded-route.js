@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, Redirect, Navigate } from "react-router-dom";
+import { AuthContext } from '../App';
 
 export default function GuardedRoute(props) {
-  if (props.auth) {
+  const { isAuthenticated } = useContext(AuthContext)
+  if (isAuthenticated) {
     return <> {props.children} </>;
   }
   else {
