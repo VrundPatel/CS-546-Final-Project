@@ -22,48 +22,72 @@ const getUserByEmail = async (input) => {
 };
 
 // TODO: Encrypt password before saving
-const createUser = async ({ fullName, city, state, email, password }) => {
+const createUser = async (firstName, lastName, city, state, zipCode, email, hashedPassword) => {
+  checkString(firstName);
+  checkString(lastName);
+  checkString(city);
+  checkString(state);
+  checkString(zipCode);
+  checkString(email);
+  checkString(hashedPassword);
   email = email.toLowerCase();
   const userCollection = await users();
   const userFound = await getUserByEmail(email)
   if (!!userFound) {
-    throw 'User already exists';
+    throw `User already exists`;
   }
-  const insertInfo = await userCollection.insertOne({ fullName, city, state, email, password });
+  let newUser = {
+    firstName: firstName,
+    lastName: lastName,
+    city: city,
+    state: state,
+    zipCode: zipCode,
+    email: email,
+    hashedPassword: hashedPassword,
+    reviewIds: [],
+    reportIds: []
+  }
+  const insertInfo = await userCollection.insertOne(newUser);
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw 'Could not add user';
   return getUserById(insertInfo.insertedId.toString());
 };
 
-const updateUser = async (id, updatedUser) => {
+const updateUser = async (id, updateInfo) => {
   if (!id) {
     throw `id is missing, should input the id your want to update`;
   }
-  if (!updatedUser) {
+  if (!updateInfo) {
     return await this.getUserById(id);
   }
   checkString(id);
   const userCollection = await users();
   let updatedUserData = {};
   let gotten = await this.getUserById(id);
-  if (JSON.stringify(updatedUser) == JSON.stringify(gotten)) {
+  if (JSON.stringify(updateInfo) == JSON.stringify(gotten)) {
     return await this.getUserById(id);
   }
 
-  if (updatedUser.fullName) {
-    updatedUserData.fullName = updatedUser.fullName;
+  if (updateInfo.firstName) {
+    updatedUserData.fisrtName = updateInfo.firstName;
   }
-  if (updatedUser.city) {
-    updatedUserData.city = updatedUser.city;
+  if (updateInfo.lastName) {
+    updatedUserData.lastName = updateInfo.lastName;
   }
-  if (updatedUser.state) {
-    updatedUserData.state = updatedUser.state;
+  if (updateInfo.city) {
+    updatedUserData.city = updateInfo.city;
   }
-  if (updatedUser.email) {
-    updatedUserData.email = updatedUser.email;
+  if (updateInfo.state) {
+    updatedUserData.state = updateInfo.state;
   }
-  if (updatedUser.password) {
-    updatedUserData.password = updatedUser.password;
+  if (updateInfo.zipCode) {
+    updatedUserData.zipCode = updateInfo.zipCode;
+  }
+  if (updateInfo.email) {
+    updatedUserData.email = updateInfo.email;
+  }
+  if (updateInfo.hashedPassword) {
+    updatedUserData.hashedPassword = updateInfo.hashedPassword;
   }
 
   if (updatedUserData == {}) {
@@ -78,7 +102,7 @@ const updateUser = async (id, updatedUser) => {
 
 function checkString(input) {
   if (typeof input != 'string' || input.trim().length == 0) {
-      throw `Not valid! Input should be a non-empty string`;
+      throw `Not valid! ${input} should be a non-empty string`;
   }
 }
 
