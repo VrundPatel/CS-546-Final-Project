@@ -87,21 +87,32 @@ router
 router
   .route('/:restroomId')
   .get(async (req, res) => {
-    try { // Error Checking
-      //TODO: ID validation
-    } catch (e) {
-      return res.status(400).json({ error: e });
+    const id = req.params.restroomId;
+    if (!id) {
+      res.status(400).json({ error: `You must provide an id to search for` });
+      return;
+    }
+    if (!ObjectId.isValid(id)) {
+      res.status(400).json({ error: `invalid id is given` });
+      return;
     }
     try {
-      const restroom = await restroomData.getRestroomById(req.params.restroomId);
-      res.json(restroom);
+      await restroomData.getRestroomById(id);
     } catch (e) {
-      res.status(404).json({ error: e });
+      res.status(404).json({ error: `restroom by id not found` });
+      return;
+    }
+    try {
+      const restroom = await restroomData.getRestroomById(id);
+      res.status(200).json(restroom);
+    } catch (e) {
+      res.status(500).json({ error: e });
     }
   })
   .put(async (req, res) => {
     //TODO: Updates an existing restroom with updated fields
-    res.send(`POST request to http://localhost:3000/restroom/${req.params.id}`);
+    
+    //res.send(`POST request to http://localhost:3000/restroom/${req.params.id}`);
   })
   .delete(async (req, res) => {
     //TODO: Deletes a restroom by ID
