@@ -90,13 +90,13 @@ router
       return;
     }
     try {
-      await reviewData.getReview(id)
+      await reviewData.getReviewById(id)
     } catch (e) {
       res.status(404).json({ error: `review by id not found` });
       return;
     }
     try {
-      const review = await reviewData.getReview(id);
+      const review = await reviewData.getReviewById(id);
       res.status(200).json(review);
     } catch (e) {
       res.status(500).json({ error: e });
@@ -114,13 +114,13 @@ router
       return;
     }
     try {
-      await reviewData.getReview(id)
+      await reviewData.getReviewById(id)
     } catch (e) {
       res.status(404).json({ error: `review by id not found` });
       return;
     }
     try {
-      const restroom = await reviewData.removeReview(id);
+      const restroom = await reviewData.removeReviewById(id);
       res.status(200).json(restroom);
     } catch (e) {
       res.status(500).json({ error: e });
