@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const restroomData = data.restrooms;
+const { ObjectId } = require('mongodb');
 
 router
   .route('/')
@@ -199,7 +200,28 @@ router
   })
   .delete(async (req, res) => {
     //TODO: Deletes a restroom by ID
-    res.send('DELETE request to http://localhost:3000/restroom');
+    const id = req.params.restroomId;
+    if (!id) {
+      res.status(400).json({ error: `You must provide an id to search for` });
+      return;
+    }
+    if (!ObjectId.isValid(id)) {
+      res.status(400).json({ error: `invalid id is given` });
+      return;
+    }
+    try {
+      await restroomData.getRestroomById(id);
+    } catch (e) {
+      res.status(404).json({ error: `restroom by id not found` });
+      return;
+    }
+    try {
+      await restroomData.removeRestroomById(id);
+      res.status(200).json({ restroomId: id, deleted: true });
+    } catch (e) {
+      res.status(500).json({ error: e });
+    }
+    //res.send('DELETE request to http://localhost:3000/restroom');
   });
 
   function checkString(input) {
