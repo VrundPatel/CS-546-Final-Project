@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import './App.css';
+// import AuthContext from './context/auth-context';
 import GuardedRoute from './pages/guarded-route';
 import Restrooms from './pages/Home';
 import Login from './pages/Login';
@@ -11,17 +12,22 @@ import SignUp from './pages/SignUp';
 import UserProfile from './pages/UserProfile';
 
 export const AuthContext = React.createContext();
+axios.defaults.withCredentials = true;
 
 function App() {
-  //TODO: introduce a custom hook for auth 
-  const [isAuthenticated, setAutheticated] = useState(true);
+  const [isAuthenticated, setAuthenticated] = useState(false);
 
-  // useEffect(() => {
-  //   axios.get('http://localhost:9000/users/auth-check').then((res) => {
-  //     console.log('response for auth check ', res.data);
-  //     setAutheticated(true);
-  //   })
-  // })
+  useEffect(() => {
+    axios.get('http://localhost:9000/users/auth-check')
+      .then((res) => {
+        console.log('response for auth check ', res.data);
+        setAuthenticated(!!res.data.user);
+      }).catch(error => {
+        console.error('error: ', error);
+        setAuthenticated(false);
+      })
+  }, [window.location]);
+
   return (
     <AuthContext.Provider value={isAuthenticated}>
       <BrowserRouter>
@@ -30,17 +36,17 @@ function App() {
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={
-            <GuardedRoute isAuthenticated>
+            <GuardedRoute>
               <Restrooms />
             </GuardedRoute>
           } />
-          <Route path="/restroon/:id" element={
-            <GuardedRoute isAuthenticated>
+          <Route path="/restroom/:id" element={
+            <GuardedRoute>
               <RestroomDetails />
             </GuardedRoute>
           } />
           <Route path="/user" element={
-            <GuardedRoute isAuthenticated>
+            <GuardedRoute>
               <UserProfile />
             </GuardedRoute>
           } />
