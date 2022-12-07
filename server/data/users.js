@@ -9,6 +9,13 @@ const getAllUsers = async () => {
 }
 
 const getUserById = async (id) => {
+  if (!id) {
+    throw `You must provide an id to search for`;
+  }
+  checkString(id);
+  if (!ObjectId.isValid(id)) {
+    throw `id is not a valid ObjectId`;
+  }
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: ObjectId(id) });
   if (user === null) throw 'Error: No user with that id';
@@ -21,14 +28,32 @@ const getUserByEmail = async (input) => {
   return user;
 };
 
-const createUser = async ({ fullName, city, state, email, password }) => {
+const createUser = async ({ firstName, lastName, city, state, zipcode, email, hashedPassword }) => {
+  checkString(firstName);
+  checkString(lastName);
+  checkString(city);
+  checkString(state);
+  checkString(zipcode);
+  checkString(email);
+  checkString(hashedPassword);
   email = email.toLowerCase();
+  let newUser = {
+    firstName: firstName,
+    lastName: lastName,
+    city: city,
+    state: state,
+    zipcode: zipcode,
+    email: email,
+    hashedPassword: hashedPassword,
+    reviewIds: [],
+    reportIds: []
+  };
   const userCollection = await users();
   const userFound = await getUserByEmail(email)
   if (!!userFound) {
     throw 'User already exists';
   }
-  const insertInfo = await userCollection.insertOne({ fullName, city, state, email, password });
+  const insertInfo = await userCollection.insertOne(newUser);
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw 'Could not add user';
   return getUserById(insertInfo.insertedId.toString());
@@ -83,7 +108,7 @@ const updateUser = async (id, updateInfo) => {
 
 function checkString(input) {
   if (typeof input != 'string' || input.trim().length == 0) {
-      throw `Not valid! ${input} should be a non-empty string`;
+    throw `Not valid! ${input} should be a non-empty string`;
   }
 }
 
