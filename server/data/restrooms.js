@@ -12,6 +12,13 @@ const getAllRestrooms = async () => {
 
 const getRestroomById = async (id) => {
     //TODO: ID validation
+    if (!id) {
+      throw `You must provide an id to search for`;
+    }
+    checkString(id);
+    if (!ObjectId.isValid(id)) {
+      throw `id is not a valid ObjectId`;
+    }
     const restroomCollection = await restrooms();
     const restroom = await restroomCollection.findOne({_id: ObjectId(id)});
     if (restroom === null) throw 'Error: No restroom with that id';
