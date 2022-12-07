@@ -5,6 +5,7 @@ const reportsRoutes = require('./reports');
 const homepageRoutes = require('./homepage');
 
 const constructorMethod = (app) => {
+  app.use('/search', homepageRoutes);
   app.use('/restrooms', restroomRoutes);
   app.use('/users', userRoutes);
   app.use('/reviews', reviewsRoutes);
