@@ -131,5 +131,6 @@ module.exports = {
   getRestroomById,
   searchRestroomsByTerm,
   searchRestroomsByLocation,
-  removeRestroomById
+  removeRestroomById,
+  createRestroom
 }
