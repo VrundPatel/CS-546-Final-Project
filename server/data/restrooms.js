@@ -34,9 +34,34 @@ const searchRestroomsByLocation = async () => {
     console.log(navigator.geolocation.getCurrentPosition(showPosition));
 }
 
+const removeRestroomById = async (id) => {
+  if (!id) {
+    throw `You must provide an id to search for`;
+  }
+  checkString(id);
+  if (!ObjectId.isValid(id)) {
+    throw `id is not a valid ObjectId`;
+  }
+  const restroomsCollection = await restrooms();
+  const restroom = await getRestroomById(id);
+  const deletionInfo = await restroomsCollection.deleteOne({ _id: ObjectId(id) });
+  if (deletionInfo.deletedCount === 0) {
+    throw `Could not delete restroom with id of ${id}`;
+  }
+  return restroom._id + " has been successfully deleted!";
+
+};
+
+function checkString(input) {
+  if (typeof input != 'string' || input.trim().length == 0) {
+      throw `Not valid! ${input} should be a non-empty string`;
+  }
+}
+
 module.exports = {
   getAllRestrooms,
   getRestroomById,
   searchRestroomsByTerm,
-  searchRestroomsByLocation
+  searchRestroomsByLocation,
+  removeRestroomById
 }
