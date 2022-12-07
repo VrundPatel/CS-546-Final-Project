@@ -12,7 +12,7 @@ const getUserById = async (id) => {
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: ObjectId(id) });
   if (user === null) throw 'Error: No user with that id';
-  return user._id.toString();
+  return user;
 };
 
 const getUserByEmail = async (input) => {

@@ -4,10 +4,20 @@ const data = require('../data');
 const userData = data.users;
 
 router
+  .route('/auth-check')
+  .get(async (req, res) => {
+    console.log('check auth state');
+    if (req.session.user) res.json({ user: req.session.user })
+    else res.status(401).json({ error: 'User not in session' })
+  })
+
+router
   .route('/')
   .post(async (req, res) => {
     try {
       const userCreated = await userData.createUser(req.body);
+      req.session.user = userCreated;
+      console.log('req session ', req.session.user);
       res.json({ created: true });
     } catch (e) {
       res.status(400).json({ error: e });
