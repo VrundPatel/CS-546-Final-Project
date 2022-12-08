@@ -16,8 +16,6 @@ router
   .post(async (req, res) => {
     try {
       const userCreated = await userData.createUser(req.body);
-      req.session.user = userCreated;
-      console.log('req session ', req.session.user);
       res.json({ created: true });
     } catch (e) {
       res.status(400).json({ error: e });
@@ -29,7 +27,21 @@ router
   .post(async (req, res) => {
     try {
       const userFound = await userData.getUserByEmail(req.body.email);
+      const { email } = userFound;
+      req.session.user = email;
+      console.log('req session ', req.session.user);
       res.json(userFound);
+    } catch (e) {
+      res.status(400).json({ error: e });
+    }
+  });
+
+router
+  .route('/logout')
+  .post(async (req, res) => {
+    try {
+      req.session.destroy();
+      res.json('User logged out');
     } catch (e) {
       res.status(400).json({ error: e });
     }

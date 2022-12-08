@@ -78,7 +78,7 @@ const getAllReviews = async (restroomId) => {
     return reviewList;
 };
 
-const getReview = async (reviewId) => {
+const getReviewById = async (reviewId) => {
     if (!reviewId) {
         throw `You must provide an review id to search for`;
     }
@@ -106,7 +106,7 @@ const getReview = async (reviewId) => {
     return review;
 };
 
-const removeReview = async (reviewId) => {
+const removeReviewById = async (reviewId) => {
     if (!reviewId) {
         throw `You must provide an review id to search for`;
     }
@@ -155,7 +155,7 @@ const removeReview = async (reviewId) => {
     return await restroomsData.getRestroomById(currentRestroom._id.toString());
 };
 
-const updateReview = async (reviewId, updatedReview) => {
+const updateReviewById = async (reviewId, updatedReview) => {
     if (!reviewId) {
         throw `You must provide an review id to search for`;
     }
@@ -174,7 +174,7 @@ const updateReview = async (reviewId, updatedReview) => {
     }
 
     await reviewCollection.updateOne({_id: ObjectId(reviewId)}, {$set: updatedReviewData});
-    return await this.getReview(reviewId);
+    return await this.getReviewById(reviewId);
 };
 
 
@@ -184,4 +184,4 @@ function checkString(input) {
     }
 }
 
-module.exports = { createReview, getAllReviews, getReview, removeReview, updateReview };
+module.exports = { createReview, getAllReviews, getReviewById, removeReviewById, updateReviewById };

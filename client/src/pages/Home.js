@@ -13,7 +13,7 @@ export default function Restrooms() {
   useEffect(() => {
     api.getAllRestrooms().then((res) => {
       setRestrooms(res);
-    })
+    });
   }, []);
 
 	const navigate = useNavigate();
@@ -65,22 +65,20 @@ export default function Restrooms() {
       </Form>
     </div>
         <div>
-          {
-            restrooms.map((restroom, index) => {
-              return (
-                <Card key={restroom._id} style={{ width: '18rem' }}>
-                  <Card.Body>
-                    {restroom.streetAddress}<br />
-                    {restroom.city},
-                    {restroom.state}
-                    {restroom.zipCode}
-                  </Card.Body>
-                </Card>
-              )
-            })
-          }
+          {restrooms.map((restroom, index) => {
+            return (
+              <Card key={restroom._id} style={{ width: "18rem" }}>
+                <Card.Body>
+                  {restroom.streetAddress}
+                  <br />
+                  {restroom.city},{restroom.state}
+                  {restroom.zipCode}
+                </Card.Body>
+              </Card>
+            );
+          })}
         </div>
       </Layout>
     </>
-  )
+  );
 }

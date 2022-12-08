@@ -71,7 +71,7 @@ const getAllReports = async (restroomId) => {
     return reportList;
 };
 
-const getReport = async (reportId) => {
+const getReportById = async (reportId) => {
     if (!reportId) {
         throw `You must provide an report id to search for`;
     }
@@ -99,7 +99,7 @@ const getReport = async (reportId) => {
     return report;
 };
 
-const removeReport = async (reportId) => {
+const removeReportById = async (reportId) => {
     if (!reportId) {
         throw `You must provide an report id to search for`;
     }
@@ -140,7 +140,7 @@ const removeReport = async (reportId) => {
     return await restroomsData.getRestroomById(currentRestroom._id.toString());
 };
 
-const updateReport = async (reportId, updatedReport) => {
+const updateReportById = async (reportId, updatedReport) => {
     if (!reportId) {
         throw `You must provide an report id to search for`;
     }
@@ -155,7 +155,7 @@ const updateReport = async (reportId, updatedReport) => {
     }
 
     await reportsCollection.updateOne({_id: ObjectId(reportId)}, {$set: updatedReportData});
-    return await this.getReport(reportId);
+    return await this.getReportById(reportId);
 };
 
 
@@ -165,4 +165,4 @@ function checkString(input) {
     }
 }
 
-module.exports = { createReport, getAllReports, getReport, removeReport, updateReport };
+module.exports = { createReport, getAllReports, getReportById, removeReportById, updateReportById };
