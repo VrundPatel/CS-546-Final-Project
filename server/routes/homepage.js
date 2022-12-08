@@ -8,12 +8,13 @@ const router = express.Router();
 router.route('/')
   .post(async (req, res) => {
     searchTerm = req.body.searchRestrooms;
-    console.log(searchTerm);
-    // searchTerm = validation.checkSearchTerm(searchTerm, "Search term(s)");
+    try {
+        searchTerm = validation.checkString(searchTerm, "Search term(s)");
+    } catch (e) {
+        res.status(400).json({ error: e });
+    }
+    
     const results = await restroomData.searchRestroomsByTerm(searchTerm);
-    // results.toArray(function(err, restroom){
-    //     console.log(restroom);
-    // });
     const resultList = await results.toArray();
     res.json(resultList);
   });
