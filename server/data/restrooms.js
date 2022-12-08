@@ -1,7 +1,7 @@
-const mongoCollections = require('../config/mongoCollections');
+const mongoCollections = require("../config/mongoCollections");
 const navigator = require("navigator");
 const validation = require("../validation");
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require("mongodb");
 const restrooms = mongoCollections.restrooms;
 
 const createRestroom = async (
@@ -12,11 +12,18 @@ const createRestroom = async (
   openingHours,
   closingHours,
   availability,
-  ammenities,
+  ammenities
 ) => {
-  if (!streetAddress || !city || !state ||
-    !zipCode || !openingHours || !closingHours ||
-    !availability || !ammenities) {
+  if (
+    !streetAddress ||
+    !city ||
+    !state ||
+    !zipCode ||
+    !openingHours ||
+    !closingHours ||
+    !availability ||
+    !ammenities
+  ) {
     throw `All fields need to have valid values`;
   }
   checkString(streetAddress);
@@ -40,7 +47,7 @@ const createRestroom = async (
     availability: availability,
     ammenities: ammenities,
     reviews: [],
-    reports: []
+    reports: [],
   };
   const insertInfo = await restroomsCollection.insertOne(newRestroom);
   if (insertInfo.insertedCount === 0) {
@@ -51,7 +58,6 @@ const createRestroom = async (
   const restroom = await getRestroomById(newId.toString());
   restroom._id = restroom._id.toString();
   return restroom;
-
 };
 
 const getAllRestrooms = async () => {
@@ -71,7 +77,7 @@ const getRestroomById = async (id) => {
   }
   const restroomCollection = await restrooms();
   const restroom = await restroomCollection.findOne({ _id: ObjectId(id) });
-  if (restroom === null) throw 'Error: No restroom with that id';
+  if (restroom === null) throw "Error: No restroom with that id";
   restroom._id = restroom._id.toString();
   return restroom;
 };
@@ -80,7 +86,9 @@ const searchRestroomsByTerm = async (searchTerm) => {
   searchTerm = validation.checkString(searchTerm, "Search term(s)");
   const restroomCollection = await restrooms();
   // const restroomList = await restroomCollection.find({$text: {$search: searchTerm}});
-  const restroomList = await restroomCollection.find({ $text: { $search: searchTerm } });
+  const restroomList = await restroomCollection.find({
+    $text: { $search: searchTerm },
+  });
   // console.log(restroomList.toArray(function(err, results){
   //     console.log(results);
   // }));
@@ -89,7 +97,7 @@ const searchRestroomsByTerm = async (searchTerm) => {
 
 const searchRestroomsByLocation = async () => {
   console.log(navigator.geolocation.getCurrentPosition(showPosition));
-}
+};
 
 const removeRestroomById = async (id) => {
   if (!id) {
@@ -101,12 +109,13 @@ const removeRestroomById = async (id) => {
   }
   const restroomsCollection = await restrooms();
   const restroom = await getRestroomById(id);
-  const deletionInfo = await restroomsCollection.deleteOne({ _id: ObjectId(id) });
+  const deletionInfo = await restroomsCollection.deleteOne({
+    _id: ObjectId(id),
+  });
   if (deletionInfo.deletedCount === 0) {
     throw `Could not delete restroom with id of ${id}`;
   }
   return restroom._id + " has been successfully deleted!";
-
 };
 
 const updateRestroom = async (
@@ -118,11 +127,19 @@ const updateRestroom = async (
   openingHours,
   closingHours,
   availability,
-  ammenities,
+  ammenities
 ) => {
-  if (!id || !streetAddress || !city || !state ||
-    !zipCode || !openingHours || !closingHours ||
-    !availability || !ammenities) {
+  if (
+    !id ||
+    !streetAddress ||
+    !city ||
+    !state ||
+    !zipCode ||
+    !openingHours ||
+    !closingHours ||
+    !availability ||
+    !ammenities
+  ) {
     throw `All fields need to have valid values`;
   }
   checkString(id);
@@ -147,7 +164,7 @@ const updateRestroom = async (
     openingHours: openingHours,
     closingHours: closingHours,
     availability: availability,
-    ammenities: ammenities
+    ammenities: ammenities,
   };
   const restroomsCollection = await restrooms();
   await restroomsCollection.updateOne(
@@ -155,11 +172,10 @@ const updateRestroom = async (
     { $set: updatedRestroom }
   );
   return await restroomsCollection.findOne({ _id: ObjectId(id) });
-
 };
 
 function checkString(input) {
-  if (typeof input != 'string' || input.trim().length == 0) {
+  if (typeof input != "string" || input.trim().length == 0) {
     throw `Not valid! ${input} should be a non-empty string`;
   }
 }
@@ -169,7 +185,7 @@ function checkArrays(input) {
     throw `${input} should not be a non-empty array`;
   }
   for (i = 0; i < input.length; i++) {
-    if (typeof input[i] != 'string' || input[i].trim().length === 0) {
+    if (typeof input[i] != "string" || input[i].trim().length === 0) {
       throw `${input} should not have empty string elements`;
     }
   }
@@ -182,5 +198,5 @@ module.exports = {
   searchRestroomsByLocation,
   removeRestroomById,
   createRestroom,
-  updateRestroom
-}
+  updateRestroom,
+};
