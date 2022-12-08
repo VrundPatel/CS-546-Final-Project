@@ -86,13 +86,13 @@ router
       return;
     }
     try {
-      await reportData.getReport(id)
+      await reportData.getReportById(id)
     } catch (e) {
       res.status(404).json({ error: `report by id not found` });
       return;
     }
     try {
-      const report = await reportData.getReport(id);
+      const report = await reportData.getReportById(id);
       res.status(200).json(report);
     } catch (e) {
       res.status(500).json({ error: e });
@@ -110,13 +110,13 @@ router
       return;
     }
     try {
-      await reportData.getReport(id)
+      await reportData.getReportById(id)
     } catch (e) {
       res.status(404).json({ error: `report by id not found` });
       return;
     }
     try {
-      const restroom = await reportData.removeReport(id);
+      const restroom = await reportData.removeReportById(id);
       res.status(200).json(restroom);
     } catch (e) {
       res.status(500).json({ error: e });
