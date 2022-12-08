@@ -4,6 +4,7 @@ import InfoCard from "./InfoCard";
 import { useEffect, useState } from "react";
 import Reviews from "./Reviews";
 import WriteReview from "./WriteReview";
+import Layout from "../layout";
 
 let testData = {
   _id: "7b7997a2-c0d2-4f8c-b27a-6a1d4b5b6310",
@@ -45,7 +46,6 @@ let testData = {
   ],
 };
 
-//Add a navbar later?
 export default function RestroomDetails() {
   const [restroomData, setRestroomData] = useState(null);
   let { id } = useParams();
@@ -53,20 +53,22 @@ export default function RestroomDetails() {
   //useEffect to get restroom by ID
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          <InfoCard />
-        </Col>
-      </Row>
-      <Row>
-        <Col xl={8} lg={8} md={6} sm={6}>
-          <Reviews data={testData} />
-        </Col>
-        <Col xl={4} lg={4} md={6} sm={6}>
-          <WriteReview />
-        </Col>
-      </Row>
-    </Container>
+    <Layout>
+      <Container>
+        <Row>
+          <Col>
+            <InfoCard />
+          </Col>
+        </Row>
+        <Row>
+          <Col xl={8} lg={8} md={6} sm={6}>
+            <Reviews data={testData} />
+          </Col>
+          <Col xl={4} lg={4} md={6} sm={6}>
+            <WriteReview />
+          </Col>
+        </Row>
+      </Container>
+    </Layout>
   );
 }

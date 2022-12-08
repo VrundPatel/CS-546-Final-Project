@@ -3,7 +3,7 @@ import { Badge, Card, ListGroup } from "react-bootstrap";
 
 function Reviews(props) {
   return (
-    <Fragment class="overflow-auto">
+    <Fragment>
       <Card className="text-center">
         <Card.Header as="h5">Reviews</Card.Header>
         <Card.Body>
@@ -13,6 +13,7 @@ function Reviews(props) {
                 <ListGroup.Item
                   as="li"
                   className="d-flex justify-content-between align-items-start"
+                  key={idx}
                 >
                   <div className="ms-2 me-auto">
                     <div className="fw-bold">

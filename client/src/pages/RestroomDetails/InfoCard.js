@@ -3,7 +3,6 @@ import { Button, Card, Table } from "react-bootstrap";
 function InfoCard(props) {
   return (
     <Card className="text-center">
-      {/* <Card.Header>Featured</Card.Header> */}
       <Card.Body>
         <Card.Title>{`${props.street}, ${props.city}, ${props.state}, ${props.zipCode}`}</Card.Title>
         <Card.Text>
