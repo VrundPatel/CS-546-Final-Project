@@ -1,5 +1,6 @@
 const mongoCollections = require("../config/mongoCollections");
-const navigator = require("navigator");
+const { Navigator } = require("node-navigator");
+const navigator = new Navigator();
 const validation = require("../validation");
 const { ObjectId } = require("mongodb");
 const restrooms = mongoCollections.restrooms;
@@ -96,7 +97,10 @@ const searchRestroomsByTerm = async (searchTerm) => {
 };
 
 const searchRestroomsByLocation = async () => {
-  console.log(navigator.geolocation.getCurrentPosition(showPosition));
+    navigator.geolocation.getCurrentPosition((success, error) => {
+        if (error) return error
+        else return success;
+    });
 };
 
 const removeRestroomById = async (id) => {

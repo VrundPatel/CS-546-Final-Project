@@ -31,7 +31,7 @@ export default function Restrooms() {
 
   const onSearchSubmit = async (event) => {
     event.preventDefault();
-		console.log("searching");
+		console.log("searching by term");
     try {
       const { data } = await axios.post(`http://localhost:9000/search`, {
         "searchRestrooms": searchTerm
@@ -43,12 +43,23 @@ export default function Restrooms() {
     }
   }
 
+	const onLocationSubmit = async (event) => {
+    event.preventDefault();
+		console.log("searching by location");
+    try {
+      const { data } = await axios.get(`http://localhost:9000/search`)
+			console.log('data returned ', data);
+    } catch (e) {
+      alert('Error')
+    }
+  }
+
   return (
     <>
       <Layout>
 			<div className='form-container'>
       <Form className='custom-form' onSubmit={onSearchSubmit}>
-        <h2 style={{ 'textAlign': 'center' }}>Login to GottaGo</h2>
+        <h2 style={{ 'textAlign': 'center' }}>GottaGo</h2>
         <Form.Group className="mb-3" controlId="usersearchTerm">
           <Form.Label>Search</Form.Label>
           <Form.Control
@@ -63,16 +74,37 @@ export default function Restrooms() {
           Search
         </Button>
       </Form>
+			<Form className='custom-form' onSubmit={onLocationSubmit}>
+				<Button variant="primary" type="submit">
+						TODO: Closest Near Me
+				</Button>
+			</Form>
     </div>
+				<div>
+          {restrooms.filter((restroom, index) => {
+						if (restrooms.amenities.toLowerCase.includes("gendered")) {
+							return restroom
+						}
+					}).map((restroom, index) => {
+            return (
+              <Card key={restroom._id} style={{ width: "18rem" }}>
+                <Card.Body>
+                  {restroom.streetAddress}
+                  <br/>
+                  {restroom.city}, {restroom.state} {restroom.zipCode}
+                </Card.Body>
+              </Card>
+            );
+          })}
+        </div>
         <div>
           {restrooms.map((restroom, index) => {
             return (
               <Card key={restroom._id} style={{ width: "18rem" }}>
                 <Card.Body>
                   {restroom.streetAddress}
-                  <br />
-                  {restroom.city},{restroom.state}
-                  {restroom.zipCode}
+                  <br/>
+                  {restroom.city}, {restroom.state} {restroom.zipCode}
                 </Card.Body>
               </Card>
             );
