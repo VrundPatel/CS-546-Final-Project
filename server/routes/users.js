@@ -4,6 +4,14 @@ const data = require('../data');
 const userData = data.users;
 
 router
+  .route('/auth-check')
+  .get(async (req, res) => {
+    console.log('check auth state');
+    if (req.session.user) res.json({ user: req.session.user })
+    else res.status(401).json({ error: 'User not in session' })
+  })
+
+router
   .route('/')
   .post(async (req, res) => {
     try {
@@ -19,7 +27,21 @@ router
   .post(async (req, res) => {
     try {
       const userFound = await userData.getUserByEmail(req.body.email);
+      const { email } = userFound;
+      req.session.user = email;
+      console.log('req session ', req.session.user);
       res.json(userFound);
+    } catch (e) {
+      res.status(400).json({ error: e });
+    }
+  });
+
+router
+  .route('/logout')
+  .post(async (req, res) => {
+    try {
+      req.session.destroy();
+      res.json('User logged out');
     } catch (e) {
       res.status(400).json({ error: e });
     }

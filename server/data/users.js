@@ -9,10 +9,17 @@ const getAllUsers = async () => {
 }
 
 const getUserById = async (id) => {
+  if (!id) {
+    throw `You must provide an id to search for`;
+  }
+  checkString(id);
+  if (!ObjectId.isValid(id)) {
+    throw `id is not a valid ObjectId`;
+  }
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: ObjectId(id) });
   if (user === null) throw 'Error: No user with that id';
-  return user._id.toString();
+  return user;
 };
 
 const getUserByEmail = async (input) => {
@@ -21,23 +28,94 @@ const getUserByEmail = async (input) => {
   return user;
 };
 
-// TODO: Encrypt password before saving
-const createUser = async ({ fullName, city, state, email, password }) => {
+const createUser = async ({ firstName, lastName, city, state, zipCode, email, hashedPassword }) => {
+  checkString(firstName);
+  checkString(lastName);
+  checkString(city);
+  checkString(state);
+  checkString(zipCode);
+  checkString(email);
+  checkString(hashedPassword);
   email = email.toLowerCase();
+  let newUser = {
+    firstName: firstName,
+    lastName: lastName,
+    city: city,
+    state: state,
+    zipCode: zipCode,
+    email: email,
+    hashedPassword: hashedPassword,
+    reviewIds: [],
+    reportIds: []
+  };
   const userCollection = await users();
   const userFound = await getUserByEmail(email)
   if (!!userFound) {
     throw 'User already exists';
   }
-  const insertInfo = await userCollection.insertOne({ fullName, city, state, email, password });
+  const insertInfo = await userCollection.insertOne(newUser);
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw 'Could not add user';
   return getUserById(insertInfo.insertedId.toString());
 };
 
+const updateUser = async (id, updateInfo) => {
+  if (!id) {
+    throw `id is missing, should input the id your want to update`;
+  }
+  if (!updateInfo) {
+    return await this.getUserById(id);
+  }
+  checkString(id);
+  const userCollection = await users();
+  let updatedUserData = {};
+  let gotten = await this.getUserById(id);
+  if (JSON.stringify(updateInfo) == JSON.stringify(gotten)) {
+    return await this.getUserById(id);
+  }
+
+  if (updateInfo.firstName) {
+    updatedUserData.fisrtName = updateInfo.firstName;
+  }
+  if (updateInfo.lastName) {
+    updatedUserData.lastName = updateInfo.lastName;
+  }
+  if (updateInfo.city) {
+    updatedUserData.city = updateInfo.city;
+  }
+  if (updateInfo.state) {
+    updatedUserData.state = updateInfo.state;
+  }
+  if (updateInfo.zipCode) {
+    updatedUserData.zipCode = updateInfo.zipCode;
+  }
+  if (updateInfo.email) {
+    updatedUserData.email = updateInfo.email;
+  }
+  if (updateInfo.hashedPassword) {
+    updatedUserData.hashedPassword = updateInfo.hashedPassword;
+  }
+
+  if (updatedUserData == {}) {
+    return await this.getUserById(id);
+  }
+  const updateUserInfo = await userCollection.updateOne({ _id: id }, { $set: updatedUserData });
+  if (updateUserInfo.modifiedCount === 0 && updateUserInfo.deletedCount === 0) {
+    throw `could not update user`;
+  }
+  return await this.getUserById(id);
+};
+
+function checkString(input) {
+  if (typeof input != 'string' || input.trim().length == 0) {
+    throw `Not valid! ${input} should be a non-empty string`;
+  }
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
-  getUserByEmail
+  getUserByEmail,
+  updateUser
 }

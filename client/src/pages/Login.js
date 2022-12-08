@@ -7,9 +7,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 export default function Login() {
-
   const navigate = useNavigate();
-
   const initialState = {
     email: '',
     password: ''
