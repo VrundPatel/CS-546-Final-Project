@@ -36,8 +36,16 @@ export default function Restrooms() {
       const { data } = await axios.post(`http://localhost:9000/restrooms/search`, {
         "searchRestrooms": searchTerm
       });
-			console.log('data returned ', data);
-			setRestrooms(data);
+      if (!!data) {
+        console.log('data returned ', data);
+        const foundRestroom = await compare(searchTerm, data.streetAddress);
+        if (foundRestroom) {
+          setRestrooms(data);
+        }
+        else {
+          alert(`Not Found! No such a restroom`);
+        }
+      }
     } catch (e) {
       alert('Error')
     }
