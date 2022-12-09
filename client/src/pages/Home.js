@@ -33,7 +33,7 @@ export default function Restrooms() {
     event.preventDefault();
 		console.log("searching");
     try {
-      const { data } = await axios.post(`http://localhost:9000/search`, {
+      const { data } = await axios.post(`http://localhost:9000/restrooms/search`, {
         "searchRestrooms": searchTerm
       });
 			console.log('data returned ', data);
@@ -73,6 +73,7 @@ export default function Restrooms() {
                   <br />
                   {restroom.city},{restroom.state}
                   {restroom.zipCode}
+                  <br />
                 </Card.Body>
               </Card>
             );
