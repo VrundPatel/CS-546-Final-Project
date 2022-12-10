@@ -7,7 +7,7 @@ import "./App.css";
 import GuardedRoute from "./pages/guarded-route";
 import Restrooms from "./pages/Home";
 import Login from "./pages/Login";
-import RestroomDetails from "./pages/RestroomDetails";
+import RestroomDetails from "./pages/RestroomDetails/RestroomDetails";
 import SignUp from "./pages/SignUp";
 import UserProfile from "./pages/UserProfile";
 
