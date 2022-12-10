@@ -13,8 +13,16 @@ router
   .post(async (req, res) => {
     //TODO: Inserts a new restroom with fields
     console.log(req.body);
-    let addedId = data.restrooms.insertRestroom(req.body);
-    res.status(200).json({ newId: addedId });
+    let newObj = await data.restrooms.createRestroom(
+      req.body.streetAddress,
+      req.body.city,
+      req.body.state,
+      req.body.zipCode,
+      req.body.openingHours,
+      req.body.closingHours,
+      req.body.tags
+    );
+    res.status(200).json({ newObj: newObj });
   })
   .delete(async (req, res) => {
     //TODO: Deletes a restroom by ID
@@ -43,4 +51,5 @@ router
     //TODO: Updates an existing restroom with updated fields
     res.send(`POST request to http://localhost:3000/restroom/${req.params.id}`);
   });
+
 module.exports = router;

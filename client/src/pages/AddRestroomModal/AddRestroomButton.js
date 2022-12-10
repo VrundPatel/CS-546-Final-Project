@@ -10,7 +10,11 @@ function AddRestroomButton() {
         Add a Restroom
       </Button>
 
-      <AddRestroomModal show={modalShow} onHide={() => setModalShow(false)} />
+      <AddRestroomModal
+        show={modalShow}
+        setShow={setModalShow}
+        onHide={() => setModalShow(false)}
+      />
     </Fragment>
   );
 }

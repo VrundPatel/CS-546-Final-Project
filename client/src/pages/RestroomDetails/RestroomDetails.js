@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Reviews from "./Reviews";
 import WriteReview from "./WriteReview";
 import Layout from "../layout";
+import axios from "axios";
 
 let testData = {
   _id: "7b7997a2-c0d2-4f8c-b27a-6a1d4b5b6310",
@@ -48,27 +49,50 @@ let testData = {
 
 export default function RestroomDetails() {
   const [restroomData, setRestroomData] = useState(null);
+  const [ready, setReady] = useState(false);
   let { id } = useParams();
 
+  useEffect(() => {
+    setReady(false);
+  }, [id]);
+
   //useEffect to get restroom by ID
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const resp = await axios.get(`http://localhost:9000/restrooms/${id}`);
+        setRestroomData(resp.data);
+        console.log(resp.data);
+        setReady(true);
+      } catch (e) {
+        console.log(e);
+        return;
+      }
+    }
+    fetchData();
+  }, [id]);
 
   return (
     <Layout>
-      <Container>
-        <Row>
-          <Col>
-            <InfoCard />
-          </Col>
-        </Row>
-        <Row>
-          <Col xl={8} lg={8} md={6} sm={6}>
-            <Reviews data={testData} />
-          </Col>
-          <Col xl={4} lg={4} md={6} sm={6}>
-            <WriteReview />
-          </Col>
-        </Row>
-      </Container>
+      {ready ? (
+        <Container>
+          <Row>
+            <Col>
+              <InfoCard restroomData={restroomData} />
+            </Col>
+          </Row>
+          <Row>
+            <Col xl={8} lg={8} md={6} sm={6}>
+              <Reviews restroomData={restroomData} />
+            </Col>
+            <Col xl={4} lg={4} md={6} sm={6}>
+              <WriteReview />
+            </Col>
+          </Row>
+        </Container>
+      ) : (
+        <h2>LOADING</h2>
+      )}
     </Layout>
   );
 }
