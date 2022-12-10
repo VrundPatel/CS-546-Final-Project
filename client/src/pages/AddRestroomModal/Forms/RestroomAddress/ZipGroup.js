@@ -7,12 +7,12 @@ export default function ZipGroup(props) {
       <Form.Label>Zip Code</Form.Label>
       <Form.Control
         type="text"
-        defaultValue={props.obj.zip}
+        defaultValue={props.obj.zipCode}
         placeholder="Ex: 07030"
         onChange={(e) => {
-          props.populate({ zip: e.target.value });
+          props.populate({ zipCode: e.target.value });
         }}
-        isInvalid={!validateZip(props.obj.zip)}
+        isInvalid={!validateZip(props.obj.zipCode)}
       />
       <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
     </Form.Group>

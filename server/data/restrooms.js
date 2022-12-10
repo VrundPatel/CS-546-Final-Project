@@ -11,8 +11,7 @@ const createRestroom = async (
   zipCode,
   openingHours,
   closingHours,
-  availability,
-  ammenities
+  tags
 ) => {
   if (
     !streetAddress ||
@@ -21,8 +20,7 @@ const createRestroom = async (
     !zipCode ||
     !openingHours ||
     !closingHours ||
-    !availability ||
-    !ammenities
+    !tags
   ) {
     throw `All fields need to have valid values`;
   }
@@ -32,8 +30,7 @@ const createRestroom = async (
   checkString(zipCode);
   checkString(openingHours);
   checkString(closingHours);
-  checkArrays(availability);
-  checkArrays(ammenities);
+  //checkArrays(tags); Tags should be able to be empty
 
   const restroomsCollection = await restrooms();
   let newRestroom = {
@@ -44,10 +41,10 @@ const createRestroom = async (
     overallRating: 0,
     openingHours: openingHours,
     closingHours: closingHours,
-    availability: availability,
-    ammenities: ammenities,
+    tags: tags,
     reviews: [],
     reports: [],
+    lastUpdated: Date.now(),
   };
   const insertInfo = await restroomsCollection.insertOne(newRestroom);
   if (insertInfo.insertedCount === 0) {

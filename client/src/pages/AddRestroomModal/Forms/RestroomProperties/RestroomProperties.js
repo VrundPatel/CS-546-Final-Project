@@ -45,10 +45,6 @@ function RestroomProperties(props) {
       </Row>
     </Form>
   );
-
-  function finalValidate() {
-    return true;
-  }
 }
 
 export default RestroomProperties;
