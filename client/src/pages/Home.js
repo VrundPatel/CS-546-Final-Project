@@ -26,7 +26,9 @@ export default function Restrooms() {
     checked: 1
   };
 
-  const [checkState, setCheckState] = useState(false);
+  const [adaCheckState, setAdaCheckState] = useState(false);
+  const [genderNeutralCheckState, setGenderNeutralCheckState] = useState(false);
+  const [stationCheckState, setStationCheckState] = useState(false);
   const [formState, setFormState] = useState(initialState);
   const { searchTerm } = formState;
 
@@ -95,36 +97,36 @@ export default function Restrooms() {
               <Form.Label>Filters</Form.Label>
               <Col>
                 <ToggleButton
-                  id="toggle-check"
+                  id="ada-toggle-check"
                   type="checkbox"
                   variant="outline-primary"
-                  checked={checkState}
+                  checked={adaCheckState}
                   value="1"
-                  onChange={(e) => setCheckState(e.currentTarget.checked)}
+                  onChange={(e) => setAdaCheckState(e.currentTarget.checked)}
                 >
                   ADA
                 </ToggleButton>
               </Col>
               <Col>
                 <ToggleButton
-                  id="toggle-check"
+                  id="gender-netural-toggle-check"
                   type="checkbox"
                   variant="outline-primary"
-                  checked={checkState}
+                  checked={genderNeutralCheckState}
                   value="1"
-                  onChange={(e) => setCheckState(e.currentTarget.checked)}
+                  onChange={(e) => setGenderNeutralCheckState(e.currentTarget.checked)}
                 >
                   Gender-Neutral
                 </ToggleButton>
               </Col>
               <Col>
-                <ToggleButton
-                  id="toggle-check"
+                <ToggleButton 
+                  id="station-toggle-check"
                   type="checkbox"
                   variant="outline-primary"
-                  checked={checkState}
+                  checked={stationCheckState}
                   value="1"
-                  onChange={(e) => setCheckState(e.currentTarget.checked)}
+                  onChange={(e) => setStationCheckState(e.currentTarget.checked)}
                 >
                   Baby-Changing Station
                 </ToggleButton>
