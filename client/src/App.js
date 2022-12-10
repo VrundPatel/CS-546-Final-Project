@@ -6,8 +6,8 @@ import "./App.css";
 // import AuthContext from './context/auth-context';
 import GuardedRoute from "./pages/guarded-route";
 import Restrooms from "./pages/Home";
-import Login from "./pages/Login";
 import RestroomDetails from "./pages/RestroomDetails/RestroomDetails";
+import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import UserProfile from "./pages/UserProfile";
 

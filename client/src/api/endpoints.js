@@ -9,8 +9,6 @@ export function signUp() {
 }
 
 export async function getAllRestrooms() {
-  const { data } = await axios.post(`${serverUrl}/search`, {
-    "searchRestrooms": "Castle"
-  });
+  const { data } = await axios.get(`${serverUrl}/restrooms`);
   return data;
 }
