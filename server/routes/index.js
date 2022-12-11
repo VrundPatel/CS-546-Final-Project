@@ -3,11 +3,15 @@ const userRoutes = require('./users');
 const reviewsRoutes = require('./reviews');
 const reportsRoutes = require('./reports');
 const homepageRoutes = require('./homepage');
+const userData = require('../data/users')
 
 const constructorMethod = (app) => {
+  app.use('/users', userRoutes);
+
+  app.use(userData.verifyJwtToken);
+
   app.use('/search', homepageRoutes);
   app.use('/restrooms', restroomRoutes);
-  app.use('/users', userRoutes);
   app.use('/reviews', reviewsRoutes);
   app.use('/reports', reportsRoutes);
 
