@@ -1,5 +1,6 @@
 const mongoCollections = require("../config/mongoCollections");
-const navigator = require("navigator");
+const { Navigator } = require("node-navigator");
+const navigator = new Navigator();
 const validation = require("../validation");
 const geoCoding = require("../goecoding");
 const { ObjectId } = require("mongodb");
@@ -88,17 +89,13 @@ const getRestroomById = async (id) => {
 const searchRestroomsByTerm = async (searchTerm) => {
   searchTerm = validation.checkString(searchTerm, "Search term(s)");
   const restroomCollection = await restrooms();
-  // const restroomList = await restroomCollection.find({$text: {$search: searchTerm}});
   const restroomList = await restroomCollection.find({
     $text: { $search: searchTerm },
   });
-  // console.log(restroomList.toArray(function(err, results){
-  //     console.log(results);
-  // }));
   return restroomList;
 };
 
-const searchRestroomsByLocation = async (lat, long) => {
+const searchRestroomsByLocationNew = async (lat, long) => {
   const restroomCollection = await restrooms();
   const restroomList = await restroomCollection.find({
     loc: {

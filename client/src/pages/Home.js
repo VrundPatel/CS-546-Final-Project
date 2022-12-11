@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import ToggleButton from 'react-bootstrap/ToggleButton';
 import { Link, useNavigate } from "react-router-dom";
 import * as api from "../api/endpoints";
 import axios from "axios";
@@ -19,10 +22,17 @@ export default function Restrooms() {
   const navigate = useNavigate();
 
   const initialState = {
-    searchTerm: "",
+    searchTerm: '',
+    checked: 1,
+    deviceLat: '',
+    deviceLong: ''
   };
 
+  const [adaCheckState, setAdaCheckState] = useState(false);
+  const [genderNeutralCheckState, setGenderNeutralCheckState] = useState(false);
+  const [stationCheckState, setStationCheckState] = useState(false);
   const [formState, setFormState] = useState(initialState);
+  const [deviceLat, deviceLong] = useState(initialState);
   const { searchTerm } = formState;
 
   const handleOnChange = (e) => {
@@ -31,51 +41,104 @@ export default function Restrooms() {
 
   const onSearchSubmit = async (event) => {
     event.preventDefault();
-    console.log("searching");
+		console.log("searching by term");
     try {
       const { data } = await axios.post(`http://localhost:9000/search`, {
-        searchRestrooms: searchTerm,
+        "searchRestrooms": searchTerm
       });
-      if (!!data) {
-        console.log("data returned ", data);
-        //const foundRestroom = await compare(searchTerm, data.streetAddress);
-        setRestrooms(data);
-        // const foundRestroom = null;
-        // if (foundRestroom) {
-        //   setRestrooms(data);
-        // } else {
-        //   alert(`Not Found! No such a restroom`);
-        // }
-      }
+      setRestrooms(data);
+      // if (!!data) {
+      //   console.log('data returned ', data);
+      //   const foundRestroom = await compare(searchTerm, data.streetAddress);
+      //   if (foundRestroom) {
+      //     setRestrooms(data);
+      //   }
+      //   else {
+      //     alert(`Not Found! No such a restroom`);
+      //   }
+      // }
     } catch (e) {
-      console.log(e);
-      alert("Error");
+      alert('Error')
     }
-  };
+  }
 
   return (
     <>
       <Layout>
-        <div className="form-container">
-          <Form className="custom-form" onSubmit={onSearchSubmit}>
-            <h2 style={{ textAlign: "center" }}>Login to GottaGo</h2>
-            <Form.Group className="mb-3" controlId="usersearchTerm">
+        <div className='search-bar-container'>
+          <Form className='search-form' onSubmit={onSearchSubmit}>
+            <h2 style={{ 'textAlign': 'center' }}>GottaGo</h2>
+            <Row className="mb-3">
               <Form.Label>Search</Form.Label>
-              <Form.Control
-                onChange={handleOnChange}
-                value={searchTerm}
-                name="searchTerm"
-                type="searchTerm"
-                placeholder="Enter search term"
-              />
-            </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Search
-            </Button>
+              <Col>
+                <Form.Control
+                  onChange={handleOnChange}
+                  value={searchTerm}
+                  name="searchTerm"
+                  type="searchTerm"
+                  placeholder="Enter search term" />
+              </Col>
+              <Col>
+                <Button variant="primary" type="submit">
+                  Search
+                </Button>
+              </Col>
+            </Row>
+            <div className='location-button-container'>
+              <Button className = 'location-button' variant="primary" type="submit">
+                  TODO: Closest Near Me
+              </Button>
+            </div>
           </Form>
         </div>
+
+        <div className='filter-container'>
+          <Form className='filter-form' onSubmit={onSearchSubmit}>
+            <Row className="mb-3">
+              <Form.Label>Filters</Form.Label>
+              <Col>
+                <ToggleButton
+                  id="ada-toggle-check"
+                  type="checkbox"
+                  variant="outline-primary"
+                  checked={adaCheckState}
+                  value="1"
+                  onChange={(e) => setAdaCheckState(e.currentTarget.checked)}
+                >
+                  ADA
+                </ToggleButton>
+              </Col>
+              <Col>
+                <ToggleButton
+                  id="gender-netural-toggle-check"
+                  type="checkbox"
+                  variant="outline-primary"
+                  checked={genderNeutralCheckState}
+                  value="1"
+                  onChange={(e) => setGenderNeutralCheckState(e.currentTarget.checked)}
+                >
+                  Gender-Neutral
+                </ToggleButton>
+              </Col>
+              <Col>
+                <ToggleButton 
+                  id="station-toggle-check"
+                  type="checkbox"
+                  variant="outline-primary"
+                  checked={stationCheckState}
+                  value="1"
+                  onChange={(e) => setStationCheckState(e.currentTarget.checked)}
+                >
+                  Baby-Changing Station
+                </ToggleButton>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+
+        {/* Search Results with preprocessing filter*/}
         <div>
+          <h2> Results </h2>
           {restrooms.map((restroom, index) => {
             return (
               <Card key={restroom._id} style={{ width: "18rem" }}>
@@ -84,7 +147,6 @@ export default function Restrooms() {
                   <br />
                   {restroom.city},{restroom.state}
                   {restroom.zipCode}
-                  <br />
                 </Card.Body>
               </Card>
             );

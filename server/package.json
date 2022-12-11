@@ -16,6 +16,6 @@
     "express-session": "^1.17.3",
     "luxon": "^3.0.4",
     "mongodb": "^4.11.0",
-    "navigator": "^1.0.1"
+    "node-navigator": "^1.0.1"
   }
 }
