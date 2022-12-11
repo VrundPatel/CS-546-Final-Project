@@ -3,13 +3,13 @@ const router = express.Router();
 const data = require('../data');
 const userData = data.users;
 
-router
-  .route('/auth-check')
-  .get(async (req, res) => {
-    console.log('check auth state');
-    if (req.session.user) res.json({ user: req.session.user })
-    else res.status(401).json({ error: 'User not in session' })
-  })
+// router
+//   .route('/auth-check')
+//   .get(async (req, res) => {
+//     console.log('check auth state');
+//     if (req.session.user) res.json({ user: req.session.user })
+//     else res.status(401).json({ error: 'User not in session' })
+//   })
 
 router
   .route('/')

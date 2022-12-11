@@ -50,7 +50,7 @@ const userAuth = async (emailInput, userPass) => {
   };
 }
 
-const login = async({email, password}) => {
+const login = async ({ email, password }) => {
   return await userAuth(email, password);
 }
 
@@ -61,9 +61,7 @@ const createUser = async ({ fullName, city, state, email, password }) => {
   const userFound = await getUserByEmail(email)
   if (!!userFound) {
     throw 'User already exists'
-   if (!!userFound) {
-    throw 'User already exists'
-  }}
+  }
 
   const hashedPassword = await hashPassword(password);
   const insertInfo = await userCollection.insertOne({ fullName, city, state, email, hashedPassword, reviewIds, reportIds });
@@ -129,11 +127,41 @@ function checkString(input) {
   }
 }
 
+const verifyJwtToken = async (req, res, next) => {
+  if (!(req.url.includes('login') || req.url.includes('logout'))) {
+    try {
+      const { token } = req.cookies;
+      if (!token) throw new Error('no token found, please login.');
+
+      try {
+        const { user } = jwt.verify(token, 'CS546');
+        const existingUser = await getUserById(user._id);
+        if (user.email !== existingUser.email) throw new Error('Not the same user');
+        console.log('existing user ', existingUser);
+        req.user = user;
+        next();
+      } catch (e) {
+        res.clearCookie('token');
+        res
+          .status(401)
+          .json({ error: 'Invalid token' });
+      }
+    } catch (e) {
+      res
+        .status(401)
+        .json({ error: 'No valid token found' });
+    }
+  } else {
+    next();
+  }
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
   getUserByEmail,
   updateUser,
-  login
+  login,
+  verifyJwtToken
 }
