@@ -135,23 +135,7 @@ export default function Restrooms() {
           </Form>
         </div>
 
-				{/* <div>
-          {restrooms.filter((restroom, index) => {
-						if (restrooms?.amenities?.toLowerCase.includes("gendered")) {
-							return restroom
-						}
-					}).map((restroom, index) => {
-            return (
-              <Card key={restroom._id} style={{ width: "18rem" }}>
-                <Card.Body>
-                  {restroom.streetAddress}
-                  <br/>
-                  {restroom.city}, {restroom.state} {restroom.zipCode}
-                </Card.Body>
-              </Card>
-            );
-          })}
-        </div> */}
+        {/* Search Results with preprocessing filter*/}
         <div>
           <h2> Results </h2>
           {restrooms.map((restroom, index) => {

@@ -15,6 +15,7 @@ router.route('/')
     })
     .post(async (req, res) => {
         searchTerm = req.body.searchRestrooms;
+        console.log(searchTags);
         try {
             searchTerm = validation.checkString(searchTerm, "Search term(s)");
         } catch (e) {
