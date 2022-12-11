@@ -63,6 +63,12 @@ export default function Restrooms() {
     }
   }
 
+  // useEffect(() => {
+  //   if (resetCheckState) {
+  //     this.setState({adaCheckState: false});
+  //   }
+  // });
+
   return (
     <>
       <Layout>
@@ -105,7 +111,7 @@ export default function Restrooms() {
                   value="1"
                   onChange={(e) => setAdaCheckState(e.currentTarget.checked)}
                 >
-                  ADA
+                  ADA Compliant
                 </ToggleButton>
                 {" "}
                 <ToggleButton
@@ -133,16 +139,18 @@ export default function Restrooms() {
                 <ToggleButton 
                   id="reset-toggle-check"
                   type="checkbox"
-                  variant="primary"
+                  variant="secondary"
                   checked={resetCheckState}
                   value="1"
-                  onChange={(e) => setResetCheckState(e.currentTarget.checked)}
-                  disabled = {!stationCheckState}
+                  onChange={() => {
+                    setAdaCheckState(false);
+                    setGenderNeutralCheckState(false);
+                    setStationCheckState(false);
+                  }}
+                  disabled = {!(adaCheckState || stationCheckState || genderNeutralCheckState)}
                 >
                   Reset
                 </ToggleButton>
-                <br/>
-                <p>{stationCheckState.data}</p>
           </Form>
         </div>
 
