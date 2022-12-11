@@ -31,6 +31,7 @@ export default function Restrooms() {
   const [adaCheckState, setAdaCheckState] = useState(false);
   const [genderNeutralCheckState, setGenderNeutralCheckState] = useState(false);
   const [stationCheckState, setStationCheckState] = useState(false);
+  const [resetCheckState, setResetCheckState] = useState(false);
   const [formState, setFormState] = useState(initialState);
   const [deviceLat, deviceLong] = useState(initialState);
   const { searchTerm } = formState;
@@ -101,7 +102,7 @@ export default function Restrooms() {
             </Row>
             <div className='location-button-container'>
               <Button className = 'location-button' variant="primary" type="submit">
-                  TODO: Closest Near Me
+                  TODO: Search Near Me
               </Button>
             </div>
           </Form>
@@ -109,9 +110,8 @@ export default function Restrooms() {
 
         <div className='filter-container'>
           <Form className='filter-form' onSubmit={onSearchSubmit}>
-            <Row className="mb-3">
               <Form.Label>Filters</Form.Label>
-              <Col>
+              <br/>
                 <ToggleButton
                   id="ada-toggle-check"
                   type="checkbox"
@@ -122,8 +122,7 @@ export default function Restrooms() {
                 >
                   ADA
                 </ToggleButton>
-              </Col>
-              <Col>
+                {" "}
                 <ToggleButton
                   id="gender-netural-toggle-check"
                   type="checkbox"
@@ -134,8 +133,7 @@ export default function Restrooms() {
                 >
                   Gender-Neutral
                 </ToggleButton>
-              </Col>
-              <Col>
+                {" "}
                 <ToggleButton 
                   id="station-toggle-check"
                   type="checkbox"
@@ -146,8 +144,20 @@ export default function Restrooms() {
                 >
                   Baby-Changing Station
                 </ToggleButton>
-              </Col>
-            </Row>
+                {" "}
+                <ToggleButton 
+                  id="reset-toggle-check"
+                  type="checkbox"
+                  variant="primary"
+                  checked={resetCheckState}
+                  value="1"
+                  onChange={(e) => setResetCheckState(e.currentTarget.checked)}
+                  disabled = {!stationCheckState}
+                >
+                  Reset
+                </ToggleButton>
+                <br/>
+                <p>{stationCheckState.data}</p>
           </Form>
         </div>
 
