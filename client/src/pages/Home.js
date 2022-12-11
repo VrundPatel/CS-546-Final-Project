@@ -23,13 +23,16 @@ export default function Restrooms() {
 
   const initialState = {
     searchTerm: '',
-    checked: 1
+    checked: 1,
+    deviceLat: '',
+    deviceLong: ''
   };
 
   const [adaCheckState, setAdaCheckState] = useState(false);
   const [genderNeutralCheckState, setGenderNeutralCheckState] = useState(false);
   const [stationCheckState, setStationCheckState] = useState(false);
   const [formState, setFormState] = useState(initialState);
+  const [deviceLat, deviceLong] = useState(initialState);
   const { searchTerm } = formState;
 
   const handleOnChange = (e) => {
@@ -40,18 +43,20 @@ export default function Restrooms() {
     event.preventDefault();
 		console.log("searching by term");
     try {
-      const { data } = await axios.post(`http://localhost:9000/restrooms/search`, {
+      const { data } = await axios.post(`http://localhost:9000/search`, {
         "searchRestrooms": searchTerm
       });
       if (!!data) {
         console.log('data returned ', data);
-        const foundRestroom = await compare(searchTerm, data.streetAddress);
-        if (foundRestroom) {
-          setRestrooms(data);
-        }
-        else {
-          alert(`Not Found! No such a restroom`);
-        }
+        setRestrooms(data);
+        // const foundRestroom = await compare(searchTerm, data.streetAddress);
+        // const foundRestroom = null;
+        // if (foundRestroom) {
+        //   setRestrooms(data);
+        // }
+        // else {
+        //   alert(`Not Found! No such a restroom`);
+        // }
       }
     } catch (e) {
       alert('Error')
@@ -62,7 +67,10 @@ export default function Restrooms() {
     event.preventDefault();
 		console.log("searching by location");
     try {
-      const { data } = await axios.get(`http://localhost:9000/search`)
+      const { data } = await axios.get(`http://localhost:9000/search`, {
+        "lat": deviceLat,
+        "long": deviceLong
+      });
 			console.log('data returned ', data);
     } catch (e) {
       alert('Error')
