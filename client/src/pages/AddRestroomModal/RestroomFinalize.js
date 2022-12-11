@@ -1,5 +1,5 @@
-import { Fragment } from "react";
-import { Button, Col, Row, Table } from "react-bootstrap";
+import { Fragment, useState } from "react";
+import { Alert, Button, Col, Row, Spinner, Table } from "react-bootstrap";
 
 export default function RestroomFinalize(props) {
   let taglist;
@@ -47,7 +47,7 @@ export default function RestroomFinalize(props) {
             <tr>
               <td>Zipcode</td>
               <td>
-                <strong>{props.obj.zip}</strong>
+                <strong>{props.obj.zipCode}</strong>
               </td>
             </tr>
             <tr>
@@ -68,6 +68,18 @@ export default function RestroomFinalize(props) {
       <Row>
         <Col>
           <Button onClick={props.submit}>Submit</Button>
+        </Col>
+        <Col>
+          {props.posting === true ? (
+            <Spinner animation="border" variant="primary" />
+          ) : (
+            <></>
+          )}
+          {props.error ? (
+            <Alert variant={"danger"}>{props.error}</Alert>
+          ) : (
+            <></>
+          )}
         </Col>
         <Col>
           <Button onClick={onPrev} disabled={props.step === 1 ? true : false}>

@@ -45,14 +45,7 @@ function App() {
               </GuardedRoute>
             }
           />
-          <Route
-            path="/restroom/:id"
-            element={
-              <GuardedRoute>
-                <RestroomDetails />
-              </GuardedRoute>
-            }
-          />
+          <Route path="/restroom/:id" element={<RestroomDetails />} />
           <Route
             path="/user"
             element={

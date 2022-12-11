@@ -1,29 +1,61 @@
 import { Fragment, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import RestroomAddress from "./Forms/RestroomAddress/RestroomAddress";
 import RestroomProperties from "./Forms/RestroomProperties/RestroomProperties";
 import RestroomFinalize from "./RestroomFinalize";
 import axios from "axios";
+import { propTypes } from "react-bootstrap/esm/Image";
 
-function RestroomForm() {
+function RestroomForm(props) {
+  const navigate = useNavigate();
   const [requestObj, setRequestObj] = useState({});
   const [step, setStep] = useState(1);
   const [result, setResult] = useState(null);
+  const [posting, setPosting] = useState(false);
+  const [error, setError] = useState(null);
+
   console.log("Updated object to:", requestObj);
 
+  function buildFinalResponseObj() {
+    //get object as it stands
+    let resp = structuredClone(requestObj);
+
+    //set the author
+    resp["author"] = "HarryT";
+
+    //convert tags from object into array
+    let arrTags = [];
+    for (const [key, value] of Object.entries(requestObj.tags)) {
+      console.log(`item : ${key}: ${value}`);
+      arrTags.push(key);
+    }
+    resp.tags = arrTags;
+
+    return resp;
+  }
+
   async function submitForm() {
-    //Add extra data
-    requestObj["author"] = "HarryT";
+    setPosting(true);
+    //get the final object
+    let finalResponse = buildFinalResponseObj();
+    let response;
     try {
-      const sub = await axios.post(
+      response = await axios.post(
         "http://localhost:9000/restrooms",
-        requestObj
+        finalResponse
       );
     } catch (e) {
       console.log(e);
+      setError(e.message);
+      setPosting(false);
+      return;
     }
 
-    console.log("SUBMIT");
+    console.log(response.data.newObj._id);
     //post data
+    setPosting(false);
+    props.setShow(false);
+    navigate(`/restroom/${response.data.newObj._id}`);
   }
 
   return (
@@ -56,6 +88,8 @@ function RestroomForm() {
           confirm={result}
           nextStep={setStep}
           step={step}
+          posting={posting}
+          error={error}
         />
       ) : (
         <></>
@@ -64,6 +98,7 @@ function RestroomForm() {
   );
 
   function populateObject(obj) {
+    setError(null);
     setRequestObj((requestObj) => ({
       ...requestObj,
       ...obj,

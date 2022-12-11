@@ -1,4 +1,5 @@
 import { Button, Modal } from "react-bootstrap";
+import GeoLocation from "../GeoLocation";
 import RestroomForm from "./RestroomForm";
 
 function AddRestroomModal(props) {
@@ -16,7 +17,7 @@ function AddRestroomModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <RestroomForm />
+        <RestroomForm setShow={props.setShow} />
       </Modal.Body>
     </Modal>
   );
