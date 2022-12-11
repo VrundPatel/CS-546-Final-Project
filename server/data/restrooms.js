@@ -2,13 +2,9 @@ const mongoCollections = require("../config/mongoCollections");
 const { Navigator } = require("node-navigator");
 const navigator = new Navigator();
 const validation = require("../validation");
+const geoCoding = require("../goecoding");
 const { ObjectId } = require("mongodb");
 const restrooms = mongoCollections.restrooms;
-
-//temporary !!
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
 
 const createRestroom = async (
   streetAddress,
@@ -38,6 +34,10 @@ const createRestroom = async (
   checkString(closingHours);
   //checkArrays(tags); Tags should be able to be empty
 
+  let geoCode = await geoCoding.getCoords(
+    streetAddress + " " + city + " " + state + " " + zipCode
+  );
+
   const restroomsCollection = await restrooms();
   let newRestroom = {
     streetAddress: streetAddress,
@@ -47,8 +47,7 @@ const createRestroom = async (
     overallRating: 0,
     openingHours: openingHours,
     closingHours: closingHours,
-    latitude: 40.719074 + getRandomInt(10) - getRandomInt(10),
-    longitude: -74.050552 + getRandomInt(10) - getRandomInt(10),
+    loc: geoCode.geometry,
     tags: tags,
     reviews: [],
     reports: [],
@@ -91,16 +90,24 @@ const searchRestroomsByTerm = async (searchTerm) => {
   searchTerm = validation.checkString(searchTerm, "Search term(s)");
   const restroomCollection = await restrooms();
   const restroomList = await restroomCollection.find({
-    $text: { $search: searchTerm }
+    $text: { $search: searchTerm },
   });
   return restroomList;
 };
 
-const searchRestroomsByLocation = async () => {
-    navigator.geolocation.getCurrentPosition((success, error) => {
-        if (error) return error
-        else return success;
-    });
+const searchRestroomsByLocation = async (lat, long) => {
+  const restroomCollection = await restrooms();
+  const restroomList = await restroomCollection.find({
+    loc: {
+      $near: {
+        $geometry: { type: "Point", coordinates: [long, lat] },
+        $minDistance: 0,
+        $maxDistance: 33000,
+      },
+    },
+  });
+
+  return restroomList;
 };
 
 const removeRestroomById = async (id) => {
