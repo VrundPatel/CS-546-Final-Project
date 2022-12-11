@@ -15,20 +15,20 @@ export const AuthContext = React.createContext();
 axios.defaults.withCredentials = true;
 
 function App() {
-  const [isAuthenticated, setAuthenticated] = useState(false);
+  // const [isAuthenticated, setAuthenticated] = useState(false);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:9000/users/auth-check")
-      .then((res) => {
-        console.log("response for auth check ", res.data);
-        setAuthenticated(!!res.data.user);
-      })
-      .catch((error) => {
-        console.error("error: ", error);
-        setAuthenticated(false);
-      });
-  }, [window.location]);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:9000/users/auth-check")
+  //     .then((res) => {
+  //       console.log("response for auth check ", res.data);
+  //       setAuthenticated(!!res.data.user);
+  //     })
+  //     .catch((error) => {
+  //       console.error("error: ", error);
+  //       setAuthenticated(false);
+  //     });
+  // }, [window.location]);
 
   return (
       <BrowserRouter>
