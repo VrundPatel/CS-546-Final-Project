@@ -31,6 +31,8 @@ export default function Restrooms() {
   const [adaCheckState, setAdaCheckState] = useState(false);
   const [genderNeutralCheckState, setGenderNeutralCheckState] = useState(false);
   const [stationCheckState, setStationCheckState] = useState(false);
+  const [buyCheckState, setBuyCheckState] = useState(false);
+  const [keyCheckState, setKeyCheckState] = useState(false);
   const [resetCheckState, setResetCheckState] = useState(false);
   const [formState, setFormState] = useState(initialState);
   const [deviceLat, deviceLong] = useState(initialState);
@@ -104,25 +106,29 @@ export default function Restrooms() {
               <Form.Label>Filters</Form.Label>
               <br/>
                 <ToggleButton
-                  id="ada-toggle-check"
-                  type="checkbox"
-                  variant="outline-primary"
-                  checked={adaCheckState}
-                  value="1"
-                  onChange={(e) => setAdaCheckState(e.currentTarget.checked)}
-                >
-                  ADA Compliant
-                </ToggleButton>
-                {" "}
-                <ToggleButton
                   id="gender-netural-toggle-check"
                   type="checkbox"
                   variant="outline-primary"
                   checked={genderNeutralCheckState}
                   value="1"
-                  onChange={(e) => setGenderNeutralCheckState(e.currentTarget.checked)}
+                  onChange={(e) => {
+                    setGenderNeutralCheckState(e.currentTarget.checked);
+                  }}
                 >
-                  Gender-Neutral
+                  Gender-neutral
+                </ToggleButton>
+                {" "}
+                <ToggleButton
+                  id="ada-toggle-check"
+                  type="checkbox"
+                  variant="outline-primary"
+                  checked={adaCheckState}
+                  value="1"
+                  onChange={(e) => {
+                    setAdaCheckState(e.currentTarget.checked);
+                  }}
+                >
+                  ADA compliant
                 </ToggleButton>
                 {" "}
                 <ToggleButton 
@@ -131,9 +137,37 @@ export default function Restrooms() {
                   variant="outline-primary"
                   checked={stationCheckState}
                   value="1"
-                  onChange={(e) => setStationCheckState(e.currentTarget.checked)}
+                  onChange={(e) => {
+                    setStationCheckState(e.currentTarget.checked);
+                  }}
                 >
                   Baby-Changing Station
+                </ToggleButton>
+                {" "}
+                <ToggleButton 
+                  id="buy-toggle-check"
+                  type="checkbox"
+                  variant="outline-primary"
+                  checked={buyCheckState}
+                  value="1"
+                  onChange={(e) => {
+                    setBuyCheckState(e.currentTarget.checked);
+                  }}
+                >
+                  Gotta Buy Something
+                </ToggleButton>
+                {" "}
+                <ToggleButton 
+                  id="key-toggle-check"
+                  type="checkbox"
+                  variant="outline-primary"
+                  checked={keyCheckState}
+                  value="1"
+                  onChange={(e) => {
+                    setKeyCheckState(e.currentTarget.checked);
+                  }}
+                >
+                  Ask For Key
                 </ToggleButton>
                 {" "}
                 <ToggleButton 
@@ -143,18 +177,20 @@ export default function Restrooms() {
                   checked={resetCheckState}
                   value="1"
                   onChange={() => {
-                    setAdaCheckState(false);
                     setGenderNeutralCheckState(false);
+                    setAdaCheckState(false);
                     setStationCheckState(false);
+                    setBuyCheckState(false);
+                    setKeyCheckState(false);
                   }}
-                  disabled = {!(adaCheckState || stationCheckState || genderNeutralCheckState)}
+                  disabled = {!(genderNeutralCheckState||adaCheckState||stationCheckState||buyCheckState||keyCheckState)}
                 >
                   Reset
                 </ToggleButton>
           </Form>
         </div>
 
-        {/* Search Results with preprocessing filter*/}
+        {/* Search Results with postprocessing filter*/}
         <div>
           <h2> Results </h2>
           {restrooms.map((restroom, index) => {
@@ -163,8 +199,8 @@ export default function Restrooms() {
                 <Card.Body>
                   {restroom.streetAddress}
                   <br />
-                  {restroom.city},{restroom.state}
-                  {restroom.zipCode}
+                  {restroom.city}, {restroom.state} {restroom.zipCode}
+                  {restroom.tags}
                 </Card.Body>
               </Card>
             );
