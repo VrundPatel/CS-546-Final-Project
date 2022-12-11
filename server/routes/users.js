@@ -15,8 +15,15 @@ router
   .route('/')
   .post(async (req, res) => {
     try {
-      const userCreated = await userData.createUser(req.body);
-      res.json({ created: true });
+      const { user, token } = await userData.createUser(req.body);
+      res
+        .cookie('token', token, {
+          maxAge: 345600000,
+          httpOnly: true,
+          sameSite: 'lax',
+        })
+        .status(200)
+        .json({ user });
     } catch (e) {
       res.status(400).json({ error: e });
     }
@@ -26,11 +33,15 @@ router
   .route('/login')
   .post(async (req, res) => {
     try {
-      const userFound = await userData.getUserByEmail(req.body.email);
-      const { email } = userFound;
-      req.session.user = email;
-      console.log('req session ', req.session.user);
-      res.json(userFound);
+      const { user, token } = await userData.login(req.body);
+      res
+        .cookie('token', token, {
+          maxAge: 345600000,
+          httpOnly: true,
+          sameSite: 'lax',
+        })
+        .status(200)
+        .json({ user })
     } catch (e) {
       res.status(400).json({ error: e });
     }
@@ -40,8 +51,7 @@ router
   .route('/logout')
   .post(async (req, res) => {
     try {
-      req.session.destroy();
-      res.json('User logged out');
+      res.clearCookie('token').status(200).send();
     } catch (e) {
       res.status(400).json({ error: e });
     }

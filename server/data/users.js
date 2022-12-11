@@ -1,6 +1,8 @@
 const mongoCollections = require('../config/mongoCollections');
 const { ObjectId } = require('mongodb');
 const users = mongoCollections.users;
+const { hashPassword, comparePassword } = require('../utils/users');
+const jwt = require('jsonwebtoken')
 
 const getAllUsers = async () => {
   const userCollection = await users();
@@ -28,18 +30,50 @@ const getUserByEmail = async (input) => {
   return user;
 };
 
+const userAuth = async (emailInput, userPass) => {
+  const { _id, email, hashedPassword, fullName } = await getUserByEmail(emailInput);
+  const doPasswordsMatch = await comparePassword(userPass, hashedPassword);
+
+  if (!doPasswordsMatch) throw new Error('Invalid username or password');
+
+  const token = jwt.sign({
+    user: {
+      _id,
+      email,
+    },
+  },
+    'CS546'
+  );
+  return {
+    user: { _id, fullName, email },
+    token,
+  };
+}
+
+const login = async({email, password}) => {
+  return await userAuth(email, password);
+}
+
 const createUser = async ({ fullName, city, state, email, password }) => {
   const reviewIds = [], reportIds = [];
   email = email.toLowerCase();
   const userCollection = await users();
   const userFound = await getUserByEmail(email)
   if (!!userFound) {
-    throw 'User already exists';
-  }
-  const insertInfo = await userCollection.insertOne({ fullName, city, state, email, password, reviewIds, reportIds });
+    throw 'User already exists'
+   if (!!userFound) {
+    throw 'User already exists'
+  }}
+
+  const hashedPassword = await hashPassword(password);
+  const insertInfo = await userCollection.insertOne({ fullName, city, state, email, hashedPassword, reviewIds, reportIds });
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw 'Could not add user';
-  return getUserById(insertInfo.insertedId.toString());
+
+  await getUserById(insertInfo.insertedId.toString());
+
+  const newUser = await userAuth(email, password);
+  return newUser;
 };
 
 const updateUser = async (id, updateInfo) => {
@@ -100,5 +134,6 @@ module.exports = {
   getUserById,
   createUser,
   getUserByEmail,
-  updateUser
+  updateUser,
+  login
 }

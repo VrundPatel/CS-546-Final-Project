@@ -26,12 +26,10 @@ export default function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const hashPass = await hash(formState.password, 10);
 
     try {
       const { data } = await axios.post('http://localhost:9000/users', {
         ...formState,
-        password: hashPass
       });
       setFormState(initialState);
       if (!!data) {

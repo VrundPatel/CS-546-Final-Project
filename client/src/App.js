@@ -31,7 +31,6 @@ function App() {
   }, [window.location]);
 
   return (
-    <AuthContext.Provider value={isAuthenticated}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
@@ -40,23 +39,18 @@ function App() {
           <Route
             path="/home"
             element={
-              <GuardedRoute>
-                <Restrooms />
-              </GuardedRoute>
+              <Restrooms />
             }
           />
           <Route path="/restroom/:id" element={<RestroomDetails />} />
           <Route
             path="/user"
             element={
-              <GuardedRoute>
-                <UserProfile />
-              </GuardedRoute>
+              <UserProfile />
             }
           />
         </Routes>
       </BrowserRouter>
-    </AuthContext.Provider>
   );
 }
 
