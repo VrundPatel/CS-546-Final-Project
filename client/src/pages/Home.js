@@ -35,9 +35,6 @@ export default function Restrooms() {
   const [stationCheckState, setStationCheckState] = useState(false);
   const [buyCheckState, setBuyCheckState] = useState(false);
   const [keyCheckState, setKeyCheckState] = useState(false);
-  const [ampleCheckState, setAmpleCheckState] = useState(false);
-  const [noTouchCheckState, setNoTouchCheckState] = useState(false);
-  const [seatCoversCheckState, setSeatCoversCheckState] = useState(false);
   const [resetCheckState, setResetCheckState] = useState(false);
   const [formState, setFormState] = useState(initialState);
   const [deviceLat, deviceLong] = useState(initialState);
@@ -213,12 +210,7 @@ export default function Restrooms() {
         {/* Search Results with variable preprocesser filtering*/}
         <div>
           <h2> Search Results with variable preprocesser filtering</h2>
-          {restrooms.filter(filteredRestroom => {
-            console.log(activeFilters);
-            return activeFilters.every(filter => {
-              return filteredRestroom.tags.includes(filter)
-            });
-          }).map((outputRestroom, index) => {
+          {restrooms.map((outputRestroom, index) => {
             return (
               <Card key={outputRestroom._id} style={{ width: "18rem" }}>
                 <Card.Body>
