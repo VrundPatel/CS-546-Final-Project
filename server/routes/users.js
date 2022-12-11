@@ -2,14 +2,33 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const userData = data.users;
+const jwt = require('jsonwebtoken')
 
-// router
-//   .route('/auth-check')
-//   .get(async (req, res) => {
-//     console.log('check auth state');
-//     if (req.session.user) res.json({ user: req.session.user })
-//     else res.status(401).json({ error: 'User not in session' })
-//   })
+router
+  .route('/auth-check')
+  .get(async (req, res) => {
+
+    try {
+      if (!req.cookies.token) {
+        res.status(400).json({ error: e });
+        return;
+      };
+
+      const { user } = jwt.verify(req.cookies.token, 'CS546');
+      const { _id, fullName, email } = await userData.getUserById(user._id);
+
+      return res.json({
+        user: {
+          _id,
+          fullName,
+          email
+        }
+      });
+    } catch (error) {
+      res.clearCookie('token');
+      res.status(400).json({ error: e });
+    }
+  })
 
 router
   .route('/')
