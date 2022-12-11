@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { hash } from 'bcryptjs-react';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
