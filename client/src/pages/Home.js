@@ -29,11 +29,15 @@ export default function Restrooms() {
     activeFilters: []
   };
 
-  const [adaCheckState, setAdaCheckState] = useState(false);
+  
   const [genderNeutralCheckState, setGenderNeutralCheckState] = useState(false);
+  const [adaCheckState, setAdaCheckState] = useState(false);
   const [stationCheckState, setStationCheckState] = useState(false);
   const [buyCheckState, setBuyCheckState] = useState(false);
   const [keyCheckState, setKeyCheckState] = useState(false);
+  const [ampleCheckState, setAmpleCheckState] = useState(false);
+  const [noTouchCheckState, setNoTouchCheckState] = useState(false);
+  const [seatCoversCheckState, setSeatCoversCheckState] = useState(false);
   const [resetCheckState, setResetCheckState] = useState(false);
   const [formState, setFormState] = useState(initialState);
   const [deviceLat, deviceLong] = useState(initialState);
@@ -111,7 +115,7 @@ export default function Restrooms() {
                     setGenderNeutralCheckState(e.currentTarget.checked);
                   }}
                 >
-                  Gender-neutral
+                  ADA compliant
                 </ToggleButton>
                 {" "}
                 <ToggleButton
