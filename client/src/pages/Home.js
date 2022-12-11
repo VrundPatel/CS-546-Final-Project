@@ -31,6 +31,11 @@ export default function Restrooms() {
   const [adaCheckState, setAdaCheckState] = useState(false);
   const [genderNeutralCheckState, setGenderNeutralCheckState] = useState(false);
   const [stationCheckState, setStationCheckState] = useState(false);
+  const [keyCheckState, setKeyCheckState] = useState(false);
+  const [buyCheckState, setBuyCheckState] = useState(false);
+  const [ampleCheckState, setAmpleCheckState] = useState(false);
+  const [noTouchCheckState, setNoTouchCheckState] = useState(false);
+  const [seatCoversCheckState, setSeatCoversCheckState] = useState(false);
   const [formState, setFormState] = useState(initialState);
   const [deviceLat, deviceLong] = useState(initialState);
   const { searchTerm } = formState;
@@ -105,7 +110,7 @@ export default function Restrooms() {
                   value="1"
                   onChange={(e) => setAdaCheckState(e.currentTarget.checked)}
                 >
-                  ADA
+                  ADA compliant
                 </ToggleButton>
               </Col>
               <Col>
@@ -130,6 +135,66 @@ export default function Restrooms() {
                   onChange={(e) => setStationCheckState(e.currentTarget.checked)}
                 >
                   Baby-Changing Station
+                </ToggleButton>
+              </Col>
+              <Col>
+                <ToggleButton 
+                  id="key-toggle-check"
+                  type="checkbox"
+                  variant="outline-primary"
+                  checked={keyCheckState}
+                  value="1"
+                  onChange={(e) => setKeyCheckState(e.currentTarget.checked)}
+                >
+                  Ask for key
+                </ToggleButton>
+              </Col>
+              <Col>
+                <ToggleButton 
+                  id="buy-toggle-check"
+                  type="checkbox"
+                  variant="outline-primary"
+                  checked={buyCheckState}
+                  value="1"
+                  onChange={(e) => setBuyCheckState(e.currentTarget.checked)}
+                >
+                  Gotta buy something
+                </ToggleButton>
+              </Col>
+              <Col>
+                <ToggleButton 
+                  id="ample-toggle-check"
+                  type="checkbox"
+                  variant="outline-primary"
+                  checked={ampleCheckState}
+                  value="1"
+                  onChange={(e) => setAmpleCheckState(e.currentTarget.checked)}
+                >
+                  Ample stalls
+                </ToggleButton>
+              </Col>
+              <Col>
+                <ToggleButton 
+                  id="seatCovers-toggle-check"
+                  type="checkbox"
+                  variant="outline-primary"
+                  checked={seatCoversCheckState}
+                  value="1"
+                  onChange={(e) => setSeatCoversCheckState(e.currentTarget.checked)}
+                >
+                  Seat Covers
+                </ToggleButton>
+              </Col>
+              <Col>
+                <ToggleButton 
+                  id="noTouch-toggle-check"
+                  type="checkbox"
+                  variant="outline-primary"
+                  checked={noTouchCheckState}
+                  value="1"
+                  onChange={(e) => setNoTouchCheckState(e.currentTarget.checked)}
+                >
+                  No-touch
                 </ToggleButton>
               </Col>
             </Row>
