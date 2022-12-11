@@ -4,6 +4,11 @@ const validation = require("../validation");
 const { ObjectId } = require("mongodb");
 const restrooms = mongoCollections.restrooms;
 
+//temporary !!
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
 const createRestroom = async (
   streetAddress,
   city,
@@ -41,6 +46,8 @@ const createRestroom = async (
     overallRating: 0,
     openingHours: openingHours,
     closingHours: closingHours,
+    latitude: 40.719074 + getRandomInt(10) - getRandomInt(10),
+    longitude: -74.050552 + getRandomInt(10) - getRandomInt(10),
     tags: tags,
     reviews: [],
     reports: [],
