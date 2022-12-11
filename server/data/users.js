@@ -28,32 +28,15 @@ const getUserByEmail = async (input) => {
   return user;
 };
 
-const createUser = async ({ firstName, lastName, city, state, zipCode, email, hashedPassword }) => {
-  checkString(firstName);
-  checkString(lastName);
-  checkString(city);
-  checkString(state);
-  checkString(zipCode);
-  checkString(email);
-  checkString(hashedPassword);
+const createUser = async ({ fullName, city, state, email, password }) => {
+  const reviewIds = [], reportIds = [];
   email = email.toLowerCase();
-  let newUser = {
-    firstName: firstName,
-    lastName: lastName,
-    city: city,
-    state: state,
-    zipCode: zipCode,
-    email: email,
-    hashedPassword: hashedPassword,
-    reviewIds: [],
-    reportIds: []
-  };
   const userCollection = await users();
   const userFound = await getUserByEmail(email)
   if (!!userFound) {
     throw 'User already exists';
   }
-  const insertInfo = await userCollection.insertOne(newUser);
+  const insertInfo = await userCollection.insertOne({ fullName, city, state, email, password, reviewIds, reportIds });
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw 'Could not add user';
   return getUserById(insertInfo.insertedId.toString());
