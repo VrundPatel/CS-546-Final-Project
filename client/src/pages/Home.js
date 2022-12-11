@@ -25,7 +25,8 @@ export default function Restrooms() {
     searchTerm: '',
     checked: 1,
     deviceLat: '',
-    deviceLong: ''
+    deviceLong: '',
+    activeFilters: []
   };
 
   const [adaCheckState, setAdaCheckState] = useState(false);
@@ -37,6 +38,7 @@ export default function Restrooms() {
   const [formState, setFormState] = useState(initialState);
   const [deviceLat, deviceLong] = useState(initialState);
   const { searchTerm } = formState;
+  const [activeFilters] = useState(initialState);
 
   const handleOnChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -64,12 +66,6 @@ export default function Restrooms() {
       alert('Error')
     }
   }
-
-  // useEffect(() => {
-  //   if (resetCheckState) {
-  //     this.setState({adaCheckState: false});
-  //   }
-  // });
 
   return (
     <>
@@ -165,6 +161,8 @@ export default function Restrooms() {
                   value="1"
                   onChange={(e) => {
                     setKeyCheckState(e.currentTarget.checked);
+                    activeFilters.push("Gotta buy something");
+                    console.log(activeFilters);
                   }}
                 >
                   Ask For Key
@@ -191,27 +189,9 @@ export default function Restrooms() {
         </div>
 
         {/* Search Results*/}
-        {/* <div>
-          <h2> Results </h2>
-          {restrooms.map((restroom, index) => {
-            return (
-              <Card key={restroom._id} style={{ width: "18rem" }}>
-                <Card.Body>
-                  {restroom.streetAddress}
-                  <br />
-                  {restroom.city}, {restroom.state} {restroom.zipCode}
-                  {restroom.tags}
-                </Card.Body>
-              </Card>
-            );
-          })}
-        </div> */}
-
-        {/* Search Results with postprocessing filter*/}
         <div>
-          <h2> Results </h2>
-          {restrooms.filter(filteredRestroom => filteredRestroom.tags).map((outputRestroom, index) => {
-            console.log(outputRestroom.tags);
+          <h2> Search Results </h2>
+          {restrooms.map((outputRestroom, index) => {
             return (
               <Card key={outputRestroom._id} style={{ width: "18rem" }}>
                 <Card.Body>
@@ -219,7 +199,30 @@ export default function Restrooms() {
                   {outputRestroom.streetAddress}
                   <br/>
                   {outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
-                  {outputRestroom.tags}
+                  <ul>{outputRestroom.tags}</ul>
+                </Card.Body>
+              </Card>
+            );
+          })}
+        </div>
+
+        {/* Search Results with variable preprocesser filtering*/}
+        <div>
+          <h2> Search Results with variable preprocesser filtering</h2>
+          {restrooms.filter(filteredRestroom => {
+            console.log(activeFilters);
+            return activeFilters.every(filter => {
+              return filteredRestroom.tags.includes(filter)
+            });
+          }).map((outputRestroom, index) => {
+            return (
+              <Card key={outputRestroom._id} style={{ width: "18rem" }}>
+                <Card.Body>
+                  <h3>{index + 1}</h3>
+                  {outputRestroom.streetAddress}
+                  <br/>
+                  {outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
+                  <ul>{outputRestroom.tags}</ul>
                 </Card.Body>
               </Card>
             );
