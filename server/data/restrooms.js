@@ -95,7 +95,7 @@ const searchRestroomsByTerm = async (searchTerm) => {
   return restroomList;
 };
 
-const searchRestroomsByLocationNew = async (lat, long) => {
+const searchRestroomsByLocation = async (lat, long) => {
   const restroomCollection = await restrooms();
   const restroomList = await restroomCollection.find({
     loc: {
