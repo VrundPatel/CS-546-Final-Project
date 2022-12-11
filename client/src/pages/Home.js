@@ -6,8 +6,8 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import { Link, useNavigate } from "react-router-dom";
-import * as api from '../api/endpoints';
-import axios from 'axios';
+import * as api from "../api/endpoints";
+import axios from "axios";
 import Layout from "./layout";
 
 export default function Restrooms() {
@@ -19,7 +19,7 @@ export default function Restrooms() {
     });
   }, []);
 
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const initialState = {
     searchTerm: '',
@@ -37,8 +37,8 @@ export default function Restrooms() {
   const { searchTerm } = formState;
 
   const handleOnChange = (e) => {
-    setFormState({ ...formState, [e.target.name]: e.target.value })
-  }
+    setFormState({ ...formState, [e.target.name]: e.target.value });
+  };
 
   const onSearchSubmit = async (event) => {
     event.preventDefault();
@@ -47,32 +47,17 @@ export default function Restrooms() {
       const { data } = await axios.post(`http://localhost:9000/search`, {
         "searchRestrooms": searchTerm
       });
-      if (!!data) {
-        console.log('data returned ', data);
-        setRestrooms(data);
-        // const foundRestroom = await compare(searchTerm, data.streetAddress);
-        // const foundRestroom = null;
-        // if (foundRestroom) {
-        //   setRestrooms(data);
-        // }
-        // else {
-        //   alert(`Not Found! No such a restroom`);
-        // }
-      }
-    } catch (e) {
-      alert('Error')
-    }
-  }
-
-	const onLocationSubmit = async (event) => {
-    event.preventDefault();
-		console.log("searching by location");
-    try {
-      const { data } = await axios.get(`http://localhost:9000/search`, {
-        "lat": deviceLat,
-        "long": deviceLong
-      });
-			console.log('data returned ', data);
+      setRestrooms(data);
+      // if (!!data) {
+      //   console.log('data returned ', data);
+      //   const foundRestroom = await compare(searchTerm, data.streetAddress);
+      //   if (foundRestroom) {
+      //     setRestrooms(data);
+      //   }
+      //   else {
+      //     alert(`Not Found! No such a restroom`);
+      //   }
+      // }
     } catch (e) {
       alert('Error')
     }
