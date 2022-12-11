@@ -94,7 +94,7 @@ export default function Restrooms() {
                   placeholder="Enter search term" />
               </Col>
               <Col>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={!searchTerm}>
                   Search
                 </Button>
               </Col>
