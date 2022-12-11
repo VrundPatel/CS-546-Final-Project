@@ -13,11 +13,11 @@ import Layout from "./layout";
 export default function Restrooms() {
   const [restrooms, setRestrooms] = useState([]);
 
-  useEffect(() => {
-    api.getAllRestrooms().then((res) => {
-      setRestrooms(res);
-    });
-  }, []);
+  // useEffect(() => {
+  //   api.getAllRestrooms().then((res) => {
+  //     setRestrooms(res);
+  //   });
+  // }, []);
 
   const navigate = useNavigate();
 
@@ -190,8 +190,8 @@ export default function Restrooms() {
           </Form>
         </div>
 
-        {/* Search Results with postprocessing filter*/}
-        <div>
+        {/* Search Results*/}
+        {/* <div>
           <h2> Results </h2>
           {restrooms.map((restroom, index) => {
             return (
@@ -201,6 +201,25 @@ export default function Restrooms() {
                   <br />
                   {restroom.city}, {restroom.state} {restroom.zipCode}
                   {restroom.tags}
+                </Card.Body>
+              </Card>
+            );
+          })}
+        </div> */}
+
+        {/* Search Results with postprocessing filter*/}
+        <div>
+          <h2> Results </h2>
+          {restrooms.filter(filteredRestroom => filteredRestroom.tags).map((outputRestroom, index) => {
+            console.log(outputRestroom.tags);
+            return (
+              <Card key={outputRestroom._id} style={{ width: "18rem" }}>
+                <Card.Body>
+                  <h3>{index + 1}</h3>
+                  {outputRestroom.streetAddress}
+                  <br/>
+                  {outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
+                  {outputRestroom.tags}
                 </Card.Body>
               </Card>
             );
