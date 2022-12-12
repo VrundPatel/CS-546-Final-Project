@@ -23,8 +23,64 @@ function checkString(searchTerm, varName) {
     return searchTerm;
 }
 
+function checkEmail(email, varName) {
+    if (!email) throw `Error: You must provide a ${varName}`;
+    if (typeof email !== 'string' || email.trim().length == 0) throw `Error: ${varName} must be a npn-empty string`;
+    email = email.trim();
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/g.test(email)) throw (`Error: ${varName} is not a format of email`);
+    return email.toLowerCase();
+}
+
+function checkFullname(fullName, varName) {
+    if (!fullName) throw `Error: You must provide a ${varName}`;
+    if (typeof fullName !== 'string' || fullName.trim().length == 0) throw `Error: ${varName} must be a non-empty string`;
+    fullName = fullName.trim();
+    if (!/^[a-zA-Z'- ]+$/g.test(fullName)) throw (`Error: ${varName} is not a real name`);
+    return fullName;
+}
+
+function checkCity(city, varName) {
+    if (!city) throw `Error: You must provide a ${varName}`;
+    if (typeof city !== 'string' || city.trim().length == 0) throw `Error: ${varName} must be a non-empty string`;
+    city = city.trim();
+    if (!/^(?:[A-Za-z]{2,}(?:(\.\s|'s\s|\s?-\s?|\s)?(?=[A-Za-z]+))){1,2}(?:[A-Za-z]+)?$/g.test(city)) throw (`Error: ${varName} is not a city name`);
+    return city;
+}
+
+function checkState(state, varName) {
+    if (!state) throw `Error: You must provide a ${varName}`;
+    if (typeof state !== 'string' || state.trim().length == 0) throw `Error: ${varName} must be a non-empty string`;
+    state = state.trim().toUpperCase();
+    let found = false;
+    let stateArray = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
+    for (let i = 0; i < stateArray.length; i++) {
+        if (state == stateArray[i]) {
+            found = true;
+            break;
+        }
+    }
+    if (!found) throw (`Error: ${varName} is not a state`);
+    return state;
+}
+
+function checkZipcode(zipcode, varName) {
+    if (!zipcode) throw `Error: You must provide a ${varName}`;
+    if (typeof zipcode !== 'string' || zipcode.trim().length == 0) throw `Error: ${varName} must be a non-empty string`;
+    zipcode = zipcode.trim();
+    if (!/^\d{5}(-\d{4})?$/g.test(zipcode)) throw (`Error: ${varName} is not a valid zipcode`);
+    return zipcode;
+}
+
+
+
 module.exports = {
     checkUsername,
     checkPassword,
-    checkString
+    checkString,
+    checkEmail,
+    checkFullname,
+    checkCity,
+    checkState,
+    checkZipcode
+
 };
