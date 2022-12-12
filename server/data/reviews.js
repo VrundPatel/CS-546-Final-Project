@@ -5,7 +5,6 @@ const users = mongoCollections.users;
 const { ObjectId } = require('mongodb');
 const restroomsData = require('./restrooms');
 
-
 const createReview = async (
     restroomId,
     reviewText,
@@ -173,7 +172,7 @@ const updateReviewById = async (reviewId, updatedReview) => {
         updatedReviewData.rating = updatedReview.rating;
     }
 
-    await reviewCollection.updateOne({_id: ObjectId(reviewId)}, {$set: updatedReviewData});
+    await reviewCollection.updateOne({ _id: ObjectId(reviewId) }, { $set: updatedReviewData });
     return await this.getReviewById(reviewId);
 };
 
