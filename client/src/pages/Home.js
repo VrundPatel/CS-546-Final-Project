@@ -32,10 +32,10 @@ export default function Restrooms() {
   const [genderNeutralCheckState, setGenderNeutralCheckState] = useState(false);
   const [stationCheckState, setStationCheckState] = useState(false);
   const [keyCheckState, setKeyCheckState] = useState(false);
-  const [buyCheckState, setBuyCheckState] = useState(false);
   const [ampleCheckState, setAmpleCheckState] = useState(false);
   const [noTouchCheckState, setNoTouchCheckState] = useState(false);
   const [seatCoversCheckState, setSeatCoversCheckState] = useState(false);
+  const [resetCheckState, setResetCheckState] = useState(false);
   const [formState, setFormState] = useState(initialState);
   const [deviceLat, deviceLong] = useState(initialState);
   const { searchTerm } = formState;
@@ -66,6 +66,64 @@ export default function Restrooms() {
       alert('Error')
     }
   }
+
+  const onLocationSubmit = async (event) => {
+    event.preventDefault();
+    console.log("searching by device location");
+    // Fetch device location
+    if (!navigator.geolocation) {
+      setStatus("Can't get location, try a different browser");
+    } else {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          console.log(position);
+          setStatus(null);
+          setLat(position.coords.latitude);
+          setLng(position.coords.longitude);
+
+          try {
+            const { data } = await axios.get(`http://localhost:9000/search/${position.coords.latitude}/${position.coords.longitude}`);
+            setRestrooms(data);
+          } catch (e) {
+            alert('Error')
+          }
+        },
+        () => {
+          setStatus("Unable to retrieve your location");
+        }
+      );
+    }
+  }
+
+  const activeFilters = [genderNeutralCheckState, adaCheckState, stationCheckState, buyCheckState, keyCheckState];
+
+  const filteredRestrooms = restrooms.filter(filteredRestroom => {
+    if (genderNeutralCheckState && !filteredRestroom.tags.includes("Gender-neutral")) {
+      return false;
+    }
+    if (adaCheckState && !filteredRestroom.tags.includes("ADA compliant")) {
+      return false;
+    }
+    if (stationCheckState && !filteredRestroom.tags.includes("Baby-changing")) {
+      return false;
+    }
+    if (buyCheckState && !filteredRestroom.tags.includes("Gotta buy something")) {
+      return false;
+    }
+    if (keyCheckState && !filteredRestroom.tags.includes("Ask for key")) {
+      return false;
+    }
+    if (ampleCheckState && !filteredRestroom.tags.includes("Ample stalls")) {
+      return false;
+    }
+    if (noTouchCheckState && !filteredRestroom.tags.includes("No-touch")) {
+      return false;
+    }
+    if (seatCoversCheckState && !filteredRestroom.tags.includes("Seat covers")) {
+      return false;
+    }
+    return filteredRestrooms;
+  });
 
   return (
     <>
@@ -99,105 +157,132 @@ export default function Restrooms() {
 
         <div className='filter-container'>
           <Form className='filter-form' onSubmit={onSearchSubmit}>
-            <Row className="mb-3">
-              <Form.Label>Filters</Form.Label>
-              <Col>
-                <ToggleButton
-                  id="ada-toggle-check"
-                  type="checkbox"
-                  variant="outline-primary"
-                  checked={adaCheckState}
-                  value="1"
-                  onChange={(e) => setAdaCheckState(e.currentTarget.checked)}
-                >
-                  ADA compliant
-                </ToggleButton>
-              </Col>
-              <Col>
-                <ToggleButton
-                  id="gender-netural-toggle-check"
-                  type="checkbox"
-                  variant="outline-primary"
-                  checked={genderNeutralCheckState}
-                  value="1"
-                  onChange={(e) => setGenderNeutralCheckState(e.currentTarget.checked)}
-                >
-                  Gender-Neutral
-                </ToggleButton>
-              </Col>
-              <Col>
-                <ToggleButton 
-                  id="station-toggle-check"
-                  type="checkbox"
-                  variant="outline-primary"
-                  checked={stationCheckState}
-                  value="1"
-                  onChange={(e) => setStationCheckState(e.currentTarget.checked)}
-                >
-                  Baby-Changing Station
-                </ToggleButton>
-              </Col>
-              <Col>
-                <ToggleButton 
-                  id="key-toggle-check"
-                  type="checkbox"
-                  variant="outline-primary"
-                  checked={keyCheckState}
-                  value="1"
-                  onChange={(e) => setKeyCheckState(e.currentTarget.checked)}
-                >
-                  Ask for key
-                </ToggleButton>
-              </Col>
-              <Col>
-                <ToggleButton 
-                  id="buy-toggle-check"
-                  type="checkbox"
-                  variant="outline-primary"
-                  checked={buyCheckState}
-                  value="1"
-                  onChange={(e) => setBuyCheckState(e.currentTarget.checked)}
-                >
-                  Gotta buy something
-                </ToggleButton>
-              </Col>
-              <Col>
-                <ToggleButton 
-                  id="ample-toggle-check"
-                  type="checkbox"
-                  variant="outline-primary"
-                  checked={ampleCheckState}
-                  value="1"
-                  onChange={(e) => setAmpleCheckState(e.currentTarget.checked)}
-                >
-                  Ample stalls
-                </ToggleButton>
-              </Col>
-              <Col>
-                <ToggleButton 
-                  id="seatCovers-toggle-check"
-                  type="checkbox"
-                  variant="outline-primary"
-                  checked={seatCoversCheckState}
-                  value="1"
-                  onChange={(e) => setSeatCoversCheckState(e.currentTarget.checked)}
-                >
-                  Seat Covers
-                </ToggleButton>
-              </Col>
-              <Col>
-                <ToggleButton 
-                  id="noTouch-toggle-check"
-                  type="checkbox"
-                  variant="outline-primary"
-                  checked={noTouchCheckState}
-                  value="1"
-                  onChange={(e) => setNoTouchCheckState(e.currentTarget.checked)}
-                >
-                  No-touch
-                </ToggleButton>
-              </Col>
-            </Row>
+            <Form.Label>Filters</Form.Label>
+            <br />
+            <ToggleButton
+              id="gender-neutral-toggle-check"
+              type="checkbox"
+              variant="outline-primary"
+              checked={genderNeutralCheckState}
+              value="1"
+              onChange={(e) => {
+                setGenderNeutralCheckState(e.currentTarget.checked);
+              }}
+            >
+              Gender-neutral
+            </ToggleButton>
+            {" "}
+            <ToggleButton
+              id="ada-toggle-check"
+              type="checkbox"
+              variant="outline-primary"
+              checked={adaCheckState}
+              value="1"
+              onChange={(e) => {
+                setAdaCheckState(e.currentTarget.checked);
+              }}
+            >
+              ADA compliant
+            </ToggleButton>
+            {" "}
+            <ToggleButton
+              id="station-toggle-check"
+              type="checkbox"
+              variant="outline-primary"
+              checked={stationCheckState}
+              value="1"
+              onChange={(e) => {
+                setStationCheckState(e.currentTarget.checked);
+              }}
+            >
+              Baby-Changing Station
+            </ToggleButton>
+            {" "}
+            <ToggleButton
+              id="buy-toggle-check"
+              type="checkbox"
+              variant="outline-primary"
+              checked={buyCheckState}
+              value="1"
+              onChange={(e) => {
+                setBuyCheckState(e.currentTarget.checked);
+              }}
+            >
+              Gotta Buy Something
+            </ToggleButton>
+            {" "}
+            <ToggleButton
+              id="key-toggle-check"
+              type="checkbox"
+              variant="outline-primary"
+              checked={keyCheckState}
+              value="1"
+              onChange={(e) => {
+                setKeyCheckState(e.currentTarget.checked);
+              }}
+            >
+              Ask For Key
+            </ToggleButton>
+            {" "}
+            <ToggleButton
+              id="ample-toggle-check"
+              type="checkbox"
+              variant="outline-primary"
+              checked={ampleCheckState}
+              value="1"
+              onChange={(e) => {
+                setAmpleCheckState(e.currentTarget.checked);
+              }}
+            >
+              Ample stalls
+            </ToggleButton>
+            {" "}
+            <ToggleButton
+              id="no-touch-toggle-check"
+              type="checkbox"
+              variant="outline-primary"
+              checked={noTouchCheckState}
+              value="1"
+              onChange={(e) => {
+                setNoTouchCheckState(e.currentTarget.checked);
+              }}
+            >
+              No-touch
+            </ToggleButton>
+            {" "}
+            <ToggleButton
+              id="seat-toggle-check"
+              type="checkbox"
+              variant="outline-primary"
+              checked={seatCoversCheckState}
+              value="1"
+              onChange={(e) => {
+                setSeatCoversCheckState(e.currentTarget.checked);
+              }}
+            >
+              Seat covers
+            </ToggleButton>
+            {" "}
+            <ToggleButton
+              id="reset-toggle-check"
+              type="checkbox"
+              variant="secondary"
+              checked={resetCheckState}
+              value="1"
+              onChange={() => {
+                setGenderNeutralCheckState(false);
+                setAdaCheckState(false);
+                setStationCheckState(false);
+                setBuyCheckState(false);
+                setKeyCheckState(false);
+                setAmpleCheckState(false);
+                setNoTouchCheckState(false);
+                setSeatCoversCheckState(false);
+              }}
+              disabled={!activeFilters.filter(Boolean).length}
+            >
+              Reset
+            </ToggleButton>
           </Form>
         </div>
 
