@@ -33,6 +33,9 @@ export default function Restrooms() {
   const [stationCheckState, setStationCheckState] = useState(false);
   const [buyCheckState, setBuyCheckState] = useState(false);
   const [keyCheckState, setKeyCheckState] = useState(false);
+  const [ampleCheckState, setAmpleCheckState] = useState(false);
+  const [seatCoverCheckState, setSeatCoverCheckState] = useState(false);
+  const [noTouchCheckState, setNoTouchCheckState] = useState(false);
   const [resetCheckState, setResetCheckState] = useState(false);
   const [formState, setFormState] = useState(initialState);
   const [deviceLat, deviceLong] = useState(initialState);
@@ -83,7 +86,7 @@ export default function Restrooms() {
     }
   }
 
-  const activeFilters = [genderNeutralCheckState, adaCheckState, stationCheckState, buyCheckState, keyCheckState];
+  const activeFilters = [genderNeutralCheckState, adaCheckState, stationCheckState, buyCheckState, keyCheckState, ampleCheckState, noTouchCheckState,seatCoverCheckState];
 
   const filteredRestrooms = restrooms.filter(filteredRestroom => {
     if (genderNeutralCheckState && !filteredRestroom.tags.includes("Gender-neutral")) {
@@ -99,6 +102,15 @@ export default function Restrooms() {
       return false;
     }
     if (keyCheckState && !filteredRestroom.tags.includes("Ask for key")) {
+      return false;
+    }
+    if (ampleCheckState && !filteredRestroom.tags.includes("Ample stalls")) {
+      return false;
+    }
+    if (seatCoverCheckState && !filteredRestroom.tags.includes("Seat covers")) {
+      return false;
+    }
+    if (noTouchCheckState && !filteredRestroom.tags.includes("No-touch")) {
       return false;
     }
     return filteredRestroom;
@@ -203,6 +215,45 @@ export default function Restrooms() {
             </ToggleButton>
             {" "}
             <ToggleButton
+              id="ample-toggle-check"
+              type="checkbox"
+              variant="outline-primary"
+              checked={ampleCheckState}
+              value="1"
+              onChange={(e) => {
+                setAmpleCheckState(e.currentTarget.checked);
+              }}
+            >
+              Ample stalls
+            </ToggleButton>
+            {" "}
+            <ToggleButton
+              id="no-touch-toggle-check"
+              type="checkbox"
+              variant="outline-primary"
+              checked={noTouchCheckState}
+              value="1"
+              onChange={(e) => {
+                setNoTouchCheckState(e.currentTarget.checked);
+              }}
+            >
+              No-touch
+            </ToggleButton>
+            {" "}
+            <ToggleButton
+              id="seat-covers-toggle-check"
+              type="checkbox"
+              variant="outline-primary"
+              checked={seatCoverCheckState}
+              value="1"
+              onChange={(e) => {
+                setSeatCoverCheckState(e.currentTarget.checked);
+              }}
+            >
+              Seat covers
+            </ToggleButton>
+            {" "}
+            <ToggleButton
               id="reset-toggle-check"
               type="checkbox"
               variant="secondary"
@@ -214,6 +265,9 @@ export default function Restrooms() {
                 setStationCheckState(false);
                 setBuyCheckState(false);
                 setKeyCheckState(false);
+                setAmpleCheckState(false);
+                setSeatCoverCheckState(false);
+                setNoTouchCheckState(false);
               }}
               disabled={!activeFilters.filter(Boolean).length}
             >
