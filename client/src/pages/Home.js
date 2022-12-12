@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Button, Form, Col, Row, ToggleButton } from "react-bootstrap";
+import { Card, Button, Form, Col, Row, ToggleButton, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import * as api from "../api/endpoints";
 import axios from "axios";
@@ -7,6 +7,9 @@ import Layout from "./layout";
 
 export default function Restrooms() {
   const [restrooms, setRestrooms] = useState([]);
+	const [lat, setLat] = useState(null);
+  const [lng, setLng] = useState(null);
+  const [status, setStatus] = useState(null);
 
   // useEffect(() => {
   //   api.getAllRestrooms().then((res) => {
@@ -62,6 +65,34 @@ export default function Restrooms() {
     }
   }
 
+	const onLocationSubmit = async (event) => {
+    event.preventDefault();
+    console.log("searching by device location");
+    // Fetch device location
+    if (!navigator.geolocation) {
+      setStatus("Can't get location, try a different browser");
+    } else {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+					console.log(position);
+          setStatus(null);
+          setLat(position.coords.latitude);
+          setLng(position.coords.longitude);
+        },
+        () => {
+          setStatus("Unable to retrieve your location");
+        }
+      );
+    }
+		// GET request with device coordinates
+		try {
+      const { data } = await axios.get(`http://localhost:9000/search/${lat}/${lng}`);
+      setRestrooms(data);
+    } catch (e) {
+      alert('Error')
+    }
+	}
+
   const activeFilters = [genderNeutralCheckState, adaCheckState, stationCheckState, buyCheckState, keyCheckState];
 
   const filteredRestrooms = restrooms.filter(filteredRestroom => {
@@ -105,12 +136,12 @@ export default function Restrooms() {
                 </Button>
               </Col>
             </Row>
-            <div className='location-button-container'>
-              <Button className = 'location-button' variant="primary" type="submit">
-                  TODO: Search Near Me
-              </Button>
-            </div>
           </Form>
+					<div className='location-button-container'>
+						<Button className = 'location-button' variant="primary" type="submit" onClick = {onLocationSubmit}>
+								Search Near Me
+						</Button>
+					</div>
         </div>
 
         <div className='filter-container'>
