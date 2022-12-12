@@ -6,7 +6,8 @@ function InfoCard(props) {
     <Card className="text-center">
       <Card.Body>
         <Card.Title>
-          <h1>{`${props.restroomData.streetAddress}, ${props.restroomData.city}, ${props.restroomData.state}, ${props.restroomData.zipCode}`}</h1>
+          <h1>{`${props.restroomData.streetAddress}, ${props.restroomData.city}, ${props.restroomData.state}, ${props.restroomData.zipCode}`}</h1> <br />
+          <a href={`https://www.google.com/maps/dir/?api=1&destination=${props.restroomData.streetAddress}`}>Navigate</a>
         </Card.Title>
         <Card.Text>
           <Table striped bordered hover>

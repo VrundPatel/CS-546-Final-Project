@@ -109,7 +109,6 @@ export default function Restrooms() {
       <Layout>
         <div className='search-bar-container'>
           <Form className='search-form' onSubmit={onSearchSubmit}>
-            <h2 style={{ 'textAlign': 'center' }}>GottaGo</h2>
             <Row className="mb-3">
               <Form.Label>Search</Form.Label>
               <Col>
@@ -231,7 +230,8 @@ export default function Restrooms() {
               <Card key={outputRestroom._id} style={{ width: "24rem" }}>
                 <Card.Body>
                   <h3>{index + 1}</h3>
-                  <a href={"/restroom/" + outputRestroom._id}>{outputRestroom.streetAddress}</a>
+                  <a href={"/restroom/" + outputRestroom._id}>{outputRestroom.streetAddress}</a> <br />
+                  <a href={`https://www.google.com/maps/dir/?api=1&destination=${outputRestroom.streetAddress}`}>Navigate</a>
                   <br />
                   {outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
                 </Card.Body>
