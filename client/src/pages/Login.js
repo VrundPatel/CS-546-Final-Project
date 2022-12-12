@@ -4,9 +4,16 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from "react-router-dom";
 import './login.css';
+import { useCookies } from 'react-cookie';
 
 export default function Login() {
   const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(["auth"]);
+
+  function createCookie(value) {
+    setCookie("auth", value, { path: '/'});
+  }
+
   const initialState = {  
     email: '',
     password: ''
@@ -28,7 +35,7 @@ export default function Login() {
       });
       if (!!data) {
         setFormState(initialState);
-        sessionStorage.setItem('access_token', data.token);
+        createCookie(data.token);
         navigate('/home');
       }
     } catch (e) {

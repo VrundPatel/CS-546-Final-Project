@@ -5,13 +5,15 @@ import Navbar from "react-bootstrap/Navbar";
 import { useNavigate } from "react-router-dom";
 import AddRestroomButton from "./AddRestroomModal/AddRestroomButton";
 import "./layout.css";
+import { useCookies } from 'react-cookie';
 
 export default function Layout(props) {
-
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
 
   const onLogout = async() => {
     const { data } = await axios.post('http://localhost:9000/users/logout');
+    removeCookie('auth');
     navigate('/login');
   }
   
