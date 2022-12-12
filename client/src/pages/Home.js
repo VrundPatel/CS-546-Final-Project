@@ -64,6 +64,25 @@ export default function Restrooms() {
 
   const activeFilters = [genderNeutralCheckState, adaCheckState, stationCheckState, buyCheckState, keyCheckState];
 
+  const filteredRestrooms = restrooms.filter(filteredRestroom => {
+    if (genderNeutralCheckState && !filteredRestroom.tags.includes("Gender-neutral")) {
+        return false;
+    }
+    if (adaCheckState && !filteredRestroom.tags.includes("ADA compliant")) {
+        return false;
+    }
+    if (stationCheckState && !filteredRestroom.tags.includes("Baby-changing")) {
+        return false;
+    }
+    if (buyCheckState && !filteredRestroom.tags.includes("Gotta buy something")) {
+        return false;
+    }
+    if (keyCheckState && !filteredRestroom.tags.includes("Ask for key")) {
+        return false;
+    }
+    return filteredRestroom;
+  });
+
   return (
     <>
       <Layout>
@@ -183,54 +202,17 @@ export default function Restrooms() {
           </Form>
         </div>
 
-        {/* Search Results*/}
-        {/* <div>
-          <h2> Search Results </h2>
-          {restrooms.map((outputRestroom, index) => {
-            return (
-              <Card key={outputRestroom._id} style={{ width: "18rem" }}>
-                <Card.Body>
-                  <h3>{index + 1}</h3>
-                  {outputRestroom.streetAddress}
-                  <br/>
-                  {outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
-                  <ul>{outputRestroom.tags}</ul>
-                </Card.Body>
-              </Card>
-            );
-          })}
-        </div> */}
-
         {/* Search Results with variable preprocesser filtering*/}
         <div>
-          <h2> Search Results with variable preprocesser filtering</h2>
-          {restrooms.filter(filteredRestroom => {
-            console.log(filteredRestroom.tags);
-            if (genderNeutralCheckState && !filteredRestroom.tags.includes("Gender-neutral")) {
-                return false;
-            }
-            if (adaCheckState && !filteredRestroom.tags.includes("ADA compliant")) {
-                return false;
-            }
-            if (stationCheckState && !filteredRestroom.tags.includes("Baby-changing")) {
-                return false;
-            }
-            if (buyCheckState && !filteredRestroom.tags.includes("Gotta buy something")) {
-                return false;
-            }
-            if (keyCheckState && !filteredRestroom.tags.includes("Ask for key")) {
-                return false;
-            }
-            return filteredRestroom;
-          }).map((outputRestroom, index) => {
+          <h2>{filteredRestrooms.length} Result{filteredRestrooms.length != 1 ? "s": ""}</h2>
+          {filteredRestrooms.map((outputRestroom, index) => {
             return (
-              <Card key={outputRestroom._id} style={{ width: "18rem" }}>
+              <Card key={outputRestroom._id} style={{ width: "24rem" }}>
                 <Card.Body>
                   <h3>{index + 1}</h3>
                   {outputRestroom.streetAddress}
                   <br/>
                   {outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
-                  <ul>{outputRestroom.tags}</ul>
                 </Card.Body>
               </Card>
             );
