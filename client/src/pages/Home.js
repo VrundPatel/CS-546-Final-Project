@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import ToggleButton from 'react-bootstrap/ToggleButton';
+import { Card, Button, Form, Col, Row, ToggleButton } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import * as api from "../api/endpoints";
 import axios from "axios";
@@ -39,7 +34,6 @@ export default function Restrooms() {
   const [formState, setFormState] = useState(initialState);
   const [deviceLat, deviceLong] = useState(initialState);
   const { searchTerm } = formState;
-  const [activeFilters] = useState(initialState);
 
   const handleOnChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -67,6 +61,8 @@ export default function Restrooms() {
       alert('Error')
     }
   }
+
+  const activeFilters = [genderNeutralCheckState, adaCheckState, stationCheckState, buyCheckState, keyCheckState];
 
   return (
     <>
@@ -103,7 +99,7 @@ export default function Restrooms() {
               <Form.Label>Filters</Form.Label>
               <br/>
                 <ToggleButton
-                  id="gender-netural-toggle-check"
+                  id="gender-neutral-toggle-check"
                   type="checkbox"
                   variant="outline-primary"
                   checked={genderNeutralCheckState}
@@ -112,7 +108,7 @@ export default function Restrooms() {
                     setGenderNeutralCheckState(e.currentTarget.checked);
                   }}
                 >
-                  ADA compliant
+                  Gender-neutral
                 </ToggleButton>
                 {" "}
                 <ToggleButton
@@ -162,8 +158,6 @@ export default function Restrooms() {
                   value="1"
                   onChange={(e) => {
                     setKeyCheckState(e.currentTarget.checked);
-                    activeFilters.push("Gotta buy something");
-                    console.log(activeFilters);
                   }}
                 >
                   Ask For Key
@@ -182,7 +176,7 @@ export default function Restrooms() {
                     setBuyCheckState(false);
                     setKeyCheckState(false);
                   }}
-                  disabled = {!(genderNeutralCheckState||adaCheckState||stationCheckState||buyCheckState||keyCheckState)}
+                  disabled = {!activeFilters.filter(Boolean).length}
                 >
                   Reset
                 </ToggleButton>
@@ -190,7 +184,7 @@ export default function Restrooms() {
         </div>
 
         {/* Search Results*/}
-        <div>
+        {/* <div>
           <h2> Search Results </h2>
           {restrooms.map((outputRestroom, index) => {
             return (
@@ -205,12 +199,30 @@ export default function Restrooms() {
               </Card>
             );
           })}
-        </div>
+        </div> */}
 
         {/* Search Results with variable preprocesser filtering*/}
         <div>
           <h2> Search Results with variable preprocesser filtering</h2>
-          {restrooms.map((outputRestroom, index) => {
+          {restrooms.filter(filteredRestroom => {
+            console.log(filteredRestroom.tags);
+            if (genderNeutralCheckState && !filteredRestroom.tags.includes("Gender-neutral")) {
+                return false;
+            }
+            if (adaCheckState && !filteredRestroom.tags.includes("ADA compliant")) {
+                return false;
+            }
+            if (stationCheckState && !filteredRestroom.tags.includes("Baby-changing")) {
+                return false;
+            }
+            if (buyCheckState && !filteredRestroom.tags.includes("Gotta buy something")) {
+                return false;
+            }
+            if (keyCheckState && !filteredRestroom.tags.includes("Ask for key")) {
+                return false;
+            }
+            return filteredRestroom;
+          }).map((outputRestroom, index) => {
             return (
               <Card key={outputRestroom._id} style={{ width: "18rem" }}>
                 <Card.Body>
