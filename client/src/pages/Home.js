@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Button, Form, Col, Row, ToggleButton, Container } from "react-bootstrap";
+import { Card, Button, Form, Col, Row, ToggleButton, Container, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import * as api from "../api/endpoints";
 import axios from "axios";
@@ -10,6 +10,7 @@ export default function Restrooms() {
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
   const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // useEffect(() => {
   //   api.getAllRestrooms().then((res) => {
@@ -65,6 +66,7 @@ export default function Restrooms() {
     if (!navigator.geolocation) {
       setStatus("Can't get location, try a different browser");
     } else {
+      setLoading(true);
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           console.log(position);
@@ -75,18 +77,21 @@ export default function Restrooms() {
           try {
             const { data } = await axios.get(`http://localhost:9000/search/${position.coords.latitude}/${position.coords.longitude}`);
             setRestrooms(data);
+            setLoading(false)
           } catch (e) {
             alert('Error')
+            setLoading(false)
           }
         },
         () => {
           setStatus("Unable to retrieve your location");
+          setLoading(false)
         }
       );
     }
   }
 
-  const activeFilters = [genderNeutralCheckState, adaCheckState, stationCheckState, buyCheckState, keyCheckState, ampleCheckState, noTouchCheckState,seatCoverCheckState];
+  const activeFilters = [genderNeutralCheckState, adaCheckState, stationCheckState, buyCheckState, keyCheckState, ampleCheckState, noTouchCheckState, seatCoverCheckState];
 
   const filteredRestrooms = restrooms.filter(filteredRestroom => {
     if (genderNeutralCheckState && !filteredRestroom.tags.includes("Gender-neutral")) {
@@ -276,8 +281,16 @@ export default function Restrooms() {
           </Form>
         </div>
 
+        <hr />
+
         {/* Search Results with variable preprocesser filtering*/}
         <div>
+          { loading &&
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          }
+         
           <h2>{filteredRestrooms.length} Result{filteredRestrooms.length !== 1 ? "s" : ""}</h2>
           {filteredRestrooms.map((outputRestroom, index) => {
             return (
