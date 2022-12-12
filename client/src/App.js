@@ -10,24 +10,30 @@ import RestroomDetails from "./pages/RestroomDetails/RestroomDetails";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import UserProfile from "./pages/UserProfile";
+import { useAuth } from "./hooks/use-auth";
 
 export const AuthContext = React.createContext();
 axios.defaults.withCredentials = true;
 
 function App() {
-  const [isAuthenticated, setAuthenticated] = useState(false);
+  // const [isAuthenticated, setAuthenticated] = useState(
+  //   !!sessionStorage.getItem('access_token')
+  // );
+
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:9000/users/auth-check")
-      .then((res) => {
-        console.log("response for auth check ", res.data);
-        setAuthenticated(!!res.data.user);
-      })
-      .catch((error) => {
-        console.error("error: ", error);
-        setAuthenticated(false);
-      });
+    // axios
+    //   .get("http://localhost:9000/users/auth-check")
+    //   .then((res) => {
+    //     console.log("response for auth check ", res.data);
+    //     setAuthenticated(true);
+    //   })
+    //   .catch((error) => {
+    //     console.error("error: ", error);
+    //     setAuthenticated(false);
+    //   });
+
   }, []);
 
   return (
@@ -39,7 +45,7 @@ function App() {
         <Route
           path="/home"
           element={
-            <GuardedRoute isAuthenticated>
+            <GuardedRoute isAuthenticated={isAuthenticated}>
               <Restrooms />
             </GuardedRoute>
           }

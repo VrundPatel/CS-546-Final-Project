@@ -28,6 +28,7 @@ export default function Login() {
       });
       if (!!data) {
         setFormState(initialState);
+        sessionStorage.setItem('access_token', data.token);
         navigate('/home');
       }
     } catch (e) {

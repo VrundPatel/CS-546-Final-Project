@@ -22,7 +22,7 @@ router
           _id,
           fullName,
           email
-        }
+        }, token: req.cookies.token
       });
     } catch (error) {
       res.clearCookie('token');
@@ -42,7 +42,7 @@ router
           sameSite: 'lax',
         })
         .status(200)
-        .json({ user });
+        .json({ user, token });
     } catch (e) {
       res.status(400).json({ error: e });
     }
@@ -60,7 +60,7 @@ router
           sameSite: 'lax',
         })
         .status(200)
-        .json({ user })
+        .json({ user, token })
     } catch (e) {
       res.status(400).json({ error: e });
     }
