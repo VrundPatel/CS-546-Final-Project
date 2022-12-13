@@ -39,7 +39,6 @@ export default function Restrooms() {
   const [noTouchCheckState, setNoTouchCheckState] = useState(false);
   const [resetCheckState, setResetCheckState] = useState(false);
   const [formState, setFormState] = useState(initialState);
-  const [deviceLat, deviceLong] = useState(initialState);
   const { searchTerm } = formState;
 
   const handleOnChange = (e) => {
@@ -145,7 +144,7 @@ export default function Restrooms() {
           </Form>
           <div className='location-button-container'>
             <Button className='location-button' variant="primary" type="submit" onClick={onLocationSubmit}>
-              Search Near Me
+						&#128205; Search Nearby
             </Button>
           </div>
         </div>
@@ -297,10 +296,21 @@ export default function Restrooms() {
               <Card key={outputRestroom._id} style={{ width: "24rem" }}>
                 <Card.Body>
                   <h3>{index + 1}</h3>
-                  <a href={"/restroom/" + outputRestroom._id}>{outputRestroom.streetAddress}</a> <br />
-                  <a href={`https://www.google.com/maps/dir/?api=1&destination=${outputRestroom.streetAddress}`}>Navigate</a>
+                  <a href={"/restroom/" + outputRestroom._id}>{outputRestroom.streetAddress}</a>
                   <br />
                   {outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
+									<br />
+									<div align="right">
+									<Button className='navigate-button' variant="primary" type="submit" onClick={
+										(event) => {
+											event.preventDefault();
+											console.log("navigating");
+											window.location.href=`https://www.google.com/maps/dir/?api=1&destination=${outputRestroom.streetAddress}`;
+										}
+									}>
+              			Navigate &#10138;
+            			</Button>
+									</div>
                 </Card.Body>
               </Card>
             );
