@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, Button, Form, Col, Row, ToggleButton, Container, Spinner } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as api from "../api/endpoints";
 import axios from "axios";
 import Layout from "./layout";
@@ -23,8 +23,6 @@ export default function Restrooms() {
   const initialState = {
     searchTerm: '',
     checked: 1,
-    deviceLat: '',
-    deviceLong: '',
     activeFilters: []
   };
 
