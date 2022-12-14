@@ -103,7 +103,7 @@ const searchRestroomsByLocation = async (lat, long) => {
         $geometry: { type: "Point", coordinates: [long, lat] },
         $minDistance: 0,
         // $maxDistance: 33000,
-				$maxDistance: 100000
+				$maxDistance: 200000
       },
     },
 	});

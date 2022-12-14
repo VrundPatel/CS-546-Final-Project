@@ -122,7 +122,7 @@ export default function Restrooms() {
 	// React-Paginate Components
 	// Invoke when user click to request another page.
 	const [itemOffset, setItemOffset] = useState(0);
-	const itemsPerPage = 1;
+	const itemsPerPage = 5;
 	const endOffset = itemOffset + itemsPerPage;
 	const items = filteredRestrooms.slice(itemOffset, endOffset);
   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
@@ -308,41 +308,8 @@ export default function Restrooms() {
           }
          
           <h2>{filteredRestrooms.length} Result{filteredRestrooms.length !== 1 ? "s" : ""}</h2>
-          {/* {filteredRestroomsPage.map((outputRestroom, index) => {
-            return (
-              <Card key={outputRestroom._id} style={{ width: "32rem" }}>
-                <Card.Body>
-                  <h3>{index + 1}</h3>
-                  <a href={"/restroom/" + outputRestroom._id}>{outputRestroom.streetAddress}</a>
-                  <br />
-                  {outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
-									<br />
-									<div align="center">
-										<Button className='navigate-button' variant="secondary" type="submit" onClick={
-											(event) => {
-												event.preventDefault();
-												console.log("viewing restroom info");
-												navigate(`/restroom/${outputRestroom._id}`);
-											}
-										}>
-              				&#128270; View Info
-            				</Button>
-										{" "}
-										<Button className='navigate-button' variant="primary" type="submit" onClick={
-											(event) => {
-												event.preventDefault();
-												console.log("navigating");
-												window.location.href=`https://www.google.com/maps/dir/?api=1&destination=${outputRestroom.streetAddress}`;
-											}
-										}>
-											&#10138; Navigate
-										</Button>
-									</div>
-                </Card.Body>
-              </Card>
-            );
-          })} */}
 					<>
+					<p>Showing results {itemOffset+1}-{filteredRestrooms.length > endOffset? endOffset: filteredRestrooms.length}</p>
 					{items.map((outputRestroom, index) => {
             return (
               <Card key={outputRestroom._id} style={{ width: "32rem" }}>
@@ -377,11 +344,11 @@ export default function Restrooms() {
               </Card>
             );
           })}
-					<ReactPaginate
+					<ReactPaginate className='paginator'
 						breakLabel="..."
 						nextLabel="next >"
 						onPageChange={handlePageClick}
-						pageRangeDisplayed={5}
+						pageRangeDisplayed={3}
 						pageCount={pageCount}
 						previousLabel="< previous"
 						renderOnZeroPageCount={null}
