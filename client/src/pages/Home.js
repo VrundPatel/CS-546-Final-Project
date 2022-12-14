@@ -315,7 +315,6 @@ export default function Restrooms() {
             return (
               <Card key={outputRestroom._id} style={{ width: "32rem" }}>
                 <Card.Body>
-                  <h3>{index + 1}</h3>
                   <a href={"/restroom/" + outputRestroom._id}>{outputRestroom.streetAddress}</a>
                   <br />
                   {outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
