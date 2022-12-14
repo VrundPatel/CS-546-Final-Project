@@ -310,7 +310,7 @@ export default function Restrooms() {
          
           <h2>{filteredRestrooms.length} Result{filteredRestrooms.length !== 1 ? "s" : ""}</h2>
 					<>
-					<p>Showing results {itemOffset+1}-{filteredRestrooms.length > endOffset? endOffset: filteredRestrooms.length}</p>
+					<p hidden={!filteredRestrooms.length}>Showing results {itemOffset+1}-{filteredRestrooms.length > endOffset? endOffset: filteredRestrooms.length}</p>
 					{items.map((outputRestroom, index) => {
             return (
               <Card key={outputRestroom._id} style={{ width: "32rem" }}>
@@ -318,6 +318,7 @@ export default function Restrooms() {
                   <a href={"/restroom/" + outputRestroom._id}>{outputRestroom.streetAddress}</a>
                   <br />
                   {outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
+									<br />
 									<br />
 									<div align="center">
 										<Button className='navigate-button' variant="secondary" type="submit" onClick={
