@@ -6,7 +6,7 @@ function AddRestroomButton() {
   const [modalShow, setModalShow] = useState(false);
   return (
     <Fragment>
-      <Button variant="primary" onClick={() => setModalShow(true)}>
+      <Button variant="secondary" onClick={() => setModalShow(true)}>
         Add a Restroom
       </Button>
 
