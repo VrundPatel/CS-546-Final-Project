@@ -166,7 +166,7 @@ export default function Restrooms() {
 						&#128205; Search Nearby
             </Button>
 				</div>
-
+				<hr />
         <div className='filter-container'>
           <Form className='filter-form' onSubmit={onSearchSubmit}>
             <Form.Label><h2>Filters</h2></Form.Label>
@@ -297,7 +297,7 @@ export default function Restrooms() {
             </ToggleButton>
           </Form>
         </div>
-
+				<br />
         <hr />
 
         {/* Search Results with variable preprocesser filtering*/}
