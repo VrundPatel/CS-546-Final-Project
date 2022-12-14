@@ -16,13 +16,14 @@ export default function AppRoutes() {
   const [cookies, setCookie] = useCookies(["auth"]);
 
   useEffect(() => {
-    if (!!cookies && ['/login', '/sign-up'].includes(location.pathname)) {
+    if (!!cookies && ['/', '/login', '/sign-up'].includes(location.pathname)) {
       navigate('/home');
     }
   }, []);
 
   return (
     <Routes>
+      <Route path="*" element={<Navigate to="/home" />} />
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
@@ -43,6 +44,7 @@ export default function AppRoutes() {
           </GuardedRoute>
         }
       />
+
     </Routes>
   )
 }
