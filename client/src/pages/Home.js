@@ -5,6 +5,7 @@ import * as api from "../api/endpoints";
 import axios from "axios";
 import Layout from "./layout";
 import ReactPaginate from "react-paginate";
+import './home.css';
 
 export default function Restrooms() {
   const [restrooms, setRestrooms] = useState([]);

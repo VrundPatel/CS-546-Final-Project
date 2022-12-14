@@ -1,0 +1,28 @@
+.search-bar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 30vh;
+  }
+  
+.search-form {
+    width: 800px;
+    padding: 40px;
+    border-radius: 8px;
+    background-color: white;
+  }
+  
+  .location-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
