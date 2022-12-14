@@ -32,6 +32,34 @@ router
 
 router
   .route('/')
+  .get(async (req, res) => {
+    try { // Error Checking
+      //TODO: ID validation
+    } catch (e) {
+      return res.status(400).json({ error: e });
+    }
+
+    try {
+      if (!req.cookies.token) {
+        res.status(400).json({ error: e });
+        return;
+      };
+
+      const { user } = jwt.verify(req.cookies.token, 'CS546');
+      const { _id, fullName, email } = await userData.getUserById(user._id);
+
+      return res.json({
+        user: {
+          _id,
+          fullName,
+          email
+        }, token: req.cookies.token
+      });
+    } catch (error) {
+      res.clearCookie('token');
+      res.status(400).json({ error: e });
+    }
+  })
   .post(async (req, res) => {
     try {
       const { user, token } = await userData.createUser(req.body);
@@ -75,25 +103,5 @@ router
       res.status(400).json({ error: e });
     }
   });
-
-router
-  .route('/:userId')
-  .get(async (req, res) => {
-    try { // Error Checking
-      //TODO: ID validation
-    } catch (e) {
-      return res.status(400).json({ error: e });
-    }
-    try {
-      const user = await userData.getUserById(req.params.userId);
-      res.json(user);
-    } catch (e) {
-      res.status(404).json({ error: e });
-    }
-  })
-  .put(async (req, res) => {
-    //TODO: Updates an existing user with updated fields
-    res.send(`POST request to http://localhost:3000/user/${req.params.id}`);
-  })
 
 module.exports = router;
