@@ -335,7 +335,10 @@ export default function Restrooms() {
 											(event) => {
 												event.preventDefault();
 												console.log("navigating");
-												window.location.href=`https://www.google.com/maps/dir/?api=1&destination=${outputRestroom.streetAddress}`;
+												window.open(
+													`https://www.google.com/maps/dir/?api=1&destination=${outputRestroom.streetAddress}`,
+													"_blank"
+													)
 											}
 										}>
 											&#10138; Navigate
