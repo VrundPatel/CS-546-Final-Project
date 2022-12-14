@@ -105,7 +105,7 @@ const searchRestroomsByLocation = async (lat, long) => {
         $maxDistance: 33000,
       },
     },
-  });
+	});
 
   return restroomList;
 };
