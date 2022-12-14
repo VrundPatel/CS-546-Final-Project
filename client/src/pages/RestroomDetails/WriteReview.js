@@ -9,6 +9,7 @@ function WriteReview() {
     event.preventDefault();
     try {
       //Post to rating endpoint
+      const { data } = axios.post('http://localhost:9000/')
       console.log("Submit");
     } catch (e) {
       console.log(e);
