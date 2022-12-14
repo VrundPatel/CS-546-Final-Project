@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import * as api from "../api/endpoints";
 import axios from "axios";
 import Layout from "./layout";
+import ReactPaginate from "react-paginate";
 
 export default function Restrooms() {
   const [restrooms, setRestrooms] = useState([]);
@@ -117,6 +118,24 @@ export default function Restrooms() {
     }
     return filteredRestroom;
   });
+
+	// React-Paginate Components
+	// Invoke when user click to request another page.
+	const [itemOffset, setItemOffset] = useState(0);
+	const itemsPerPage = 1;
+	const endOffset = itemOffset + itemsPerPage;
+	const items = filteredRestrooms.slice(itemOffset, endOffset);
+  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  const currentItems = filteredRestrooms.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(filteredRestrooms.length / itemsPerPage);
+
+	const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % filteredRestrooms.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
 
   return (
     <>
@@ -289,7 +308,42 @@ export default function Restrooms() {
           }
          
           <h2>{filteredRestrooms.length} Result{filteredRestrooms.length !== 1 ? "s" : ""}</h2>
-          {filteredRestrooms.map((outputRestroom, index) => {
+          {/* {filteredRestroomsPage.map((outputRestroom, index) => {
+            return (
+              <Card key={outputRestroom._id} style={{ width: "32rem" }}>
+                <Card.Body>
+                  <h3>{index + 1}</h3>
+                  <a href={"/restroom/" + outputRestroom._id}>{outputRestroom.streetAddress}</a>
+                  <br />
+                  {outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
+									<br />
+									<div align="center">
+										<Button className='navigate-button' variant="secondary" type="submit" onClick={
+											(event) => {
+												event.preventDefault();
+												console.log("viewing restroom info");
+												navigate(`/restroom/${outputRestroom._id}`);
+											}
+										}>
+              				&#128270; View Info
+            				</Button>
+										{" "}
+										<Button className='navigate-button' variant="primary" type="submit" onClick={
+											(event) => {
+												event.preventDefault();
+												console.log("navigating");
+												window.location.href=`https://www.google.com/maps/dir/?api=1&destination=${outputRestroom.streetAddress}`;
+											}
+										}>
+											&#10138; Navigate
+										</Button>
+									</div>
+                </Card.Body>
+              </Card>
+            );
+          })} */}
+					<>
+					{items.map((outputRestroom, index) => {
             return (
               <Card key={outputRestroom._id} style={{ width: "32rem" }}>
                 <Card.Body>
@@ -323,6 +377,16 @@ export default function Restrooms() {
               </Card>
             );
           })}
+					<ReactPaginate
+						breakLabel="..."
+						nextLabel="next >"
+						onPageChange={handlePageClick}
+						pageRangeDisplayed={5}
+						pageCount={pageCount}
+						previousLabel="< previous"
+						renderOnZeroPageCount={null}
+					/>
+    </>
         </div>
       </Layout>
     </>
