@@ -24,7 +24,7 @@ function InfoCard(props) {
     onReport(reportReason)
     setShow(false);
   }
-  
+
   const handleShow = () => setShow(true);
 
   const onOptionChange = (e) => {
@@ -35,11 +35,12 @@ function InfoCard(props) {
   return (
     <>
       <Card className="text-center">
+        <Card.Title>
+          <h1>{`${streetAddress}, ${city}, ${state}, ${zipCode}`}</h1> <br />
+          <a href={`https://www.google.com/maps/dir/?api=1&destination=${streetAddress}`}>Navigate</a>
+          <Button size="sm" onClick={handleShow} variant='warning' style={{ float: 'right', marginRight: '20px' }}>Report</Button>
+        </Card.Title>
         <Card.Body>
-          <Card.Title>
-            <h1>{`${streetAddress}, ${city}, ${state}, ${zipCode}`}</h1> <br />
-            <a href={`https://www.google.com/maps/dir/?api=1&destination=${streetAddress}`}>Navigate</a>
-          </Card.Title>
           <Table striped bordered hover>
             <tbody>
               <tr>
@@ -68,9 +69,6 @@ function InfoCard(props) {
             </tbody>
           </Table>
         </Card.Body>
-        <Card.Footer className="text-muted">
-          <Button size="sm" onClick={handleShow}>Report</Button>
-        </Card.Footer>
       </Card>
 
       <Modal
