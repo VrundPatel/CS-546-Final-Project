@@ -1,8 +1,11 @@
 import { Badge, Button, Card, Table } from "react-bootstrap";
+import axios from "axios";
 
 function InfoCard(props) {
   console.log(props);
+  const { onReport } = props;
   const {
+    _id: id,
     streetAddress,
     city,
     state,
@@ -52,7 +55,7 @@ function InfoCard(props) {
       <Card.Footer className="text-muted">
         Last updated:{" "}
         {new Date(lastUpdated).toLocaleDateString()}{" "}
-        <Button size="sm">Report</Button>
+        <Button size="sm" onClick={onReport}>Report</Button>
       </Card.Footer>
     </Card>
   );
