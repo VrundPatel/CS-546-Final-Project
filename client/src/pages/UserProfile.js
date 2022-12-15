@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Accordion, Button, Card } from 'react-bootstrap';
+import { Accordion, Badge, Button, Card } from 'react-bootstrap';
 import Layout from './layout';
 
 export default function UserProfile() {
@@ -55,7 +55,19 @@ export default function UserProfile() {
               <Accordion.Item eventKey="1">
                 <Accordion.Header>Reports</Accordion.Header>
                 <Accordion.Body>
-                  List of reports done will go here
+                  {
+                    user?.reports.map((item, index) => {
+                      const { report } = item;
+                      return (<Card key={item}>
+                        <Card.Body>
+                          {`${report.value}`}
+                          <Badge pill bg="primary" style={{ float: 'right' }}>
+                            {report.reportedAt}
+                          </Badge>
+                        </Card.Body>
+                      </Card>)
+                    })
+                  }
                 </Accordion.Body>
               </Accordion.Item>
               <Accordion.Item eventKey="3">
