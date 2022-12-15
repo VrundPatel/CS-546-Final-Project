@@ -7,7 +7,7 @@ function Reviews(props) {
       <Card className="text-center">
         <Card.Header as="h5">Reviews</Card.Header>
         <Card.Body>
-          {props.restroomData.length > 0 ? (
+          {props.restroomData.reviews.length > 0 ? (
             <ListGroup as="ul">
               {props.restroomData.reviews.map((review, idx) => {
                 return (

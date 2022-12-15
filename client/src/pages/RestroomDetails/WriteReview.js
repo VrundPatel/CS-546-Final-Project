@@ -1,14 +1,31 @@
 import { Fragment, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
+import axios from "axios";
 
-function WriteReview() {
+function WriteReview(props) {
   const [rating, setRating] = useState(5);
   const [comments, setComments] = useState("");
 
+  function buildReviewObj() {
+    let obj = {
+      restroomId: props.restroomData._id,
+      reviewText: comments,
+      userId: "6395eaeb645fb4d72dca3e0b",
+      rating: Number(rating),
+    };
+    console.log("review obj ", obj);
+    return obj;
+  }
+
   const onFormSubmit = async (event) => {
     event.preventDefault();
+    let resp;
     try {
       //Post to rating endpoint
+      resp = await axios.post(
+        `http://localhost:9000/reviews/${props.restroomData._id}`,
+        buildReviewObj()
+      );
       console.log("Submit");
     } catch (e) {
       console.log(e);

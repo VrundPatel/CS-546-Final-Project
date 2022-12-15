@@ -86,7 +86,7 @@ export default function RestroomDetails() {
               <Reviews restroomData={restroomData} />
             </Col>
             <Col xl={4} lg={4} md={6} sm={6}>
-              <WriteReview />
+              <WriteReview restroomData={restroomData} />
             </Col>
           </Row>
         </Container>

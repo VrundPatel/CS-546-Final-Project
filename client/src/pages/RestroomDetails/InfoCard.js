@@ -1,7 +1,6 @@
 import { Badge, Button, Card, Table } from "react-bootstrap";
 
 function InfoCard(props) {
-  console.log(props);
   return (
     <Card className="text-center">
       <Card.Body>

@@ -7,6 +7,12 @@ let tags = [
   { tag: "Baby-changing", desc: "Has a baby changing station" },
   { tag: "Gotta buy something", desc: "Need to purchase something to use" },
   { tag: "Ask for key", desc: "Have to ask for key for access" },
+  { tag: "Ample stalls", desc: "Has more toilets than average" },
+  {
+    tag: "No-touch",
+    desc: "Bathroom functions can be used without direct contact (sensors)",
+  },
+  { tag: "Seat covers", desc: "Provides seat covers" },
 ];
 
 let activeTags = {};

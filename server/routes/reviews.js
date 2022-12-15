@@ -1,14 +1,14 @@
-const mongoCollections = require('../config/mongoCollections');
-const express = require('express');
+const mongoCollections = require("../config/mongoCollections");
+const express = require("express");
 const router = express.Router();
-const data = require('../data');
+const data = require("../data");
 const reviewData = data.reviews;
 const restroomData = data.restrooms;
 const restrooms = mongoCollections.restrooms;
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require("mongodb");
 
 router
-  .route('/:restroomId')
+  .route("/:restroomId")
   .get(async (req, res) => {
     //code here for GET
     const id = req.params.restroomId;
@@ -41,7 +41,12 @@ router
     //code here for POST
     const id = req.params.restroomId;
     const reviewInfo = req.body;
-    if (!reviewInfo.restroomId || !reviewInfo.reviewText || !reviewInfo.userId || !reviewInfo.rating) {
+    if (
+      !reviewInfo.restroomId ||
+      !reviewInfo.reviewText ||
+      !reviewInfo.userId ||
+      !reviewInfo.rating
+    ) {
       res.status(400).json({ error: `the request body is not valid` });
       return;
     }
@@ -49,9 +54,10 @@ router
       checkString(reviewInfo.restroomId);
       checkString(reviewInfo.reviewText);
       checkString(reviewInfo.userId);
-    }
-    catch (e) {
-      res.status(400).json({ error: `Not valid! Input should be a non-empty string` });
+    } catch (e) {
+      res
+        .status(400)
+        .json({ error: `Not valid! Input should be a non-empty string` });
       return;
     }
     if (!id) {
@@ -68,16 +74,25 @@ router
       res.status(404).json({ error: `Restroom by id not found` });
       return;
     }
-    if (isNaN(reviewInfo.rating) || reviewInfo.rating < 1 || reviewInfo.rating > 5) {
+    if (
+      isNaN(reviewInfo.rating) ||
+      reviewInfo.rating < 1 ||
+      reviewInfo.rating > 5
+    ) {
       res.status(400).json({ error: `invalid rating` });
       return;
     }
-    const restroomData = await reviewData.createReview(id, reviewInfo.restroomId, reviewInfo.reviewText, reviewInfo.userId, reviewInfo.rating);
+    const restroomData = await reviewData.createReview(
+      reviewInfo.restroomId,
+      reviewInfo.reviewText,
+      reviewInfo.userId,
+      Number(reviewInfo.rating)
+    );
     res.status(200).json(restroomData);
   });
 
-  router
-  .route('/reviews/:reviewId')
+router
+  .route("/reviews/:reviewId")
   .get(async (req, res) => {
     //code here for GET
     const id = req.params.reviewId;
@@ -90,7 +105,7 @@ router
       return;
     }
     try {
-      await reviewData.getReviewById(id)
+      await reviewData.getReviewById(id);
     } catch (e) {
       res.status(404).json({ error: `review by id not found` });
       return;
@@ -114,7 +129,7 @@ router
       return;
     }
     try {
-      await reviewData.getReviewById(id)
+      await reviewData.getReviewById(id);
     } catch (e) {
       res.status(404).json({ error: `review by id not found` });
       return;
@@ -127,10 +142,10 @@ router
     }
   });
 
-  function checkString(input) {
-    if (typeof input != 'string' || input.trim().length == 0) {
-      throw `Not valid! ${input} should be a non-empty string`;
-    }
+function checkString(input) {
+  if (typeof input != "string" || input.trim().length == 0) {
+    throw `Not valid! ${input} should be a non-empty string`;
   }
+}
 
-  module.exports = router;
+module.exports = router;
