@@ -329,7 +329,6 @@ export default function Restrooms() {
             </Spinner>
           }
          
-          
 					<>
 					<div className="results-container" hidden={!searchState}>
 						<h2>{filteredRestrooms.length} Result{filteredRestrooms.length !== 1 ? "s" : ""}</h2>
