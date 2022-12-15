@@ -56,13 +56,13 @@ export default function RestroomDetails() {
     setReady(false);
   }, [id]);
 
-  const report = async () => {
+  const report = async (reason) => {
+    console.log('event from button ', reason);
     const { data } = await axios.post(`http://localhost:9000/reports/${id}`, {
       restroomId: id,
-      value: 'Down for maintenance'
+      value: reason
     });
-    console.log('data returned from report ', data);
-    setRestroomData(data)
+    setRestroomData(data);  
   }
 
 
