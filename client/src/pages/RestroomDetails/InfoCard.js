@@ -55,8 +55,7 @@ function InfoCard(props) {
               <tr>
                 <td>Hours</td>
                 <td>
-                  {openingHours}-
-                  {closingHours}
+									{((openingHours == "25:00" && closingHours == "25:00") ? "Unavailable" : `${openingHours}-${closingHours}`)}
                 </td>
               </tr>
               <tr>
