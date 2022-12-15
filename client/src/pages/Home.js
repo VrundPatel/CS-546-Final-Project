@@ -40,23 +40,20 @@ export default function Restrooms() {
   const [resetCheckState, setResetCheckState] = useState(false);
   const [formState, setFormState] = useState(initialState);
   const { searchTerm } = formState;
+	const [SearchState, setSearchState] = useState(false);
 
-  const handleOnChange = (e) => {
-    setFormState({ ...formState, [e.target.name]: e.target.value });
-  };
-
-  const onSearchSubmit = async (event) => {
-    event.preventDefault();
-    console.log("searching by term");
-    try {
-      const { data } = await axios.post(`http://localhost:9000/search`, {
-        "searchRestrooms": searchTerm
-      });
-      setRestrooms(data);
-    } catch (e) {
-      alert('Error')
-    }
-  }
+  // const onSearchSubmit = async (event) => {
+  //   event.preventDefault();
+  //   try {
+  //     const { data } = await axios.post(`http://localhost:9000/search`, {
+  //       "searchRestrooms": searchTerm
+  //     });
+	// 		setSearchState(true);
+  //     setRestrooms(data);
+  //   } catch (e) {
+  //     alert('Error')
+  //   }
+  // }
 
   const onLocationSubmit = async (event) => {
     event.preventDefault();
@@ -72,10 +69,10 @@ export default function Restrooms() {
           setStatus(null);
           setLat(position.coords.latitude);
           setLng(position.coords.longitude);
-
           try {
             const { data } = await axios.get(`http://localhost:9000/search/${position.coords.latitude}/${position.coords.longitude}`);
             setRestrooms(data);
+						setSearchState(true);
             setLoading(false)
           } catch (e) {
             alert('Error')
@@ -138,29 +135,11 @@ export default function Restrooms() {
     setItemOffset(newOffset);
   };
 
+	console.log(SearchState);
+
   return (
     <>
       <Layout>
-        <div className='search-bar-container'>
-          <Form className='search-form' onSubmit={onSearchSubmit}>
-            <Row className="mb-3">
-              <Form.Label>Search</Form.Label>
-              <Col>
-                <Form.Control
-                  onChange={handleOnChange}
-                  value={searchTerm}
-                  name="searchTerm"
-                  type="searchTerm"
-                  placeholder="Enter search term" />
-              </Col>
-              <Col>
-                <Button variant="primary" type="submit" disabled={!searchTerm}>
-                  Search
-                </Button>
-              </Col>
-            </Row>
-          </Form>
-        </div>
 				<div className='location-button-container'>
             <Button className='location-button' variant="primary" type="submit" size="lg" onClick={onLocationSubmit}>
 						&#128205; Search Nearby
@@ -168,7 +147,7 @@ export default function Restrooms() {
 				</div>
 				<hr />
         <div className='filter-container'>
-          <Form className='filter-form' onSubmit={onSearchSubmit}>
+          <Form className='filter-form' onSubmit={onLocationSubmit}>
             <Form.Label><h2>Filters</h2></Form.Label>
             <br />
             <ToggleButton
@@ -310,65 +289,68 @@ export default function Restrooms() {
          
           <h2>{filteredRestrooms.length} Result{filteredRestrooms.length !== 1 ? "s" : ""}</h2>
 					<>
-					<p hidden={!filteredRestrooms.length}>Showing results {itemOffset+1}-{filteredRestrooms.length > endOffset? endOffset: filteredRestrooms.length}</p>
-					{items.map((outputRestroom, index) => {
-            return (
-              <Card key={outputRestroom._id} style={{ width: "32rem" }}>
-                <Card.Body>
-                  <a href={"/restroom/" + outputRestroom._id}>{outputRestroom.streetAddress}</a>
-                  <br />
-                  {outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
-									<br />
-									<br />
-									<div align="center">
-										<Button className='navigate-button' variant="secondary" type="submit" onClick={
-											(event) => {
-												event.preventDefault();
-												console.log("viewing restroom info");
-												navigate(`/restroom/${outputRestroom._id}`);
-											}
-										}>
-              				&#128270; View Info
-            				</Button>
-										{" "}
-										<Button className='navigate-button' variant="primary" type="submit" onClick={
-											(event) => {
-												event.preventDefault();
-												console.log("navigating");
-												window.open(
-													`https://www.google.com/maps/dir/?api=1&destination=${outputRestroom.streetAddress}`,
-													"_blank"
-													)
-											}
-										}>
-											&#10138; Navigate
-										</Button>
-									</div>
-                </Card.Body>
-              </Card>
-            );
-          })}
-					<ReactPaginate
-						containerClassName="pagination"
-						activeClassName="active"
-						pageClassName="page-item"
-        		pageLinkClassName="page-link"
-        		previousClassName="page-item"
-						previousLinkClassName="page-link"
-						nextClassName="page-item"
-        		nextLinkClassName="page-link"
-						breakClassName="page-item"
-        		breakLinkClassName="page-link"
-						breakLabel="..."
-						nextLabel="Next"
-						onPageChange={handlePageClick}
-						marginPagesDisplayed={2}
-						pageRangeDisplayed={3}
-						pageCount={pageCount}
-						previousLabel="Previous"
-						renderOnZeroPageCount={null}
-					/>
-    </>
+					<p hidden={SearchState && filteredRestrooms.length}>No results within 20 miles {":("}</p>
+					<div className="results-container" hidden={!filteredRestrooms.length}>
+						<p>Showing results {itemOffset+1}-{filteredRestrooms.length > endOffset? endOffset: filteredRestrooms.length}</p>
+						{items.map((outputRestroom, index) => {
+							return (
+								<Card key={outputRestroom._id} style={{ width: "32rem" }}>
+									<Card.Body>
+										<a href={"/restroom/" + outputRestroom._id}>{outputRestroom.streetAddress}</a>
+										<br />
+										{outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
+										<br />
+										<br />
+										<div align="center">
+											<Button className='navigate-button' variant="secondary" type="submit" onClick={
+												(event) => {
+													event.preventDefault();
+													console.log("viewing restroom info");
+													navigate(`/restroom/${outputRestroom._id}`);
+												}
+											}>
+												&#128270; View Info
+											</Button>
+											{" "}
+											<Button className='navigate-button' variant="primary" type="submit" onClick={
+												(event) => {
+													event.preventDefault();
+													console.log("navigating");
+													window.open(
+														`https://www.google.com/maps/dir/?api=1&destination=${outputRestroom.streetAddress}`,
+														"_blank"
+														)
+												}
+											}>
+												&#10138; Navigate
+											</Button>
+										</div>
+									</Card.Body>
+								</Card>
+							);
+						})}
+						<ReactPaginate
+							containerClassName="pagination"
+							activeClassName="active"
+							pageClassName="page-item"
+							pageLinkClassName="page-link"
+							previousClassName="page-item"
+							previousLinkClassName="page-link"
+							nextClassName="page-item"
+							nextLinkClassName="page-link"
+							breakClassName="page-item"
+							breakLinkClassName="page-link"
+							breakLabel="..."
+							nextLabel="Next"
+							onPageChange={handlePageClick}
+							marginPagesDisplayed={2}
+							pageRangeDisplayed={3}
+							pageCount={pageCount}
+							previousLabel="Previous"
+							renderOnZeroPageCount={null}
+						/>
+					</div>
+					</>
         </div>
       </Layout>
     </>
