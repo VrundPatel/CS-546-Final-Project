@@ -1,8 +1,9 @@
 const mongoCollections = require('../config/mongoCollections');
 const { ObjectId } = require('mongodb');
 const users = mongoCollections.users;
+const restrooms = mongoCollections.restrooms;
 const { hashPassword, comparePassword } = require('../utils/users');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 const getAllUsers = async () => {
   const userCollection = await users();
@@ -21,8 +22,64 @@ const getUserById = async (id) => {
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: ObjectId(id) });
   if (user === null) throw 'Error: No user with that id';
-  return user;
+  const reviews = await getUserReviews(user._id);
+  const reports = await getUserReports(user._id);
+  return {
+    user,
+    reviews,
+    reports
+  };
 };
+
+const getUserReviews = async(userId) => {
+  const restroomsCollection = await restrooms();
+  return await restroomsCollection.aggregate([
+    {
+      '$match': {
+        'reviews': {
+          '$elemMatch': {
+            'userId': `${userId}`
+          }
+        }
+      }
+    }, {
+      '$unwind': {
+        'path': '$reviews',
+        'includeArrayIndex': 'idx'
+      }
+    }, {
+      '$replaceWith': {
+        'review': '$reviews'
+      }
+    }
+  ]).toArray();
+  console.log('aggreate data ', data);
+}
+
+const getUserReports = async (userId) => {
+  const restroomsCollection = await restrooms();
+  return await restroomsCollection.aggregate([
+    {
+      '$match': {
+        'reports': {
+          '$elemMatch': {
+            'userId': `${userId}`
+          }
+        }
+      }
+    }, {
+      '$unwind': {
+        'path': '$reports',
+        'includeArrayIndex': 'idx'
+      }
+    }, {
+      '$replaceWith': {
+        'report': '$reports'
+      }
+    }
+  ]).toArray();
+}
+
 
 const getUserByEmail = async (input) => {
   const userCollection = await users();
