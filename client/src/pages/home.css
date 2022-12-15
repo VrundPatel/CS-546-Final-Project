@@ -21,6 +21,13 @@
     align-items: center;
     text-align: center;
   }
+
+  .gottago-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
   
   .filter-container {
     display: flex;

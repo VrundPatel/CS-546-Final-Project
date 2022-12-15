@@ -21,7 +21,7 @@ export default function Layout(props) {
     <>
       <Navbar className="navBar" bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="/home">GottaGo&#127939;</Navbar.Brand>
+          <Navbar.Brand href="/home">GottaGo</Navbar.Brand>
           <Navbar.Collapse className="justify-content-end">
             <AddRestroomButton />
 
