@@ -122,6 +122,15 @@ export default function Restrooms() {
     }
   }
 
+	function distanceToRestroom(deviceCoords, restroomCoords) {
+		let deviceLat = deviceCoords.coords.latitude;
+		let deviceLong = deviceCoords.coords.longitude;
+		let restroomLat = restroomCoords.coordinates[1];
+		let restroomLong = restroomCoords.coordinates[0];
+		console.log("Device: " + deviceLat + ", " + deviceLong);
+		console.log("Restroom: " + restroomLat + ", " + restroomLong);
+	}
+
   const activeFilters = [genderNeutralCheckState, adaCheckState, stationCheckState, buyCheckState, keyCheckState, ampleCheckState, noTouchCheckState, seatCoverCheckState];
 
   const filteredRestrooms = restrooms.filter(filteredRestroom => {
@@ -342,6 +351,7 @@ export default function Restrooms() {
 										<br />
 										{outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
 										<br />
+										{distanceToRestroom(position, outputRestroom.loc)}
 										<br />
 										<div align="center">
 											<Button className='navigate-button' variant="secondary" type="submit" onClick={
