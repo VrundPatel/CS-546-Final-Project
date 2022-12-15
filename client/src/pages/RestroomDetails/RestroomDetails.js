@@ -1,4 +1,4 @@
-import { Col, Row, Container } from "react-bootstrap";
+import { Accordion, Badge, Col, Row, Container, Card } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import InfoCard from "./InfoCard";
 import { useEffect, useState } from "react";
@@ -56,6 +56,16 @@ export default function RestroomDetails() {
     setReady(false);
   }, [id]);
 
+  const report = async (reason) => {
+    console.log('event from button ', reason);
+    const { data } = await axios.post(`http://localhost:9000/reports/${id}`, {
+      restroomId: id,
+      value: reason
+    });
+    setRestroomData(data);  
+  }
+
+
   //useEffect to get restroom by ID
   useEffect(() => {
     async function fetchData() {
@@ -78,12 +88,45 @@ export default function RestroomDetails() {
         <Container>
           <Row>
             <Col>
-              <InfoCard restroomData={restroomData} />
+              <InfoCard restroomData={restroomData} onReport={report} />
             </Col>
           </Row>
           <Row>
             <Col xl={8} lg={8} md={6} sm={6}>
-              <Reviews restroomData={restroomData} />
+              <Row>
+                <Col>
+                  <Reviews restroomData={restroomData} />
+                </Col>
+              </Row>
+              <hr />
+              <Row>
+                <Col>
+                  <Accordion defaultActiveKey="0">
+                    <Accordion.Item eventKey="0">
+                      <Accordion.Header>Reports</Accordion.Header>
+                      <Accordion.Body>
+                        {
+                          restroomData?.reports.map((item) => {
+                            return (
+                              <Card key={item?._id}>
+                                <Card.Body>
+                                  {`${item.value}`}
+                                  <Badge pill bg="primary" style={{float: 'right'}}>
+                                    {item.reportedAt}
+                                  </Badge>
+                                </Card.Body>
+                              </Card>
+                            )
+                          })
+                        }
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  </Accordion>
+                  <ul>
+
+                  </ul>
+                </Col>
+              </Row>
             </Col>
             <Col xl={4} lg={4} md={6} sm={6}>
               <WriteReview />

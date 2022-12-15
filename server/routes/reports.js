@@ -38,17 +38,17 @@ router
     }
   })
   .post(async (req, res) => {
-    //code here for POST
+    let user = req.user;
     const id = req.params.restroomId;
     const reportInfo = req.body;
-    if (!reportInfo.restroomId || !reportInfo.value || !reportInfo.userId) {
+    if (!reportInfo.value) {
       res.status(400).json({ error: `the request body is not valid` });
       return;
     }
     try {
-      checkString(reportInfo.restroomId);
+      checkString(id);
       checkString(reportInfo.value);
-      checkString(reportInfo.userId);
+      checkString(user._id);
     }
     catch (e) {
       res.status(400).json({ error: `Not valid! Input should be a non-empty string` });
@@ -68,11 +68,11 @@ router
       res.status(404).json({ error: `Restroom by id not found` });
       return;
     }
-    const restroomData = await reportData.createReview(id, reportInfo.restroomId, reportInfo.value, reportInfo.userId);
+    const restroomData = await reportData.createReport(id, reportInfo.value, user._id);
     res.status(200).json(restroomData);
   });
 
-  router
+router
   .route('/reports/:reportId')
   .get(async (req, res) => {
     //code here for GET
@@ -123,10 +123,10 @@ router
     }
   });
 
-  function checkString(input) {
-    if (typeof input != 'string' || input.trim().length == 0) {
-      throw `Not valid! ${input} should be a non-empty string`;
-    }
+function checkString(input) {
+  if (typeof input != 'string' || input.trim().length == 0) {
+    throw `Not valid! ${input} should be a non-empty string`;
   }
+}
 
-  module.exports = router;
+module.exports = router;
