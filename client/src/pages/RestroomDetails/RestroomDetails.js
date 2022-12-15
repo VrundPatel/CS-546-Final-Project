@@ -17,7 +17,6 @@ export default function RestroomDetails() {
   }, [id]);
 
   const report = async (reason) => {
-    console.log('event from button ', reason);
     const { data } = await axios.post(`http://localhost:9000/reports/${id}`, {
       restroomId: id,
       value: reason
@@ -32,7 +31,6 @@ export default function RestroomDetails() {
       try {
         const resp = await axios.get(`http://localhost:9000/restrooms/${id}`);
         setRestroomData(resp.data);
-        console.log(resp.data);
         setReady(true);
       } catch (e) {
         console.log(e);
