@@ -38,7 +38,17 @@ function InfoCard(props) {
         <Card.Body>
           <Card.Title>
             <h1>{`${streetAddress}, ${city}, ${state}, ${zipCode}`}</h1> <br />
-            <a href={`https://www.google.com/maps/dir/?api=1&destination=${streetAddress}`}>Navigate</a>
+						<Button className='navigate-button' variant="primary" type="submit" onClick={
+							(event) => {
+								event.preventDefault();
+								window.open(
+									`https://www.google.com/maps/dir/?api=1&destination=${streetAddress}`,
+									"_blank"
+									)
+							}
+						}>
+							&#10138; Navigate
+						</Button>
           </Card.Title>
           <Table striped bordered hover>
             <tbody>
