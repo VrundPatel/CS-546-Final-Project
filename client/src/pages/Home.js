@@ -122,14 +122,24 @@ export default function Restrooms() {
     }
   }
 
-	function distanceToRestroom(deviceCoords, restroomCoords) {
-		let deviceLat = deviceCoords.coords.latitude;
-		let deviceLong = deviceCoords.coords.longitude;
-		let restroomLat = restroomCoords.coordinates[1];
-		let restroomLong = restroomCoords.coordinates[0];
+	function distanceToRestroom(deviceLat, deviceLong, restroomLat, restroomLong) {
 		console.log("Device: " + deviceLat + ", " + deviceLong);
 		console.log("Restroom: " + restroomLat + ", " + restroomLong);
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(restroomLat-deviceLat);  // deg2rad below
+    var dLon = deg2rad(restroomLong-deviceLong); 
+    var a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(deg2rad(deviceLat)) * Math.cos(deg2rad(restroomLat)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2); 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c; // Distance in km
+    return Math.round((0.621371 * d) * 100) / 100;
 	}
+
+  function deg2rad(deg) {
+    return deg * (Math.PI/180)
+  }
 
   const activeFilters = [genderNeutralCheckState, adaCheckState, stationCheckState, buyCheckState, keyCheckState, ampleCheckState, noTouchCheckState, seatCoverCheckState];
 
@@ -351,7 +361,7 @@ export default function Restrooms() {
 										<br />
 										{outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
 										<br />
-										{distanceToRestroom(position, outputRestroom.loc)}
+										{distanceToRestroom(lat, lng, outputRestroom.loc.coordinates[1], outputRestroom.loc.coordinates[0]) + (distanceToRestroom(lat, lng, outputRestroom.loc.coordinates[1], outputRestroom.loc.coordinates[0]) > 1 ? " miles" : " mile")}
 										<br />
 										<div align="center">
 											<Button className='navigate-button' variant="secondary" type="submit" onClick={
