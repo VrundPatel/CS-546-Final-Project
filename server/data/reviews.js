@@ -35,7 +35,7 @@ const createReview = async (restroomId, reviewText, userId, rating) => {
     restroomId: restroomId,
     reviewText: reviewText,
     userId: userId,
-    userName: user.fullName,
+    userName: user.user.fullName,
     rating: rating,
   };
 

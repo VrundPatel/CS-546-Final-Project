@@ -39,6 +39,7 @@ router
   })
   .post(async (req, res) => {
     //code here for POST
+    const userId = req.user._id;
     const id = req.params.restroomId;
     const reviewInfo = req.body;
     if (
@@ -85,7 +86,7 @@ router
     const restroomData = await reviewData.createReview(
       reviewInfo.restroomId,
       reviewInfo.reviewText,
-      reviewInfo.userId,
+      userId,
       Number(reviewInfo.rating)
     );
     res.status(200).json(restroomData);
