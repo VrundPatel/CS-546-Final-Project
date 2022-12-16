@@ -102,10 +102,10 @@ const searchRestroomsByLocation = async (lat, long) => {
       $near: {
         $geometry: { type: "Point", coordinates: [long, lat] },
         $minDistance: 0,
-        $maxDistance: 33000,
+        $maxDistance: 33000
       },
     },
-  });
+	});
 
   return restroomList;
 };

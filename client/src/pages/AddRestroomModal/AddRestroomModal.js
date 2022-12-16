@@ -1,5 +1,4 @@
-import { Button, Modal } from "react-bootstrap";
-import GeoLocation from "../GeoLocation";
+import { Modal } from "react-bootstrap";
 import RestroomForm from "./RestroomForm";
 
 function AddRestroomModal(props) {

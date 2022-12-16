@@ -153,7 +153,6 @@ const verifyJwtToken = async (req, res, next) => {
         const existingUser = await getUserById(user._id);
         if (user.email !== existingUser.email)
           throw new Error("Not the same user");
-        console.log("existing user ", existingUser);
         req.user = user;
         next();
       } catch (e) {

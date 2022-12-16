@@ -18,7 +18,10 @@ function Reviews(props) {
                   >
                     <div className="ms-2 me-auto">
                       <div className="fw-bold">
-                        {review.userId}
+                        {/* {review.userName !== null
+                          ? review.userName
+                          : review.userId} */}
+                        {review.userName ? review.userName : review.userId}
                         <Badge style={{ marginLeft: "1vw" }} bg="primary" pill>
                           {review.rating}
                         </Badge>

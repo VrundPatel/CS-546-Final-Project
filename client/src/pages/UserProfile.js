@@ -1,5 +1,73 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Accordion, Button, Card } from 'react-bootstrap';
+import Layout from './layout';
+
 export default function UserProfile() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    axios.get('http://localhost:9000/users')
+      .then(({ data }) => {
+        console.log('user returned ', data);
+        setUser(data.user);
+      })
+      .catch();
+  }, [])
+
   return (
-    <h1>User Profile Page</h1>
+    <Layout>
+      <div className='container py-5'>
+        <div className='row'>
+          <div className='col-4'>
+            <Card style={{ width: '18rem' }}>
+              <Card.Img variant="top" src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" />
+              <Card.Body>
+                <Card.Title>{user?.fullName}</Card.Title>
+                <Card.Text>
+                  {user?.email}
+                </Card.Text>
+                <div className="d-flex justify-content-between text-center mt-5 mb-2">
+                  <div>
+                    <p className="mb-2 h5">10</p>
+                    <p className="text-muted mb-0">Reports</p>
+                  </div>
+                  <div>
+                    <p className="mb-2 h5">20</p>
+                    <p className="text-muted mb-0">Reviews</p>
+                  </div>
+                  <div>
+                    <p className="mb-2 h5">15</p>
+                    <p className="text-muted mb-0">Locations</p>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          </div>
+          <div className='col-8'>
+            <Accordion defaultActiveKey="0">
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Reviews</Accordion.Header>
+                <Accordion.Body>
+                  List of reviews will go here
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>Reports</Accordion.Header>
+                <Accordion.Body>
+                  List of reports done will go here
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="3">
+                <Accordion.Header>Locations</Accordion.Header>
+                <Accordion.Body>
+                  List of all locations added will go here
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+          </div>
+        </div>
+      </div>
+    </Layout>
   )
 }

@@ -142,6 +142,11 @@ router
     }
   });
 
+router.route("/reviews/user/:id").get(async (req, res) => {
+  let queryRev = reviewData.getReviewsByUser(req.params.id);
+  res.status(200).json(queryRev);
+});
+
 function checkString(input) {
   if (typeof input != "string" || input.trim().length == 0) {
     throw `Not valid! ${input} should be a non-empty string`;

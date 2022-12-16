@@ -30,6 +30,7 @@ function WriteReview(props) {
     } catch (e) {
       console.log(e);
     }
+    props.setReview(buildReviewObj);
   };
 
   const onChangeRating = (e) => {

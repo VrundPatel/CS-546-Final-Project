@@ -2,6 +2,7 @@ const mongoCollections = require("../config/mongoCollections");
 const reviews = mongoCollections.reviews;
 const restrooms = mongoCollections.restrooms;
 const users = mongoCollections.users;
+const userData = require("./users");
 const { ObjectId } = require("mongodb");
 const restroomsData = require("./restrooms");
 
@@ -23,18 +24,18 @@ const createReview = async (restroomId, reviewText, userId, rating) => {
     throw `No restroom with that id`;
   }
   if (isNaN(rating) || rating < 1 || rating > 5) {
-    console.log(rating);
     throw "rating must be a number in range from 1-5";
   }
   const restroomThatReviewed = await restroomsData.getRestroomById(restroomId);
   //const userThatReviewed = await usersData.getUserById(userId);
-
+  let user = await userData.getUserById(userId);
   const reviewId = ObjectId();
   const newReview = {
     _id: reviewId,
     restroomId: restroomId,
     reviewText: reviewText,
     userId: userId,
+    userName: user.fullName,
     rating: rating,
   };
 
