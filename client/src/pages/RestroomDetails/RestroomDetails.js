@@ -18,13 +18,15 @@ export default function RestroomDetails() {
   }, [id]);
 
   const report = async (reason) => {
-    console.log("event from button ", reason);
     const { data } = await axios.post(`http://localhost:9000/reports/${id}`, {
       restroomId: id,
       value: reason,
     });
     setRestroomData(data);
   };
+    setRestroomData(data);
+  }
+
 
   //useEffect to get restroom by ID
   useEffect(() => {
@@ -65,22 +67,20 @@ export default function RestroomDetails() {
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>Reports</Accordion.Header>
                       <Accordion.Body>
-                        {restroomData?.reports.map((item) => {
-                          return (
-                            <Card key={item?._id}>
-                              <Card.Body>
-                                {`${item.value}`}
-                                <Badge
-                                  pill
-                                  bg="primary"
-                                  style={{ float: "right" }}
-                                >
-                                  {item.reportedAt}
-                                </Badge>
-                              </Card.Body>
-                            </Card>
-                          );
-                        })}
+                        {
+                          restroomData?.reports.map((item) => {
+                            return (
+                              <Card key={item?._id}>
+                                <Card.Body>
+                                  {`${item.value}`}
+                                  <Badge pill bg="primary" style={{ float: 'right' }}>
+                                    {item.reportedAt}
+                                  </Badge>
+                                </Card.Body>
+                              </Card>
+                            )
+                          })
+                        }
                       </Accordion.Body>
                     </Accordion.Item>
                   </Accordion>

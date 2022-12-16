@@ -26,8 +26,6 @@ const createReport = async (
   }
 
   const restroomThatReported = await restroomsData.getRestroomById(restroomId);
-  //const userThatReviewed = await usersData.getUserById(userId);
-
   const reportId = ObjectId();
   const newReport = {
     _id: reportId,
@@ -36,7 +34,6 @@ const createReport = async (
     userId: userId,
     reportedAt: new Date().toLocaleString()
   };
-
 
   let updatedReports = [];
   for (let i = 0; i < restroomThatReported.reports.length; i++) {
