@@ -86,6 +86,13 @@ export default function SignUp() {
 
         <Form.Group className="mb-3" controlId="userPassword">
           <Form.Label>Password</Form.Label>
+          <ul>
+            <li>No empty spaces and no spaces</li>
+            <li>At least 6 characters long</li>
+            <li>At least 1 uppercase character</li>
+            <li>At least 1 number</li>
+            <li>At least 1 special character(@, $, %, etc)</li>
+          </ul>
           <Form.Control
             onChange={handleOnChange}
             value={password}

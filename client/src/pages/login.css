@@ -13,3 +13,10 @@
   border-radius: 8px;
   background-color: white;
 }
+
+ul {
+  color: red;
+  font-size: small;
+  font-weight: bold;
+}
+

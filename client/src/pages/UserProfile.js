@@ -29,11 +29,11 @@ export default function UserProfile() {
                 </Card.Text>
                 <div className="d-flex justify-content-between text-center mt-5 mb-2">
                   <div>
-                    <p className="mb-2 h5">10</p>
+                    <p className="mb-2 h5">{user?.reports?.length}</p>
                     <p className="text-muted mb-0">Reports</p>
                   </div>
                   <div>
-                    <p className="mb-2 h5">20</p>
+                    <p className="mb-2 h5">{user?.reviews?.length}</p>
                     <p className="text-muted mb-0">Reviews</p>
                   </div>
                   <div>
@@ -49,7 +49,20 @@ export default function UserProfile() {
               <Accordion.Item eventKey="0">
                 <Accordion.Header>Reviews</Accordion.Header>
                 <Accordion.Body>
-                  List of reviews will go here
+                  {
+                    user?.reviews.map((item, index) => {
+                      const { review } = item;
+                      return (<Card key={review._id}>
+                        <Card.Body>
+                          {`${review.reviewText}`}
+                          <Badge pill bg="primary" style={{ float: 'right' }}>
+                            {`${review.rating}`}
+                          </Badge>
+                          
+                        </Card.Body>
+                      </Card>)
+                    })
+                  }
                 </Accordion.Body>
               </Accordion.Item>
               <Accordion.Item eventKey="1">

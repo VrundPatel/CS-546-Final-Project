@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Badge, Button, Card, Modal, Table, Form } from "react-bootstrap";
 
 function InfoCard(props) {
-  console.log(props);
   const { onReport } = props;
   const {
     _id: id,
@@ -19,17 +18,21 @@ function InfoCard(props) {
 
   const [show, setShow] = useState(false);
   const [reportReason, setReportReason] = useState(null);
+  const [canSubmit, setCanSubmit] = useState(false);
 
   const handleClose = () => {
-    onReport(reportReason);
+    !!reportReason && onReport(reportReason);
     setShow(false);
   };
 
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setCanSubmit(false);
+    setShow(true);
+  }
 
   const onOptionChange = (e) => {
-    console.log(e);
     setReportReason(e.target.value);
+    setCanSubmit(!!e.target.value);
   };
 
   return (
@@ -114,7 +117,7 @@ function InfoCard(props) {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleClose} disabled={!canSubmit}>
             Submit
           </Button>
         </Modal.Footer>
