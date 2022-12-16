@@ -24,9 +24,6 @@ export default function RestroomDetails() {
     });
     setRestroomData(data);
   };
-    setRestroomData(data);
-  }
-
 
   //useEffect to get restroom by ID
   useEffect(() => {
