@@ -62,7 +62,14 @@ export default function RestroomDetails() {
                 <Col>
                   <Accordion defaultActiveKey="0">
                     <Accordion.Item eventKey="0">
-                      <Accordion.Header>Reports</Accordion.Header>
+                      <Accordion.Header>
+                        Reports
+                        {restroomData?.reports?.length > 5 &&
+                          <Badge pill bg="danger">
+                            {restroomData?.reports?.length}
+                          </Badge>
+                        }
+                      </Accordion.Header>
                       <Accordion.Body>
                         {
                           restroomData?.reports.map((item) => {
