@@ -1,5 +1,5 @@
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "bootswatch/dist/zephyr/bootstrap.min.css";
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import "./App.css";

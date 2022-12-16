@@ -4,6 +4,7 @@ import { Button, Card, Form } from "react-bootstrap";
 function WriteReport() {
   const [reports, setReports] = useState("");
 
+  console.log(reports);
   const onFormSubmit = async (event) => {
     event.preventDefault();
     try {

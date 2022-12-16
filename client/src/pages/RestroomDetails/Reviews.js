@@ -7,7 +7,7 @@ function Reviews(props) {
       <Card className="text-center">
         <Card.Header as="h5">Reviews</Card.Header>
         <Card.Body>
-          {props.restroomData.length > 0 ? (
+          {props.restroomData.reviews.length > 0 ? (
             <ListGroup as="ul">
               {props.restroomData.reviews.map((review, idx) => {
                 return (
@@ -18,7 +18,10 @@ function Reviews(props) {
                   >
                     <div className="ms-2 me-auto">
                       <div className="fw-bold">
-                        {review.userId}
+                        {/* {review.userName !== null
+                          ? review.userName
+                          : review.userId} */}
+                        {review.userName ? review.userName : review.userId}
                         <Badge style={{ marginLeft: "1vw" }} bg="primary" pill>
                           {review.rating}
                         </Badge>

@@ -10,6 +10,7 @@ import axios from "axios";
 export default function RestroomDetails() {
   const [restroomData, setRestroomData] = useState(null);
   const [ready, setReady] = useState(false);
+  const [review, setReview] = useState(null);
   let { id } = useParams();
 
   useEffect(() => {
@@ -19,8 +20,10 @@ export default function RestroomDetails() {
   const report = async (reason) => {
     const { data } = await axios.post(`http://localhost:9000/reports/${id}`, {
       restroomId: id,
-      value: reason
+      value: reason,
     });
+    setRestroomData(data);
+  };
     setRestroomData(data);
   }
 
@@ -32,13 +35,14 @@ export default function RestroomDetails() {
         const resp = await axios.get(`http://localhost:9000/restrooms/${id}`);
         setRestroomData(resp.data);
         setReady(true);
+        setReview(null);
       } catch (e) {
         console.log(e);
         return;
       }
     }
     fetchData();
-  }, [id]);
+  }, [id, review]);
 
   return (
     <Layout>
@@ -80,14 +84,12 @@ export default function RestroomDetails() {
                       </Accordion.Body>
                     </Accordion.Item>
                   </Accordion>
-                  <ul>
-
-                  </ul>
+                  <ul></ul>
                 </Col>
               </Row>
             </Col>
             <Col xl={4} lg={4} md={6} sm={6}>
-              <WriteReview />
+              <WriteReview restroomData={restroomData} setReview={setReview} />
             </Col>
           </Row>
         </Container>

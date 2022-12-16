@@ -14,41 +14,55 @@ function InfoCard(props) {
     closingHours,
     tags,
     overallRating,
-    lastUpdated
+    lastUpdated,
   } = props.restroomData;
 
   const [show, setShow] = useState(false);
   const [reportReason, setReportReason] = useState(null);
 
   const handleClose = () => {
-    onReport(reportReason)
+    onReport(reportReason);
     setShow(false);
-  }
+  };
 
   const handleShow = () => setShow(true);
 
   const onOptionChange = (e) => {
     console.log(e);
     setReportReason(e.target.value);
-  }
+  };
 
   return (
     <>
       <Card className="text-center">
         <Card.Title>
           <h1>{`${streetAddress}, ${city}, ${state}, ${zipCode}`}</h1> <br />
-          <a href={`https://www.google.com/maps/dir/?api=1&destination=${streetAddress}`}>Navigate</a>
-          <Button size="sm" onClick={handleShow} variant='warning' style={{ float: 'right', marginRight: '20px' }}>Report</Button>
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&destination=${streetAddress}`}
+          >
+            Navigate
+          </a>
+          <Button
+            size="sm"
+            onClick={handleShow}
+            variant="warning"
+            style={{ float: "right", marginRight: "20px" }}
+          >
+            Report
+          </Button>
         </Card.Title>
         <Card.Body>
           <Table striped bordered hover>
             <tbody>
               <tr>
                 <td>Hours</td>
-                <td>
-                  {openingHours}-
-                  {closingHours}
-                </td>
+                {openingHours === "25:00" && closingHours === "25:00" ? (
+                  <td>Hours unknown</td>
+                ) : (
+                  <td>
+                    {openingHours}-{closingHours}
+                  </td>
+                )}
               </tr>
               <tr>
                 <td>Tags</td>
@@ -82,7 +96,10 @@ function InfoCard(props) {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Select aria-label="Default select example" onChange={onOptionChange}>
+            <Form.Select
+              aria-label="Default select example"
+              onChange={onOptionChange}
+            >
               <option>Choose the reason</option>
               <option value="Down for maintenance">Down for maintenance</option>
               <option value="Drainage Issues">Drainage Issues</option>
