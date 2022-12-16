@@ -15,7 +15,7 @@ router
 
       const { user } = jwt.verify(req.cookies.token, 'CS546');
       const { user: existingUser, reports, reviews } = await userData.getUserById(user._id);
-      const { _id, fullName, email } = userData;
+      const { _id, fullName, email } = existingUser;
 
       return res.json({
         user: {
