@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Button, Form, Col, Row, ToggleButton, Container, Spinner } from "react-bootstrap";
+import { Card, Button, Form, ToggleButton, Container, Spinner, Badge } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import * as api from "../api/endpoints";
 import axios from "axios";
@@ -125,20 +125,24 @@ export default function Restrooms() {
 	function distanceToRestroom(deviceLat, deviceLong, restroomLat, restroomLong) {
 		console.log("Device: " + deviceLat + ", " + deviceLong);
 		console.log("Restroom: " + restroomLat + ", " + restroomLong);
-    var R = 6371; // Radius of the earth in km
-    var dLat = deg2rad(restroomLat-deviceLat);  // deg2rad below
-    var dLon = deg2rad(restroomLong-deviceLong); 
+    var rEarth = 6371; // Radius of the earth in km
+    var deltaLat = deg2rad(restroomLat-deviceLat);  // deg2rad below
+    var deltaLon = deg2rad(restroomLong-deviceLong); 
     var a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.sin(deltaLat/2) * Math.sin(deltaLat/2) +
       Math.cos(deg2rad(deviceLat)) * Math.cos(deg2rad(restroomLat)) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2); 
+      Math.sin(deltaLon/2) * Math.sin(deltaLon/2); 
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    var d = R * c; // Distance in km
+    var d = rEarth * c; // Distance in km
     return Math.round((0.621371 * d) * 100) / 100;
 	}
 
   function deg2rad(deg) {
     return deg * (Math.PI/180)
+  }
+
+  function outOfOrder(restroom) {
+    return (restroom.reports?.length >= 5)
   }
 
   const activeFilters = [genderNeutralCheckState, adaCheckState, stationCheckState, buyCheckState, keyCheckState, ampleCheckState, noTouchCheckState, seatCoverCheckState];
@@ -363,6 +367,12 @@ export default function Restrooms() {
 										<br />
 										{distanceToRestroom(lat, lng, outputRestroom.loc.coordinates[1], outputRestroom.loc.coordinates[0]) + " mi."}
 										<br />
+                    {outOfOrder(outputRestroom) &&
+                          <Badge pill bg="danger">
+                            <div title="Due to recent reports, this restroom may be out of order">Possibly Out of Order</div>
+                          </Badge>
+                    }<br />
+                    <br />
 										<div align="center">
 											<Button className='navigate-button' variant="secondary" type="submit" onClick={
 												(event) => {
