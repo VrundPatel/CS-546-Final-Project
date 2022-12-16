@@ -31,7 +31,7 @@ const getUserById = async (id) => {
   };
 };
 
-const getUserReviews = async(userId) => {
+const getUserReviews = async (userId) => {
   const restroomsCollection = await restrooms();
   return await restroomsCollection.aggregate([
     {
@@ -192,7 +192,7 @@ const verifyJwtToken = async (req, res, next) => {
 
       try {
         const { user } = jwt.verify(token, 'CS546');
-        const existingUser = await getUserById(user._id);
+        const { user: existingUser } = await getUserById(user._id);
         if (user.email !== existingUser.email) throw new Error('Not the same user');
         req.user = user;
         next();
