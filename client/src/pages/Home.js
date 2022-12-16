@@ -352,7 +352,7 @@ export default function Restrooms() {
 					<div className="results-container" hidden={!searchState}>
 						<h2>{filteredRestrooms.length} Result{filteredRestrooms.length !== 1 ? "s" : ""}</h2>
 						<p hidden={filteredRestrooms.length}>No results within 20 miles {":("}</p>
-						<p hidden={!filteredRestrooms.length}>Showing results {itemOffset+1}-{filteredRestrooms.length > endOffset? endOffset: filteredRestrooms.length}</p>
+						<p hidden={!filteredRestrooms.length}>Showing results {itemOffset+1}-{filteredRestrooms.length > endOffset ? endOffset: filteredRestrooms.length}</p>
 						{items.map((outputRestroom, index) => {
 							return (
 								<Card key={outputRestroom._id} style={{ width: "32rem" }}>
@@ -361,7 +361,7 @@ export default function Restrooms() {
 										<br />
 										{outputRestroom.city}, {outputRestroom.state} {outputRestroom.zipCode}
 										<br />
-										{distanceToRestroom(lat, lng, outputRestroom.loc.coordinates[1], outputRestroom.loc.coordinates[0]) + (distanceToRestroom(lat, lng, outputRestroom.loc.coordinates[1], outputRestroom.loc.coordinates[0]) > 1 ? " miles" : " mile")}
+										{distanceToRestroom(lat, lng, outputRestroom.loc.coordinates[1], outputRestroom.loc.coordinates[0]) + " mi."}
 										<br />
 										<div align="center">
 											<Button className='navigate-button' variant="secondary" type="submit" onClick={
