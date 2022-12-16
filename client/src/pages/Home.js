@@ -110,7 +110,7 @@ export default function Restrooms() {
 							"_blank"
 							)
           } catch (e) {
-            alert('Error')
+            alert("Sorry, there are no results within 20 miles.")
             setGoing(false)
           }
         },
