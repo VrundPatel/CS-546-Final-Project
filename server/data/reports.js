@@ -32,7 +32,7 @@ const createReport = async (
     restroomId: restroomId,
     value: value,
     userId: userId,
-    reportedAt: new Date().toLocaleString()
+    reportedAt: new Date()
   };
 
   let updatedReports = [];
