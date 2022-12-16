@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Accordion, Badge, Button, Card } from 'react-bootstrap';
+import { Accordion, Badge, Card } from 'react-bootstrap';
 import Layout from './layout';
 
 export default function UserProfile() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:9000/users')
+    axios.get('http://localhost:9000/profile')
       .then(({ data }) => {
         console.log('user returned ', data);
         setUser(data.user);
@@ -58,7 +58,7 @@ export default function UserProfile() {
                   {
                     user?.reports.map((item, index) => {
                       const { report } = item;
-                      return (<Card key={item}>
+                      return (<Card key={report._id}>
                         <Card.Body>
                           {`${report.value}`}
                           <Badge pill bg="primary" style={{ float: 'right' }}>
