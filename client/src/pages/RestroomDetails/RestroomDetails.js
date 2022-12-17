@@ -41,6 +41,19 @@ export default function RestroomDetails() {
     fetchData();
   }, [id, review]);
 
+  function olderThan24Hours(t1) {
+    let time1 = new Date();
+    let time2 = new Date(t1);
+    // 86400000 is one day in ISO time
+    // Function returns TRUE if the input time is a day older than the current time.
+    return (new Date(time1 - time2) > 86400000);
+  }
+
+  function outOfOrder(restroom) {
+    // Function returns the reports that the restroom has received within the last 24 hours
+    return (restroom.reports?.filter(report => !olderThan24Hours(report.reportedAt)))
+  }
+
   return (
     <Layout>
       {ready ? (
@@ -64,9 +77,9 @@ export default function RestroomDetails() {
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>
                         Reports
-                        {restroomData?.reports?.length >= 3 &&
+                        {(outOfOrder(restroomData).length >= 3) &&
                           <Badge pill bg="danger">
-                            {restroomData?.reports?.length}
+                            {outOfOrder(restroomData).length + " Reports in 24 Hours"}
                           </Badge>
                         }
                       </Accordion.Header>
