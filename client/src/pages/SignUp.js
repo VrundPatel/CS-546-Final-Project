@@ -66,6 +66,9 @@ export default function SignUp() {
 
         <Form.Group className="mb-3" controlId="userState">
           <Form.Label>State</Form.Label>
+          <ul>
+            <li>Please input state abbreviation(NY, NJ, FL, etc)</li>
+          </ul>
           <Form.Control
             onChange={handleOnChange}
             value={state}
