@@ -7,6 +7,7 @@ import Layout from "./layout";
 import ReactPaginate from "react-paginate";
 import './home.css';
 
+
 export default function Restrooms() {
   const [restrooms, setRestrooms] = useState([]);
   const [lat, setLat] = useState(null);
@@ -58,7 +59,6 @@ export default function Restrooms() {
 
   const onLocationSubmit = async (event) => {
     event.preventDefault();
-    console.log("searching by device location");
     // Fetch device location
     if (!navigator.geolocation) {
       setStatus("Can't get location, try a different browser");
@@ -66,7 +66,6 @@ export default function Restrooms() {
       setLoading(true);
       navigator.geolocation.getCurrentPosition(
         async (position) => {
-          console.log(position);
           setStatus(null);
           setLat(position.coords.latitude);
           setLng(position.coords.longitude);
@@ -123,8 +122,6 @@ export default function Restrooms() {
   }
 
 	function distanceToRestroom(deviceLat, deviceLong, restroomLat, restroomLong) {
-		console.log("Device: " + deviceLat + ", " + deviceLong);
-		console.log("Restroom: " + restroomLat + ", " + restroomLong);
     var rEarth = 6371; // Radius of the earth in km
     var deltaLat = deg2rad(restroomLat-deviceLat);  // deg2rad below
     var deltaLon = deg2rad(restroomLong-deviceLong); 
@@ -141,8 +138,22 @@ export default function Restrooms() {
     return deg * (Math.PI/180)
   }
 
+  function getCurrentDate() {
+    let newDate = new Date();
+    return newDate;
+  }
+
+  function olderThan24Hours(t1) {
+    let time1 = new Date();
+    let time2 = new Date(t1);
+    // 86400000 is one day in ISO time
+    // Function returns TRUE if the input time is a day older than the current time.
+    return (new Date(time1 - time2) > 86400000);
+  }
+
   function outOfOrder(restroom) {
-    return (restroom.reports?.length >= 5)
+    // Function returns the reports that the restroom has received within the last 24 hours
+    return (restroom.reports?.filter(report => !olderThan24Hours(report.reportedAt)))
   }
 
   const activeFilters = [genderNeutralCheckState, adaCheckState, stationCheckState, buyCheckState, keyCheckState, ampleCheckState, noTouchCheckState, seatCoverCheckState];
@@ -181,20 +192,13 @@ export default function Restrooms() {
 	const itemsPerPage = 5;
 	const endOffset = itemOffset + itemsPerPage;
 	const items = filteredRestrooms.slice(itemOffset, endOffset);
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = filteredRestrooms.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(filteredRestrooms.length / itemsPerPage);
 
 	const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % filteredRestrooms.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
     setItemOffset(newOffset);
   };
-
-	console.log(searchState);
-	console.log(filteredRestrooms);
 
   return (
     <>
@@ -359,7 +363,7 @@ export default function Restrooms() {
 						<p hidden={!filteredRestrooms.length}>Showing results {itemOffset+1}-{filteredRestrooms.length > endOffset ? endOffset: filteredRestrooms.length}</p>
 						{items.map((outputRestroom, index) => {
 							return (
-								<Card key={outputRestroom._id} style={{ width: "32rem" }}>
+								<Card key={outputRestroom._id} style={{ width: "24rem" }}>
 									<Card.Body>
 										<a href={"/restroom/" + outputRestroom._id}>{outputRestroom.streetAddress}</a>
 										<br />
@@ -367,9 +371,9 @@ export default function Restrooms() {
 										<br />
 										{distanceToRestroom(lat, lng, outputRestroom.loc.coordinates[1], outputRestroom.loc.coordinates[0]) + " mi."}
 										<br />
-                    {outOfOrder(outputRestroom) &&
+                    {(outOfOrder(outputRestroom).length >= 3) &&
                           <Badge pill bg="danger">
-                            <div title="Due to recent reports, this restroom may be out of order">Possibly Out of Order</div>
+                            <div title={"This restroom has received " + outOfOrder(outputRestroom).length + " reports in the last day."}>&#9888; Warning</div>
                           </Badge>
                     }<br />
                     <br />

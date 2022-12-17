@@ -64,7 +64,7 @@ export default function RestroomDetails() {
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>
                         Reports
-                        {restroomData?.reports?.length > 5 &&
+                        {restroomData?.reports?.length >= 3 &&
                           <Badge pill bg="danger">
                             {restroomData?.reports?.length}
                           </Badge>
