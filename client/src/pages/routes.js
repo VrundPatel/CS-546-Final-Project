@@ -49,7 +49,11 @@ export default function AppRoutes() {
           </GuardedRoute>
         }
       />
-      <Route path="/restroom/:id" element={<RestroomDetails />} />
+      <Route path="/restroom/:id" element={
+        <GuardedRoute>
+          <RestroomDetails />
+        </GuardedRoute>
+      } />
       <Route
         path="/user"
         element={
