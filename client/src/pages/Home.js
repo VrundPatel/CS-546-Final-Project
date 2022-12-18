@@ -124,11 +124,11 @@ export default function Restrooms() {
 	function distanceToRestroom(deviceLat, deviceLong, restroomLat, restroomLong) {
     var rEarth = 6371; // Radius of the earth in km
     var deltaLat = deg2rad(restroomLat-deviceLat);  // deg2rad below
-    var deltaLon = deg2rad(restroomLong-deviceLong); 
+    var deltaLong = deg2rad(restroomLong-deviceLong); 
     var a = 
       Math.sin(deltaLat/2) * Math.sin(deltaLat/2) +
       Math.cos(deg2rad(deviceLat)) * Math.cos(deg2rad(restroomLat)) * 
-      Math.sin(deltaLon/2) * Math.sin(deltaLon/2); 
+      Math.sin(deltaLong/2) * Math.sin(deltaLong/2); 
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
     var d = rEarth * c; // Distance in km
     return Math.round((0.621371 * d) * 100) / 100;
