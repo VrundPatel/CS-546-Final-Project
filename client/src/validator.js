@@ -35,7 +35,7 @@ function checkFullname(fullName, varName) {
     if (!fullName) throw `Error: You must provide a ${varName}`;
     if (typeof fullName !== 'string' || fullName.trim().length == 0) throw `Error: ${varName} must be a non-empty string`;
     fullName = fullName.trim();
-    if (!/^[a-zA-Z'- ]+$/g.test(fullName)) throw (`Error: ${varName} may not be real name, please change another one`);
+    if (!/^[-a-zA-Z' ]+$/g.test(fullName)) throw (`Error: ${varName} may not be real name, please change another one`);
     return fullName;
 }
 

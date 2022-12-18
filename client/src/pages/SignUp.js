@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from "react-router-dom";
+import { checkFullname, checkCity, checkState, checkEmail, checkPassword } from '../validator';
 import './login.css';
 
 export default function SignUp() {
@@ -37,6 +38,36 @@ export default function SignUp() {
     } catch (e) {
       alert('User already exits')
     }
+    try {
+      checkFullname(fullName)
+    }
+    catch (e) {
+      alert('Please Type in a valid fullname')
+    }
+    try {
+      checkCity(city)
+    }
+    catch (e) {
+      alert('Please Type in a valid city')
+    }
+    try {
+      checkState(state)
+    }
+    catch (e) {
+      alert('Please Type in a valid State')
+    }
+    try {
+      checkEmail(email)
+    }
+    catch (e) {
+      alert('Please Type in a valid email')
+    }
+    try {
+      checkPassword(password)
+    }
+    catch (e) {
+      alert('Please Type in a valid password')
+    }
   }
 
   return (
@@ -48,7 +79,7 @@ export default function SignUp() {
           <Form.Label>Full Name</Form.Label>
           <Form.Control
             onChange={handleOnChange}
-            value={fullName}
+            value = {fullName}
             name='fullName'
             type="text"
             placeholder="Enter full name" />
