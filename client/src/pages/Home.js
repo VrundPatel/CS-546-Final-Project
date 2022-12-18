@@ -138,11 +138,6 @@ export default function Restrooms() {
     return deg * (Math.PI/180)
   }
 
-  function getCurrentDate() {
-    let newDate = new Date();
-    return newDate;
-  }
-
   function olderThan24Hours(t1) {
     let time1 = new Date();
     let time2 = new Date(t1);
