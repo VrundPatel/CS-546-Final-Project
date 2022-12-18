@@ -86,7 +86,7 @@ function InfoCard(props) {
                 </td>
               </tr>
               <tr>
-                <td>overallRating</td>
+                <td>Overall Rating</td>
                 <td>{overallRating}</td>
               </tr>
             </tbody>
